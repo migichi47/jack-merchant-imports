@@ -13,7 +13,7 @@ const Car = (vehicle) => {
     horsepower,
     id,
     image_type,
-    image_url,
+    imageUrl,
     investigation_count,
     make,
     model,
@@ -31,7 +31,7 @@ const Car = (vehicle) => {
     >
       <img
         src={
-          image_url ??
+          imageUrl ??
           "https://framerusercontent.com/images/95P5QpqVVPD3iWrbpwzFZaTyfRg.jpg?width=700&height=431"
         }
         alt=""
