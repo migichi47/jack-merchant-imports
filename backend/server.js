@@ -14,6 +14,4 @@ app.use(
 );
 app.use("/api/vehicles", vehicleRoutes);
 
-app.listen(3000, () => {
-  console.log("server is running on Port 3000");
-});
+export default app;
