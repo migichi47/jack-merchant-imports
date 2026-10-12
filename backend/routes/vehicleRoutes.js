@@ -1,11 +1,11 @@
 import express, { Router } from "express";
+import { addImagesToVehicles } from "../services/vehicleService.js";
 
 const router = Router();
 
 router.get("/", async (req, res) => {
   try {
     const { make, model, year, limit = 10, offset = 0 } = req.query;
-
     const params = new URLSearchParams();
 
     if (make) params.set("make", make);
@@ -31,7 +31,11 @@ router.get("/", async (req, res) => {
     }
 
     const data = await response.json();
-    res.json(data);
+    const vehiclesWithImages = await addImagesToVehicles(data.results);
+    res.json({
+      ...data,
+      results: vehiclesWithImages,
+    });
   } catch (error) {
     console.error("CarVector error:", error.message);
 
