@@ -19,7 +19,7 @@ const Button = ({ children, variant = "primary" }) => {
   return (
     <button
       className={twMerge(
-        "relative group rounded-full px-5 py-3 font-semibold text-sm",
+        "relative group rounded-full px-5 py-3 font-semibold text-sm cursor-pointer",
         variants[variant],
       )}
     >

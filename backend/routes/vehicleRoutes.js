@@ -1,0 +1,44 @@
+import express, { Router } from "express";
+
+const router = Router();
+
+router.get("/", async (req, res) => {
+  try {
+    const { make, model, year, limit = 10, offset = 0 } = req.query;
+
+    const params = new URLSearchParams();
+
+    if (make) params.set("make", make);
+    if (model) params.set("model", model);
+    if (year) params.set("year", year);
+
+    params.set("limit", limit);
+    params.set("offset", offset);
+
+    const response = await fetch(
+      `https://api.carvector.io/v1/vehicles?${params.toString()}`,
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.CARVECTOR_API_KEY}`,
+        },
+      },
+    );
+
+    if (!response.ok) {
+      return res.status(response.status).json({
+        message: "Failed to fetch vehicles from CarVector",
+      });
+    }
+
+    const data = await response.json();
+    res.json(data);
+  } catch (error) {
+    console.error("CarVector error:", error.message);
+
+    res.status(500).json({
+      message: "An error occurred while fetching vehicles",
+    });
+  }
+});
+
+export default router;

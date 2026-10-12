@@ -1,5 +1,4 @@
-import { CarFront, MoveRight } from "lucide-react";
-import React from "react";
+import { MoveRight } from "lucide-react";
 import Button from "./Button";
 
 const Header = () => {
