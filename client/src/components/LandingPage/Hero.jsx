@@ -2,7 +2,7 @@ import Button from "../Button";
 
 const Hero = () => {
   return (
-    <div className="flex flex-col items-center text-center space-y-7 max-w-200 mx-auto py-20">
+    <div className="flex flex-col items-center text-center space-y-7 max-w-200 mx-auto">
       <h1 className="flex flex-col space-y-2">
         <span className="text-xl">YOUR NEXT CAR STARTS HERE</span>
         <span className="text-5xl font-bold">

@@ -9,10 +9,13 @@ const WhyChooseUs = () => {
       </h1>
 
       <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-        {WhyChooseUsData.map((card) => {
+        {WhyChooseUsData.map((card, i) => {
           const { header, description, icon } = card;
           return (
-            <div className="bg-gray-100 rounded-lg border border-gray-200 p-5 flex flex-col justify-between">
+            <div
+              className="bg-gray-100 rounded-lg border border-gray-200 p-5 flex flex-col justify-between"
+              key={i}
+            >
               <div className="flex justify-between">
                 <span className="bg-gray-300 h-fit p-3 rounded-full">
                   {icon}
