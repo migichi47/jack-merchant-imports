@@ -15,7 +15,7 @@ export function CarProvider({ children }) {
         console.error(err);
       }
     };
-    // getVehicles();
+    getVehicles();
   }, []);
 
   const value = {
