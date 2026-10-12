@@ -8,9 +8,15 @@ const app = express();
 
 app.use(express.json());
 app.use(cors());
+
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://jack-merchant-imports.vercel.app",
+];
+
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: allowedOrigins,
   }),
 );
 app.use("/api/vehicles", vehicleRoutes);
