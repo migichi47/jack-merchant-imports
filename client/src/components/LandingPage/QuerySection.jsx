@@ -13,7 +13,7 @@ const QuerySection = () => {
   return (
     <div className="bg-gray-100 py-10">
       <div className="max-w-200 mx-auto flex flex-col items-center space-y-4">
-        <h2 className="text-4xl font-bold">What are you looking for?</h2>
+        <h2 className="text-2xl sm:text-4xl font-bold">What are you looking for?</h2>
         <h3 className="text-gray-500 underline">Search Cars</h3>
         <div className="flex flex-col items-center gap-5">
           <div className="flex gap-5">
