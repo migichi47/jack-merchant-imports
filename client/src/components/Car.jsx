@@ -1,7 +1,11 @@
-import { Dot } from "lucide-react";
+import { ArrowRight, Dot } from "lucide-react";
 import React from "react";
+import Button from "./Button";
+import { useNavigate } from "react-router-dom";
 
 const Car = (vehicle) => {
+  const navigate = useNavigate();
+
   const {
     body_class,
     complaint_count,
@@ -11,7 +15,6 @@ const Car = (vehicle) => {
     drive_type,
     fuel_type,
     horsepower,
-    id,
     image_type,
     imageUrl,
     investigation_count,
@@ -24,6 +27,12 @@ const Car = (vehicle) => {
     tsb_count,
     year,
   } = vehicle;
+  
+  const id = vehicle.id ?? vehicle._id
+
+  const handleClick = (id) => {
+    navigate(`/details/${id}`);
+  };
   return (
     <div
       className="border border-gray-200 rounded-lg hover:scale-98 transition-all duration-300 ease-in-out cursor-pointer
@@ -37,7 +46,7 @@ const Car = (vehicle) => {
         alt=""
         className="rounded-lg object-cover"
       />
-      <div className="bg-gray-100 p-2 border border-gray-200 rounded-lg space-y-2">
+      <div className="bg-gray-100 p-2 border border-gray-200 rounded-lg space-y-2 relative">
         <h1 className="font-semibold text-gray-600">
           {make} {model}
         </h1>
@@ -51,6 +60,13 @@ const Car = (vehicle) => {
           <Dot />
           <span> {fuel_type}</span>
         </p>
+        <Button
+          className="absolute top-2 right-2 text-xs"
+          variant="secondary"
+          onClick={() => handleClick(id)}
+        >
+          Enquire <ArrowRight />
+        </Button>
       </div>
     </div>
   );

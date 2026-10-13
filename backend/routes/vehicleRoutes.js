@@ -10,8 +10,7 @@ router.get("/", async (req, res) => {
       model,
       yearFrom,
       yearTo,
-      year = 2020,
-      limit = 4,
+      limit=10,
       offset = 0,
     } = req.query;
     const params = new URLSearchParams();

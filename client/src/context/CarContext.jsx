@@ -8,18 +8,12 @@ export function CarProvider({ children }) {
   const [popular, setPopular] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    const getVehicles = async () => {
-      try {
-        const query = useSearchParams.toString();
-        const response = await api.get(`/api/vehicles?${query}`);
-        setVehicles(response.data.results);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    // getVehicles();
-  }, []);
+  const [searchParams] = useSearchParams();
+  const make = searchParams.get("make") || "";
+  const model = searchParams.get("model") || "";
+  const yearFrom = searchParams.get("yearFrom") || "";
+  const yearTo = searchParams.get("yearTo") || "";
+
 
   useEffect(() => {
     const getPopularCars = async () => {
@@ -30,9 +24,32 @@ export function CarProvider({ children }) {
         console.error(error);
       }
     };
-    getPopularCars()
+    getPopularCars();
   }, []);
 
+  useEffect(() => {
+    const fetchVehicles = async () => {
+      try {
+        setLoading(true);
+        const response = await api.get("/api/vehicles", {
+          params: {
+            make,
+            model,
+            yearFrom,
+            yearTo,
+          },
+        });
+
+        setVehicles(response.data.results ?? response.data.vehicles ?? []);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    // fetchVehicles();
+  }, [make, model, yearFrom, yearTo]);
+
+  console.log(vehicles);
 
   const value = {
     vehicles,
