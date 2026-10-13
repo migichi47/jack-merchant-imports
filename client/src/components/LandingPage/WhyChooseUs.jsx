@@ -17,7 +17,7 @@ const WhyChooseUs = () => {
               key={i}
             >
               <div className="flex justify-between">
-                <span className="bg-gray-300 h-fit p-3 rounded-full">
+                <span className="bg-gray-200 text-red-600 h-fit p-3 rounded-full">
                   {icon}
                 </span>
                 <CarFront className="w-20 h-20 text-gray-200" />

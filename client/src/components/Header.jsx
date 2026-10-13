@@ -3,32 +3,20 @@ import Button from "./Button";
 import { useState } from "react";
 import { FaWhatsapp } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import Logo from "./Logo";
 
 const Header = () => {
   const [showMenu, setShowMenu] = useState(false);
 
   return (
     <div
-      className={`bg-white fixed w-full shadow z-100 pt-3 ${showMenu ? "h-54 lg:h-20" : "h-20"} transition-all 
+      className={`bg-white fixed w-full shadow z-100 pt-3 ${showMenu ? "h-60 lg:h-20" : "h-20"} transition-all 
       duration-600 ease-in-out`}
     >
       <div
         className={`text-black flex justify-between items-center max-w-300 mx-auto px-5`}
       >
-        <Link
-          className="flex gap-1 w-fit h-fit cursor-pointer sm:hover:scale-105 ease-in-out duration-300"
-          to={"/"}
-        >
-          <img
-            src="https://res.cloudinary.com/pzmxzqp0/image/upload/v1791885325/JM-imports-logo-remover-bg.png"
-            alt=""
-            className="w-20"
-          />
-          <h1 className="uppercase font-bold flex flex-col leading-4 justify-center">
-            <span>Jack Merchant</span>
-            <span className="text-red-600">Imports</span>
-          </h1>
-        </Link>
+        <Logo />
         <div className="flex gap-5 items-center">
           <span
             className="lg:hidden hover:text-pink-500 cursor-pointer"
@@ -42,11 +30,12 @@ const Header = () => {
             lg:gap-5 gap-3 ${showMenu ? "flex absolute top-20 w-full fade-from-top" : "hidden"}`}
           >
             <a
-              href="#"
+              href="/"
               className="lg:border-b-2 border-b-red-600 lg:text-red-600 font-semibold"
             >
               Home
             </a>
+            <a href="/services">Our Services</a>
             <a href="#">How it works</a>
             <a href="#">About us</a>
             <a href="#">Contact</a>

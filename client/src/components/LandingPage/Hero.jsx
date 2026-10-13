@@ -1,4 +1,4 @@
-import { MoveDown, MoveRight, MoveUpRight } from "lucide-react";
+import { MoveDown, MoveUpRight } from "lucide-react";
 import Button from "../Button";
 
 const Hero = () => {
@@ -22,7 +22,7 @@ const Hero = () => {
         support from selection to delivery.
       </p>
       <div className="flex items-center gap-4">
-        <Button variant="secondary" onClick={handleClick}>
+        <Button onClick={handleClick}>
           <span>Request an Import Quote</span>
           <MoveUpRight className="w-4" />
         </Button>

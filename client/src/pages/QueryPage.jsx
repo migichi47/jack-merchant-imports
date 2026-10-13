@@ -15,10 +15,10 @@ const QueryPage = () => {
     <div className="bg-gray-100 py-10">
       <div className="max-w-200 mx-auto flex flex-col items-center space-y-8">
         <div className="space-y-2 text-center">
-          <h2 className="text-2xl sm:text-4xl font-bold capitalize">
+          <h2 className="text-2xl sm:text-3xl font-bold capitalize">
             Tell Us what You have in mind
           </h2>
-          <h3 className="text-gray-500">Fields marked * are required.</h3>
+          <h3 className="text-gray-500 text-xs">Fields marked * are required.</h3>
         </div>
         <div
           className="grid sm:grid-cols-2 w-full px-10 flex-col items-center gap-5 [&>div]:[&>label]:font-semibold [&>div]:[&>label]:text-sm [&>div]:flex
@@ -33,7 +33,7 @@ const QueryPage = () => {
           </div>
           <div>
             <label htmlFor="">Phone number *</label>
-            <input type="text" required placeholder="Your contact number" />
+            <input type="tel" required placeholder="Your contact number" />
           </div>
           <div>
             <label htmlFor="">Email (optional)</label>
@@ -79,7 +79,7 @@ const QueryPage = () => {
           <div>
             <div className="flex flex-col gap-1">
               <label htmlFor="" className="text-sm font-semibold">
-                Preferred year of range
+                Preferred year of range *
               </label>
               <div
                 className="flex items-center gap-2 [&>select]:px-4 [&>select]:py-2 [&>select]:rounded-lg [&>select]:outline-0
@@ -137,7 +137,7 @@ const QueryPage = () => {
           </p>
         </div>
 
-        <Button variant="secondary" className="w-">
+        <Button className="w-">
           Request my quote <MoveUpRightIcon />
         </Button>
       </div>
