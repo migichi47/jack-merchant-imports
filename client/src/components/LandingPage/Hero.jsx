@@ -9,7 +9,7 @@ const Hero = () => {
     });
   };
   return (
-    <div className="flex flex-col items-center justify-center text-center space-y-12 max-w-200 mx-auto h-[60vh]">
+    <div className="flex flex-col items-center px-4 justify-center text-center space-y-12 max-w-200 mx-auto h-[60vh]">
       <h1 className="flex flex-col space-y-2">
         <span className="text-xl">YOUR NEXT CAR STARTS HERE</span>
         <span className="text-5xl font-bold">
