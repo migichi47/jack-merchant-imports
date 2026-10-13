@@ -47,7 +47,7 @@ export function CarProvider({ children }) {
       }
     };
 
-    // fetchVehicles();
+    fetchVehicles();
   }, [make, model, yearFrom, yearTo]);
 
   const value = {
