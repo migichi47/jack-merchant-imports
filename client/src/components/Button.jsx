@@ -1,7 +1,7 @@
 import React from "react";
 import { twMerge } from "tailwind-merge";
 
-const Button = ({ children, variant = "primary", className }) => {
+const Button = ({ children, variant = "primary", className, onClick }) => {
   const variants = {
     primary: "bg-gray-100 border border-gray-200",
     secondary: "bg-black",
@@ -19,10 +19,11 @@ const Button = ({ children, variant = "primary", className }) => {
   return (
     <button
       className={twMerge(
-        "relative group rounded-full px-5 py-3 font-semibold text-sm cursor-pointer",
+        "relative group rounded-full px-5 py-3 font-semibold text-sm cursor-pointer flex justify-center",
         variants[variant],
         className,
       )}
+      onClick={onClick}
     >
       <span
         className={twMerge(

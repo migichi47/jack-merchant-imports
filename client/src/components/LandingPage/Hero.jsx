@@ -1,8 +1,10 @@
+import { MoveRight } from "lucide-react";
 import Button from "../Button";
+import { Link } from "react-router-dom";
 
 const Hero = () => {
   return (
-    <div className="flex flex-col items-center text-center space-y-7 max-w-200 mx-auto">
+    <div className="flex flex-col items-center text-center space-y-10 max-w-200 mx-auto">
       <h1 className="flex flex-col space-y-2">
         <span className="text-xl">YOUR NEXT CAR STARTS HERE</span>
         <span className="text-5xl font-bold">
@@ -14,7 +16,12 @@ const Hero = () => {
         car importation process with clear guidance, transparent pricing, and
         support from selection to delivery.
       </p>
-      <Button variant="secondary">Start your Journey</Button>
+      <Button variant="secondary">
+        <Link className="flex gap-2 items-center" to={"/import"}>
+          <span>Import Now</span>
+          <MoveRight className="w-3" />
+        </Link>
+      </Button>
       <img
         src="https://framerusercontent.com/images/nCykaw7ADDDCvvzz4EcLErY17c.png?scale-down-to=1024&width=1680&height=397"
         alt=""

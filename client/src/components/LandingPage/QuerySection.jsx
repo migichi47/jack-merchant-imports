@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { makes, years } from "../../data/vehicleOptions";
+import Button from "../Button";
+import { useNavigate } from "react-router-dom";
 
 const QuerySection = () => {
+  const navigate = useNavigate()
   const [selectedMake, setSelectedMake] = useState("");
   const [selectedModel, setSelectedModel] = useState("");
   const [startYear, setStartYear] = useState("");
@@ -12,9 +15,13 @@ const QuerySection = () => {
 
   return (
     <div className="bg-gray-100 py-10">
-      <div className="max-w-200 mx-auto flex flex-col items-center space-y-4">
-        <h2 className="text-2xl sm:text-4xl font-bold">What are you looking for?</h2>
-        <h3 className="text-gray-500 underline">Search Cars</h3>
+      <div className="max-w-200 mx-auto flex flex-col items-center space-y-8">
+        <div className="space-y-2 text-center">
+          <h2 className="text-2xl sm:text-4xl font-bold">
+            What are you looking for?
+          </h2>
+          <h3 className="text-gray-500 underline">Search Cars</h3>
+        </div>
         <div className="flex flex-col items-center gap-5">
           <div className="flex gap-5">
             <select
@@ -64,7 +71,11 @@ const QuerySection = () => {
                 from
               </option>
               {years.map((year) => {
-                return <option value={year} key={year}>{year}</option>;
+                return (
+                  <option value={year} key={year}>
+                    {year}
+                  </option>
+                );
               })}
             </select>
             <span>-</span>
@@ -83,6 +94,8 @@ const QuerySection = () => {
             </select>
           </div>
         </div>
+
+        <Button variant="secondary" className="w-40" onClick={() => navigate("/import")}>Search</Button>
       </div>
     </div>
   );
