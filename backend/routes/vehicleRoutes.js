@@ -1,5 +1,6 @@
 import express, { Router } from "express";
 import { addImagesToVehicles } from "../services/vehicleService.js";
+import axios from "axios";
 
 const router = Router();
 
@@ -53,7 +54,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/api/vehicles/:id", async (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -66,7 +67,11 @@ router.get("/api/vehicles/:id", async (req, res) => {
       },
     );
 
-    res.json(response.data);
+
+    const vehicle = await response.data;
+    const [vehicleWithImages] = await addImagesToVehicles([vehicle]);
+
+    res.json(vehicleWithImages);
   } catch (error) {
     console.error(
       "CarVector error:",

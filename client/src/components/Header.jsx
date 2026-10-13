@@ -14,8 +14,15 @@ const Header = () => {
       <div
         className={`text-black flex justify-between items-center max-w-300 mx-auto px-5`}
       >
-        <Link className="flex gap-1 w-fit h-fit cursor-pointer sm:hover:scale-105 ease-in-out duration-300" to={"/"}>
-          <img src="./JM-imports-logo-remover-bg.png" alt="" className="w-20" />
+        <Link
+          className="flex gap-1 w-fit h-fit cursor-pointer sm:hover:scale-105 ease-in-out duration-300"
+          to={"/"}
+        >
+          <img
+            src="https://res.cloudinary.com/pzmxzqp0/image/upload/v1791885325/JM-imports-logo-remover-bg.png"
+            alt=""
+            className="w-20"
+          />
           <h1 className="uppercase font-bold flex flex-col leading-4 justify-center">
             <span>Jack Merchant</span>
             <span className="text-red-600">Imports</span>
