@@ -7,6 +7,7 @@ const Car = (vehicle) => {
   const navigate = useNavigate();
 
   const {
+    id,
     body_class,
     complaint_count,
     cylinders,
@@ -27,8 +28,6 @@ const Car = (vehicle) => {
     tsb_count,
     year,
   } = vehicle;
-  
-  const id = vehicle.id ?? vehicle._id
 
   const handleClick = (id) => {
     navigate(`/details/${id}`);

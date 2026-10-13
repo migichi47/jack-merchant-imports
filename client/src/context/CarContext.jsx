@@ -19,13 +19,14 @@ export function CarProvider({ children }) {
     const getPopularCars = async () => {
       try {
         const response = await api.get("/api/popular-cars");
-        setPopular(response.data);
+        setPopular(response.data[0].results);
       } catch (error) {
         console.error(error);
       }
     };
     getPopularCars();
   }, []);
+
 
   useEffect(() => {
     const fetchVehicles = async () => {
@@ -48,8 +49,6 @@ export function CarProvider({ children }) {
 
     // fetchVehicles();
   }, [make, model, yearFrom, yearTo]);
-
-  console.log(vehicles);
 
   const value = {
     vehicles,
