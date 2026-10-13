@@ -5,7 +5,7 @@ const router = Router();
 
 router.get("/", async (req, res) => {
   try {
-    const { make, model, year, limit = 10, offset = 0 } = req.query;
+    const { make = "toyota", model, year = 2020, limit = 4, offset = 0 } = req.query;
     const params = new URLSearchParams();
 
     if (make) params.set("make", make);

@@ -13,7 +13,7 @@ const ExplorePopularCars = () => {
       <p className="w-fit mx-auto text-center text-gray-500">
         Popular car reviews and releases. We'll help you buy with confidence.
       </p>
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 w-fit mx-auto space-y-10 sm:gap-5">
+      <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 w-fit mx-auto space-y-10 sm:gap-5">
         {vehicles.map((vehicle) => {
           return <Car {...vehicle} key={vehicle.id} />;
         })}

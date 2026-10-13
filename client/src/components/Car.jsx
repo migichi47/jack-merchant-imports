@@ -27,7 +27,7 @@ const Car = (vehicle) => {
   return (
     <div
       className="border border-gray-200 rounded-lg hover:scale-98 transition-all duration-300 ease-in-out cursor-pointer
-      w-fit p-2 flex flex-col gap-2"
+      w-fit p-2 flex flex-col gap-2 h-fit"
     >
       <img
         src={
@@ -37,7 +37,7 @@ const Car = (vehicle) => {
         alt=""
         className="rounded-lg object-cover"
       />
-      <div className="bg-gray-100 p-2 border border-gray-200 rounded-lg">
+      <div className="bg-gray-100 p-2 border border-gray-200 rounded-lg space-y-2">
         <h1 className="font-semibold text-gray-600">
           {make} {model}
         </h1>
