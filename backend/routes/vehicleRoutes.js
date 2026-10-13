@@ -5,12 +5,21 @@ const router = Router();
 
 router.get("/", async (req, res) => {
   try {
-    const { make = "toyota", model, year = 2020, limit = 4, offset = 0 } = req.query;
+    const {
+      make = "toyota",
+      model,
+      yearFrom,
+      yearTo,
+      year = 2020,
+      limit = 4,
+      offset = 0,
+    } = req.query;
     const params = new URLSearchParams();
 
     if (make) params.set("make", make);
     if (model) params.set("model", model);
-    if (year) params.set("year", year);
+    if (yearFrom) params.set("yearFrom", yearFrom);
+    if (yearTo) params.set("yearTo", yearTo);
 
     params.set("limit", limit);
     params.set("offset", offset);

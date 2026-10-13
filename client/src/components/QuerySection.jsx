@@ -1,17 +1,28 @@
 import React, { useState } from "react";
-import { makes, years } from "../../data/vehicleOptions";
-import Button from "../Button";
-import { useNavigate } from "react-router-dom";
+import { makes, years } from "../data/vehicleOptions";
+import Button from "./Button";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const QuerySection = () => {
-  const navigate = useNavigate()
-  const [selectedMake, setSelectedMake] = useState("");
+  const navigate = useNavigate();
+  const [make, setMake] = useState("");
   const [selectedModel, setSelectedModel] = useState("");
-  const [startYear, setStartYear] = useState("");
-  const [endYear, setEndYear] = useState("");
+  const [yearFrom, setYearFrom] = useState("");
+  const [yearTo, setYearTo] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const currentMake = makes.find((make) => make.name === selectedMake);
+  const currentMake = makes.find((make) => make.name === make);
   const availableModels = currentMake?.models ?? [];
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    setSearchParams({
+      make,
+      model,
+      yearFrom,
+      yearTo,
+    });
+  };
 
   return (
     <div className="bg-gray-100 py-10">
@@ -25,9 +36,9 @@ const QuerySection = () => {
         <div className="flex flex-col items-center gap-5">
           <div className="flex gap-5">
             <select
-              value={selectedMake}
+              value={make}
               onChange={(e) => {
-                setSelectedMake(e.target.value);
+                setMake(e.target.value);
                 setSelectedModel("");
               }}
               className="border border-gray-500 rounded-md p-2 outline-0"
@@ -44,7 +55,7 @@ const QuerySection = () => {
             <select
               value={selectedModel}
               onChange={(e) => setSelectedModel(e.target.value)}
-              disabled={!selectedMake}
+              disabled={!make}
               className="border border-gray-500 rounded-md p-2"
             >
               <option value="" className="text-gray-400">
@@ -64,8 +75,8 @@ const QuerySection = () => {
             <select
               name=""
               id=""
-              value={startYear}
-              onChange={(e) => setStartYear(e.target.value)}
+              value={yearFrom}
+              onChange={(e) => setYearFrom(e.target.value)}
             >
               <option value="" className="text-gray-400">
                 from
@@ -82,8 +93,8 @@ const QuerySection = () => {
             <select
               name=""
               id=""
-              value={endYear}
-              onChange={(e) => setEndYear(e.target.value)}
+              value={yearTo}
+              onChange={(e) => setYearTo(e.target.value)}
             >
               <option value="" className="text-gray-400">
                 to
@@ -95,7 +106,13 @@ const QuerySection = () => {
           </div>
         </div>
 
-        <Button variant="secondary" className="w-40" onClick={() => navigate("/import")}>Search</Button>
+        <Button
+          variant="secondary"
+          className="w-40"
+          onClick={() => navigate("/import")}
+        >
+          Search
+        </Button>
       </div>
     </div>
   );

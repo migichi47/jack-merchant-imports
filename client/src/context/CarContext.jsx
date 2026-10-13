@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { CarContext } from "./CarContext";
 import api from "../api";
+import { useSearchParams } from "react-router-dom";
 
 export function CarProvider({ children }) {
   const [vehicles, setVehicles] = useState([]);
@@ -9,13 +10,14 @@ export function CarProvider({ children }) {
   useEffect(() => {
     const getVehicles = async () => {
       try {
-        const response = await api.get("/api/vehicles");
+        const query = useSearchParams.toString();
+        const response = await api.get(`/api/vehicles?${query}`);
         setVehicles(response.data.results);
       } catch (err) {
         console.error(err);
       }
     };
-    getVehicles();
+    // getVehicles();
   }, []);
 
   const value = {
