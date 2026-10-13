@@ -1,5 +1,5 @@
 import React from 'react'
-import QuerySection from '../components/LandingPage/QuerySection'
+import QuerySection from '../components/QuerySection'
 
 const ImportPage = () => {
   return (

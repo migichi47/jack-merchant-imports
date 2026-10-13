@@ -100,7 +100,7 @@ const QuerySection = () => {
                 to
               </option>
               {years.map((year) => {
-                return <option value={year}>{year}</option>;
+                return <option value={year} key={year}>{year}</option>;
               })}
             </select>
           </div>

@@ -1,7 +1,7 @@
 import ExplorePopularCars from "../components/LandingPage/ExplorePopularCars";
 import Hero from "../components/LandingPage/Hero";
-import QuerySection from "../components/LandingPage/QuerySection";
 import WhyChooseUs from "../components/LandingPage/WhyChooseUs";
+import QuerySection from "../components/QuerySection";
 
 const LandingPage = () => {
   return (

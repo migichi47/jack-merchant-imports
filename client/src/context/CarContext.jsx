@@ -5,6 +5,7 @@ import { useSearchParams } from "react-router-dom";
 
 export function CarProvider({ children }) {
   const [vehicles, setVehicles] = useState([]);
+  const [popular, setPopular] = useState([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -20,8 +21,22 @@ export function CarProvider({ children }) {
     // getVehicles();
   }, []);
 
+  useEffect(() => {
+    const getPopularCars = async () => {
+      try {
+        const response = await api.get("/api/popular-cars");
+        setPopular(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    getPopularCars()
+  }, []);
+
+
   const value = {
     vehicles,
+    popular,
     setVehicles,
     loading,
     setLoading,

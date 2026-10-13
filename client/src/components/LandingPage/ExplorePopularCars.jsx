@@ -3,7 +3,7 @@ import Car from "../Car";
 import { useCars } from "../../hooks/useCars";
 
 const ExplorePopularCars = () => {
-  const { vehicles } = useCars();
+  const { popular } = useCars();
 
   return (
     <div className="space-y-5 max-w-400 mx-auto px-5">
@@ -14,8 +14,8 @@ const ExplorePopularCars = () => {
         Popular car reviews and releases. We'll help you buy with confidence.
       </p>
       <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 w-fit mx-auto space-y-10 sm:gap-5">
-        {vehicles.map((vehicle) => {
-          return <Car {...vehicle} key={vehicle.id} />;
+        {popular?.map((vehicle) => {
+          return <Car {...vehicle} key={vehicle._id} />;
         })}
       </div>
     </div>
