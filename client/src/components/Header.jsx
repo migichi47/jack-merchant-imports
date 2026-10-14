@@ -11,7 +11,7 @@ const Header = () => {
 
   return (
     <div
-      className={`bg-white fixed w-full shadow z-100 pt-3 ${showMenu ? "h-60 lg:h-20" : "h-20"} transition-all 
+      className={`bg-white fixed w-full shadow z-100 pt-3 ${showMenu ? "h-70 lg:h-20" : "h-20"} transition-all 
       duration-600 ease-in-out`}
     >
       <div
