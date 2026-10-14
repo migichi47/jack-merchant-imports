@@ -1,9 +1,8 @@
 import express from "express";
 import queriesRoutes from "./routes/queriesRoutes.js";
 import { connectDB } from "./config/db.js";
-import "dotenv/config"
+import "dotenv/config";
 import cors from "cors";
-
 
 const app = express();
 app.use(express.json());
@@ -19,3 +18,5 @@ const startServer = async () => {
 };
 
 startServer();
+
+export default app;
