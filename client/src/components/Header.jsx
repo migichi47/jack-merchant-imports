@@ -2,11 +2,12 @@ import { Menu, MoveRight, X } from "lucide-react";
 import Button from "./Button";
 import { useState } from "react";
 import { FaWhatsapp } from "react-icons/fa";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import Logo from "./Logo";
 
 const Header = () => {
   const [showMenu, setShowMenu] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <div
@@ -31,6 +32,7 @@ const Header = () => {
           >
             {[
               { name: "Home", to: "/" },
+              { name: "Request Quote", to: "/query" },
               { name: "Our Services", to: "/services" },
               { name: "How it works", to: "/how-it-works" },
               { name: "About Us", to: "/about" },
@@ -52,8 +54,10 @@ const Header = () => {
           </div>
 
           <Button className="bg-green-600 text-white px-3">
-            <FaWhatsapp className="text-lg" />
-            <span className="hidden lg:block">Whatsapp</span>
+            <Link to={"https://wa.me/0715366111"} target="_blank" className="flex items-center gap-2">
+              <FaWhatsapp className="text-lg" />
+              <span className="hidden lg:block">Whatsapp</span>
+            </Link>
           </Button>
         </div>
       </div>

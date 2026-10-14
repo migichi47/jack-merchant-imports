@@ -21,7 +21,7 @@ const Footer = () => {
           <h1 className="uppercase font-semibold text-sm">Explore</h1>
           <div
             className="flex flex-col text-zinc-400 text-sm [&>span]:hover:text-white
-          [&>span]:cursor-pointer [&>span]:hover:underline"
+          [&>span]:cursor-pointer [&>span]:hover:underline [&>span]:w-fit"
           >
             {[
               { name: "Home", link: "/" },
