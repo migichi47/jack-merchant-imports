@@ -22,7 +22,6 @@ const querySchema = new mongoose.Schema(
 
     budget: {
       type: String,
-      required: true,
     },
 
     car: {

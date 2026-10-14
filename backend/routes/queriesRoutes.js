@@ -13,6 +13,9 @@ router.get("/queries", async (req, res) => {
 });
 
 router.post("/queries", async (req, res) => {
+  console.log("Content-Type:", req.headers["content-type"]);
+  console.log("Request body:", req.body);
+
   try {
     const { fullName, contact, email, budget, car } = req.body;
 
@@ -20,8 +23,6 @@ router.post("/queries", async (req, res) => {
     if (
       !fullName ||
       !contact ||
-      budget === undefined ||
-      budget === "" ||
       !car?.make ||
       !car?.model ||
       car?.year?.from === undefined ||
