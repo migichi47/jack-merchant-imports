@@ -1,10 +1,10 @@
 import express from "express";
 import queriesRoutes from "./routes/queriesRoutes.js";
-import connectDB from "./config/db.js";
-import { config } from "dotenv";
+import { connectDB } from "./config/db.js";
+import "dotenv/config"
 import cors from "cors";
 
-config();
+
 const app = express();
 app.use(express.json());
 app.use(cors());
