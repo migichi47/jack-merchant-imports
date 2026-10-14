@@ -44,8 +44,8 @@ const QueryPage = () => {
         make: make,
         model: model,
         year: {
-          from: formData.yearFrom,
-          to: formData.yearTo,
+          from: Number(formData.yearFrom),
+          to: Number(formData.yearTo),
         },
       },
     };
@@ -209,7 +209,7 @@ const QueryPage = () => {
           </p>
         </div>
 
-        <Button onClick={handleSubmit}>
+        <Button onClick={handleSubmit} type="submit">
           Request my quote
           <MoveUpRightIcon className="w-4" />
         </Button>

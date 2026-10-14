@@ -2,7 +2,7 @@ import { Menu, MoveRight, X } from "lucide-react";
 import Button from "./Button";
 import { useState } from "react";
 import { FaWhatsapp } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import Logo from "./Logo";
 
 const Header = () => {
@@ -29,16 +29,26 @@ const Header = () => {
             px-10 rounded-full font-semibold lg:flex lg:static lg:w-fit inset-0 h-fit flex flex-col items-center lg:flex-row [&>a]:mx-auto 
             lg:gap-5 gap-3 ${showMenu ? "flex absolute top-20 w-full fade-from-top" : "hidden"}`}
           >
-            <a
-              href="/"
-              className="lg:border-b-2 border-b-red-600 lg:text-red-600 font-semibold"
-            >
-              Home
-            </a>
-            <a href="/services">Our Services</a>
-            <a href="/how-it-works">How it works</a>
-            <a href="/about">About us</a>
-            <a href="/contact-us">Contact</a>
+            {[
+              { name: "Home", to: "/" },
+              { name: "Our Services", to: "/services" },
+              { name: "How it works", to: "/how-it-works" },
+              { name: "About Us", to: "/about" },
+              { name: "Contact Us", to: "/contact-us" },
+            ].map((link) => (
+              <NavLink
+                to={link.to}
+                className={({ isActive }) =>
+                  `lg:border-b-2 font-semibold ${
+                    isActive
+                      ? "border-b-red-600 lg:text-red-600 text-red-600"
+                      : "border-b-transparent text-gray-700"
+                  }`
+                }
+              >
+                {link.name}
+              </NavLink>
+            ))}
           </div>
 
           <Button className="bg-green-600 text-white px-3">
