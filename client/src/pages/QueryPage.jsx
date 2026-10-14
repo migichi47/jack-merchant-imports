@@ -4,13 +4,57 @@ import Button from "../components/Button";
 import { CircleAlert, MoveUpRightIcon } from "lucide-react";
 
 const QueryPage = () => {
+  const initialForm = {
+    yearFrom: "",
+    yearTo: "",
+    fullName: "",
+    phoneNumber: "",
+    email: "",
+    budget: "",
+  };
+  const [formData, setFormData] = useState(initialForm);
   const [make, setMake] = useState("");
   const [model, setModel] = useState("");
-  const [yearFrom, setYearFrom] = useState("");
-  const [yearTo, setYearTo] = useState("");
+
   const currentMake = makes.find((m) => m.name === make);
   const availableModels = currentMake?.models ?? [];
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = () => {
+    const message = `
+    Greetings, I am ${formData.fullName}, loooking for ${make} ${model} year: ${formData.yearFrom} - ${formData.yearTo}\n
+    Contact: ${formData.phoneNumber}\n
+    Email: ${formData.email}\n
+    Budget: ${formData.budget}\n
+    `;
+
+    const formSubmitted = {
+      fullName: formData.fullName,
+      contact: formData.phoneNumber,
+      email: formData.email,
+      budget: formData.budget,
+      car: {
+        make: make,
+        model: model,
+        year: {
+          from: formData.yearFrom,
+          to: formData.yearTo,
+        },
+      },
+    };
+
+    // reset form
+    setFormData(initialForm);
+    setMake("");
+    setModel("");
+  };
   return (
     <div className="bg-gray-100 py-10">
       <div className="max-w-200 mx-auto flex flex-col items-center space-y-8">
@@ -18,7 +62,9 @@ const QueryPage = () => {
           <h2 className="text-2xl sm:text-3xl font-bold capitalize">
             Tell Us what You have in mind
           </h2>
-          <h3 className="text-gray-500 text-xs">Fields marked * are required.</h3>
+          <h3 className="text-gray-500 text-xs">
+            Fields marked * are required.
+          </h3>
         </div>
         <div
           className="grid sm:grid-cols-2 w-full px-10 flex-col items-center gap-5 [&>div]:[&>label]:font-semibold [&>div]:[&>label]:text-sm [&>div]:flex
@@ -29,15 +75,35 @@ const QueryPage = () => {
         >
           <div>
             <label htmlFor="">Full name *</label>
-            <input type="text" required placeholder="Your full name" />
+            <input
+              type="text"
+              required
+              placeholder="Your full name"
+              name="fullName"
+              value={formData.fullName}
+              onChange={handleChange}
+            />
           </div>
           <div>
             <label htmlFor="">Phone number *</label>
-            <input type="tel" required placeholder="Your contact number" />
+            <input
+              type="tel"
+              required
+              placeholder="Your contact number"
+              name="phoneNumber"
+              value={formData.phoneNumber}
+              onChange={handleChange}
+            />
           </div>
           <div>
             <label htmlFor="">Email (optional)</label>
-            <input type="email" placeholder="Your email address" />
+            <input
+              type="email"
+              placeholder="Your email address"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+            />
           </div>
           <div>
             <label htmlFor="">Preferred vehicle make *</label>
@@ -87,12 +153,12 @@ const QueryPage = () => {
               [&>select]:w-full"
               >
                 <select
-                  name=""
+                  name="yearFrom"
                   id=""
-                  value={yearFrom}
-                  onChange={(e) => setYearFrom(e.target.value)}
+                  value={formData.yearFrom}
+                  onChange={handleChange}
                 >
-                  <option value="" className="text-gray-400">
+                  <option value={""} className="text-gray-400">
                     from
                   </option>
                   {years.map((year) => {
@@ -105,10 +171,10 @@ const QueryPage = () => {
                 </select>
                 <span>-</span>
                 <select
-                  name=""
+                  name="yearTo"
                   id=""
-                  value={yearTo}
-                  onChange={(e) => setYearTo(e.target.value)}
+                  value={formData.yearTo}
+                  onChange={handleChange}
                 >
                   <option value="" className="text-gray-400">
                     to
@@ -126,7 +192,13 @@ const QueryPage = () => {
           </div>
           <div>
             <label htmlFor="">Estimated budget (optional)</label>
-            <input type="text" placeholder="e.g. 2,500,000" />
+            <input
+              type="text"
+              placeholder="e.g. 2,500,000"
+              name="budget"
+              value={formData.budget}
+              onChange={handleChange}
+            />
           </div>
         </div>
         <div className="bg-gray-200 p-5 flex gap-5 text-gray-500 text-sm mx-4 rounded-lg">
@@ -137,8 +209,9 @@ const QueryPage = () => {
           </p>
         </div>
 
-        <Button className="w-">
-          Request my quote <MoveUpRightIcon />
+        <Button onClick={handleSubmit}>
+          Request my quote
+          <MoveUpRightIcon className="w-4" />
         </Button>
       </div>
     </div>
