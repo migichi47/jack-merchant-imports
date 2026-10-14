@@ -1,8 +1,11 @@
 import React from "react";
 import Logo from "./Logo";
 import { Dot } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Footer = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="bg-zinc-950 p-5 text-white w-full">
       <div className="max-w-300 mx-auto grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
@@ -16,16 +19,20 @@ const Footer = () => {
 
         <div className="space-y-5 [&>div]:space-y-2.5">
           <h1 className="uppercase font-semibold text-sm">Explore</h1>
-          <div className="flex flex-col text-zinc-400 text-sm [&>span]:hover:text-white
-          [&>span]:cursor-pointer [&>span]:hover:underline">
+          <div
+            className="flex flex-col text-zinc-400 text-sm [&>span]:hover:text-white
+          [&>span]:cursor-pointer [&>span]:hover:underline"
+          >
             {[
-              "Home",
-              "Our Services",
-              "How it works",
-              "About Us",
-              "Contact Us",
-            ].map((link) => (
-              <span key={link}>{link}</span>
+              { name: "Home", link: "/" },
+              { name: "Our Services", link: "/services" },
+              { name: "How it works", link: "/" },
+              { name: "About Us", link: "/about" },
+              { name: "Contact Us", link: "/contact-us" },
+            ].map((link, i) => (
+              <span key={i} onClick={() => navigate(link.link)}>
+                {link.name}
+              </span>
             ))}
           </div>
         </div>

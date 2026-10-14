@@ -1,13 +1,10 @@
 import { MoveDown, MoveUpRight } from "lucide-react";
 import Button from "../Button";
+import { useNavigate } from "react-router-dom";
 
 const Hero = () => {
-  const handleClick = () => {
-    document.getElementById("query")?.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-    });
-  };
+  const navigate = useNavigate();
+
   return (
     <div className="flex flex-col items-center px-4 justify-center text-center space-y-12 max-w-200 mx-auto h-[60vh]">
       <h1 className="flex flex-col space-y-2">
@@ -22,11 +19,11 @@ const Hero = () => {
         support from selection to delivery.
       </p>
       <div className="flex items-center gap-4">
-        <Button onClick={handleClick}>
+        <Button onClick={() => navigate("/query")}>
           <span>Request an Import Quote</span>
           <MoveUpRight className="w-4" />
         </Button>
-        <Button variant="secondary" onClick={handleClick}>
+        <Button variant="secondary" onClick={() => navigate("/how-it-works")}>
           <span>How it Works</span>
           <MoveDown className="w-4" />
         </Button>

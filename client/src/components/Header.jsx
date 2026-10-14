@@ -36,9 +36,9 @@ const Header = () => {
               Home
             </a>
             <a href="/services">Our Services</a>
-            <a href="#">How it works</a>
-            <a href="#">About us</a>
-            <a href="#">Contact</a>
+            <a href="/how-it-works">How it works</a>
+            <a href="/about">About us</a>
+            <a href="/contact-us">Contact</a>
           </div>
 
           <Button className="bg-green-600 text-white px-3">
