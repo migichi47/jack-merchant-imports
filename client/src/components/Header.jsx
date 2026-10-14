@@ -56,7 +56,7 @@ const Header = () => {
 
           <Button className="bg-green-600 text-white px-3">
             <Link
-              to={"https://wa.me/0715366111"}
+              to={"https://wa.me/+254715366111"}
               target="_blank"
               className="flex items-center gap-2"
             >
