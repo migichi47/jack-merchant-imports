@@ -40,6 +40,7 @@ const Header = () => {
             ].map((link) => (
               <NavLink
                 to={link.to}
+                onClick={() => setShowMenu(false)}
                 className={({ isActive }) =>
                   `lg:border-b-2 font-semibold ${
                     isActive
@@ -54,7 +55,11 @@ const Header = () => {
           </div>
 
           <Button className="bg-green-600 text-white px-3">
-            <Link to={"https://wa.me/0715366111"} target="_blank" className="flex items-center gap-2">
+            <Link
+              to={"https://wa.me/0715366111"}
+              target="_blank"
+              className="flex items-center gap-2"
+            >
               <FaWhatsapp className="text-lg" />
               <span className="hidden lg:block">Whatsapp</span>
             </Link>
