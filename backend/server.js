@@ -1,5 +1,6 @@
 import express from "express";
 import queriesRoutes from "./routes/queriesRoutes.js";
+import importRoutes from "./routes/importRoutes.js";
 import { connectDB } from "./config/db.js";
 import "dotenv/config";
 import cors from "cors";
@@ -7,7 +8,10 @@ import cors from "cors";
 const app = express();
 app.use(express.json());
 app.use(cors());
+
 app.use("/api", queriesRoutes);
+app.use("/api/imports", importRoutes);
+
 app.use(express.urlencoded({ extended: true }));
 
 const startServer = async () => {
