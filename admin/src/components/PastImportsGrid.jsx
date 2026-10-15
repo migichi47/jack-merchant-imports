@@ -1,8 +1,12 @@
 import { ArrowRight } from "lucide-react";
-import React from "react";
+import React, { useContext } from "react";
 import { FaArrowRightLong } from "react-icons/fa6";
+import { AdminContext } from "../context/AdminContext";
+import { formatDate } from "../services/formatdate";
 
 export const PastImportsGrid = () => {
+  const { pastImports } = useContext(AdminContext);
+
   return (
     <div className="bg-white border border-gray-200 p-5 space-y-5 rounded-xl">
       <div className="flex items-center justify-between">
@@ -16,15 +20,15 @@ export const PastImportsGrid = () => {
       </div>
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-10 sm:gap-5">
-        <ImportCard />
-        <ImportCard />
-        <ImportCard />
+        {pastImports.map((pastImport) => (
+          <ImportCard {...pastImport} />
+        ))}
       </div>
     </div>
   );
 };
 
-export const ImportCard = () => {
+export const ImportCard = ({ make, model, year, arrival }) => {
   return (
     <div className="max-w-80 mx-auto space-y-2">
       <img
@@ -33,11 +37,13 @@ export const ImportCard = () => {
         className="rounded-t-lg"
       />
       <div className="space-y-2 px-2">
-        <h2 className="font-bold">Toyota Harrier</h2>
+        <h2 className="font-bold">
+          {make} {model} 
+        </h2>
         <div className="flex items-center justify-between">
           <div className="flex flex-col text-gray-500 text-xs">
-            <span>2021 manufacture</span>
-            <span>Added 09 Oct 2026</span>
+            <span>{year} manufacture</span>
+            <span>Arrived on {formatDate(arrival)}</span>
           </div>
           <span
             className="flex gap-1.5 items-center font-semibold text-xs text-red-600 hover:scale-105
