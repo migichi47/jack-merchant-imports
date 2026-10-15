@@ -14,23 +14,38 @@ const Sidebar = () => {
     <div className="h-full w-full px-4 py-5 space-y-5">
       <Logo />
       <div className="[&>a]:py-2 [&>a]:px-1 [&>a]:rounded-lg [&>a]:hover:bg-pink-100">
-        <Link className="flex items-center gap-2 text-gray-500 font-semibold text-sm">
+        <Link
+          to={"/"}
+          className="flex items-center gap-2 text-gray-500 font-semibold text-sm"
+        >
           <LayoutDashboard className="w-4" />
           Dashboard
         </Link>
-        <Link className="flex items-center gap-2 text-gray-500 font-semibold text-sm">
+        <Link
+          to={"/queries"}
+          className="flex items-center gap-2 text-gray-500 font-semibold text-sm"
+        >
           <MessageCircleQuestionMark className="w-4" />
           Customer Queries
         </Link>
-        <Link className="flex items-center gap-2 text-gray-500 font-semibold text-sm">
+        <Link
+          to={"/past-imports"}
+          className="flex items-center gap-2 text-gray-500 font-semibold text-sm"
+        >
           <CarFront className="w-4" />
           Past Imports
         </Link>
-        <Link className="flex items-center gap-2 text-gray-500 font-semibold text-sm">
+        <Link
+          to={"/past-imports/new"}
+          className="flex items-center gap-2 text-gray-500 font-semibold text-sm"
+        >
           <CirclePlus className="w-4" />
           Add Import
         </Link>
-        <Link className="flex items-center gap-2 text-gray-500 font-semibold text-sm">
+        <Link
+          to={"/settings"}
+          className="flex items-center gap-2 text-gray-500 font-semibold text-sm"
+        >
           <Settings className="w-4" />
           Settings
         </Link>

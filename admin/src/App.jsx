@@ -20,6 +20,7 @@ const App = () => {
         <Route path="/past-imports" element={<PastImports />} />
         <Route path="/past-imports/new" element={<AddImport />} />
         <Route path="/past-imports/:id/edit" element={<EditImport />} />
+        <Route path="/settings" element={<EditImport />} />
       </Route>
     </Routes>
   );

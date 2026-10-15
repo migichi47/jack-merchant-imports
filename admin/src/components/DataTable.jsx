@@ -21,7 +21,7 @@ function DataTable({ columns, data }) {
           {data.map((row, index) => (
             <tr
               key={row._id ?? row.id ?? index}
-              className="transition-colors hover:bg-gray-50"
+              className="transition-colors hover:bg-gray-50 cursor-pointer"
             >
               {columns.map((column) => (
                 <td

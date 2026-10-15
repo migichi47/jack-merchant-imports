@@ -5,9 +5,12 @@ import {
   CarFront,
   ChartNoAxesCombined,
   Clock,
+  Dot,
   MessagesSquare,
 } from "lucide-react";
 import DataTable from "../components/DataTable";
+import { FaArrowRightLong } from "react-icons/fa6";
+import PastImports from "../components/PastImports";
 
 const Dashboard = () => {
   const dashboardCards = [
@@ -102,21 +105,7 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className="bg-white border border-gray-200 p-5 space-y-5 rounded-xl">
-          <div className="flex items-center justify-between">
-            <h1 className="text-lg text-gray-800 font-bold">Past Imports</h1>
-            <span
-              className="text-red-600 flex items-center gap-1 text-xs font-semibold hover:scale-105
-            transition-all cursor-pointer duration-300"
-            >
-              Manage Imports <ArrowRight className="w-4" />
-            </span>
-          </div>
-
-          <div>
-            <DataTable columns={columns} data={inquiries} />
-          </div>
-        </div>
+        <PastImports />
       </div>
     </div>
   );
