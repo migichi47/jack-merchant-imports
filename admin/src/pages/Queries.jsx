@@ -23,7 +23,7 @@ const Queries = () => {
             <input
               type="text"
               placeholder="search name, email, phone or vehicle"
-              className="grow"
+              className="grow outline-0 text-sm"
             />
           </div>
           {/* filter */}

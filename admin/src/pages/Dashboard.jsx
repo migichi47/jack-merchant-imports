@@ -15,15 +15,17 @@ import { AdminContext } from "../context/AdminContext";
 import { Link } from "react-router-dom";
 
 const Dashboard = () => {
+  const { pastImports, dashboardQueries, queries } = useContext(AdminContext);
+
   const dashboardCards = [
     {
-      name: "New Queries",
-      value: 12,
+      name: "Total Queries",
+      value: queries?.length,
       icon: <MessagesSquare />,
     },
     {
       name: "Total Imports",
-      value: 48,
+      value: pastImports?.length ?? 0,
       icon: <CarFront />,
     },
     {
@@ -32,8 +34,6 @@ const Dashboard = () => {
       icon: <ChartNoAxesCombined />,
     },
   ];
-
-  const { dashboardQueries } = useContext(AdminContext);
 
   return (
     <div className="w-full space-y-10">
@@ -53,7 +53,8 @@ const Dashboard = () => {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
           {dashboardCards.map((card, i) => (
             <div
-              className="bg-white w-60 flex flex-col justify-between h-30 border border-gray-200 rounded-lg py-4 px-5"
+              className="bg-white w-full max-w-100 flex flex-col justify-between h-30 border border-gray-200
+              rounded-lg py-4 px-5 mx-auto hover:scale-98 transition-all duration-300 cursor-pointer"
               key={i}
             >
               <div className="w-full flex justify-between items-center">
