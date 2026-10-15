@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import DataTable from "../components/DataTable";
 import { FaArrowRightLong } from "react-icons/fa6";
-import PastImports from "../components/PastImports";
+import { PastImportsGrid } from "../components/PastImportsGrid";
 
 const Dashboard = () => {
   const dashboardCards = [
@@ -105,7 +105,7 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <PastImports />
+        <PastImportsGrid />
       </div>
     </div>
   );

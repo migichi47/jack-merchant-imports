@@ -49,10 +49,10 @@ const Queries = () => {
   ];
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-5">
       <div>
         <h1 className="text-2xl font-bold">Customer Queries</h1>
-        <span className="text-gray-500 font-semibold text-sm">
+        <span className="text-gray-500 text-sm">
           Manage customer enquiries and keep track of every conversation
         </span>
       </div>

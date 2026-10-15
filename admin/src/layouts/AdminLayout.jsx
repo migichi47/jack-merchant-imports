@@ -8,18 +8,18 @@ function AdminLayout() {
       {/* Fixed sidebar */}
       <aside
         className="fixed left-0 top-0 z-50 h-screen w-64 bg-white border-r border-gray-300
-      hidden sm:block"
+      hidden md:block"
       >
         <Sidebar />
       </aside>
 
       {/* Fixed topbar, starting after the sidebar */}
-      <header className="fixed left-0 sm:left-64 right-0 top-0 z-40 h-16 bg-white shadow-sm">
+      <header className="fixed left-0 md:left-64 right-0 top-0 z-40 h-16 bg-white shadow-sm">
         <Topbar />
       </header>
 
       {/* Main content: offset from sidebar and topbar */}
-      <main className="sm:ml-64 pt-16 min-h-screen">
+      <main className="md:ml-64 pt-16 min-h-screen">
         <div className="p-6">
           <Outlet />
         </div>

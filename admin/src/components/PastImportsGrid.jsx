@@ -2,7 +2,7 @@ import { ArrowRight } from "lucide-react";
 import React from "react";
 import { FaArrowRightLong } from "react-icons/fa6";
 
-const PastImports = () => {
+export const PastImportsGrid = () => {
   return (
     <div className="bg-white border border-gray-200 p-5 space-y-5 rounded-xl">
       <div className="flex items-center justify-between">
@@ -24,9 +24,7 @@ const PastImports = () => {
   );
 };
 
-export default PastImports;
-
-const ImportCard = () => {
+export const ImportCard = () => {
   return (
     <div className="max-w-80 mx-auto space-y-2">
       <img
