@@ -1,4 +1,40 @@
-function DataTable({ columns, data }) {
+function DataTable({ data }) {
+  const columns = [
+    {
+      key: "fullName",
+      label: "Customer Name",
+    },
+    {
+      key: "contact",
+      label: "Phone",
+    },
+    {
+      key: "car",
+      label: "Vehicle",
+      render: (row) => `${row.car.make} ${row.car.model}`,
+    },
+    {
+      key: "year",
+      label: "Year",
+      render: (row) => `${row.car.year.from} - ${row.car.year.to}`,
+    },
+    {
+      key: "budget",
+      label: "Budget",
+      render: (row) => `Ksh ${row.budget}`,
+    },
+    {
+      key: "createdAt",
+      label: "Date Received",
+      render: (row) =>
+        new Date(row.createdAt).toLocaleDateString("en-GB", {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+        }),
+    },
+  ];
+
   return (
     <div className="w-full overflow-x-auto bg-white">
       <table className="w-full text-left text-sm">

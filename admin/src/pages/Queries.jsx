@@ -1,52 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Search } from "lucide-react";
 import Button from "../components/Button";
 import DataTable from "../components/DataTable";
+import { AdminContext } from "../context/AdminContext";
 
 const Queries = () => {
-  const queries = [
-    {
-      name: "Grace Wanjiku",
-      email: "grace.wanjiku@gmail.com",
-      phone: "0712456789",
-      vehicle: "Mazda CX-5 2022",
-      received: "13 Oct 2026",
-      status: "replied",
-    },
-    {
-      name: "Kevin Otieno",
-      email: "kevin.otieno@gmail.com",
-      phone: "0798765432",
-      vehicle: "Toyota Prado 2020",
-      received: "12 Oct 2026",
-      status: "new",
-    },
-    {
-      name: "Faith Njeri",
-      email: "faith.njeri@gmail.com",
-      phone: "0705123456",
-      vehicle: "Honda Vezel 2023",
-      received: "11 Oct 2026",
-      status: "new",
-    },
-    {
-      name: "Joy Stacy",
-      email: "joytwinkle@gmail.com",
-      phone: "0112354768",
-      vehicle: "Subaru Impreza XV 2007",
-      received: "13 Oct 2026",
-      status: "replied",
-    },
-  ];
-
-  const columns = [
-    { key: "name", label: "Customer" },
-    { key: "email", label: "Email" },
-    { key: "phone", label: "Phone" },
-    { key: "vehicle", label: "Vehicle" },
-    { key: "received", label: "Receiveds" },
-    { key: "status", label: "Status" },
-  ];
+  const { queries } = useContext(AdminContext);
 
   return (
     <div className="space-y-5">
@@ -76,7 +35,7 @@ const Queries = () => {
         </div>
 
         <div>
-          <DataTable columns={columns} data={queries} />
+          <DataTable data={queries} />
         </div>
       </div>
     </div>

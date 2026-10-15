@@ -26,8 +26,6 @@ const QueryPage = () => {
   const currentMake = makes.find((m) => m.name === make);
   const availableModels = currentMake?.models ?? [];
 
-
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({

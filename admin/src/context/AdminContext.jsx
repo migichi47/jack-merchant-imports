@@ -6,13 +6,19 @@ export const AdminContext = createContext();
 
 export function AdminContextProvider({ children }) {
   const [pastImports, setPastImports] = useState([]);
-  console.log(pastImports);
+  const [queries, setQueries] = useState([]);
+  const dashboardQueries = queries.slice(0, 3)
 
   useEffect(() => {
     const fetchImports = async () => {
       const response = await api.get("/api/imports");
       setPastImports(response.data);
     };
+    const fetchQueries = async () => {
+      const response = await api.get("/api/queries");
+      setQueries(response.data);
+    };
+    fetchQueries();
     fetchImports();
   }, []);
 
@@ -27,6 +33,8 @@ export function AdminContextProvider({ children }) {
       value={{
         pastImports,
         addImport,
+        queries,
+        dashboardQueries
       }}
     >
       {children}

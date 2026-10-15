@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import Button from "../components/Button";
 import {
   ArrowRight,
@@ -11,6 +11,8 @@ import {
 import DataTable from "../components/DataTable";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { PastImportsGrid } from "../components/PastImportsGrid";
+import { AdminContext } from "../context/AdminContext";
+import { Link } from "react-router-dom";
 
 const Dashboard = () => {
   const dashboardCards = [
@@ -31,29 +33,7 @@ const Dashboard = () => {
     },
   ];
 
-  const columns = [
-    { key: "name", label: "Customer" },
-    { key: "email", label: "Email" },
-    { key: "vehicle", label: "Vehicle" },
-    { key: "status", label: "Status" },
-  ];
-
-  const inquiries = [
-    {
-      id: 1,
-      name: "John Kamau",
-      email: "john@example.com",
-      vehicle: "Toyota Harrier 2020",
-      status: "Pending",
-    },
-    {
-      id: 2,
-      name: "Mary Wanjiku",
-      email: "mary@example.com",
-      vehicle: "Mazda CX-5 2021",
-      status: "Contacted",
-    },
-  ];
+  const { dashboardQueries } = useContext(AdminContext);
 
   return (
     <div className="w-full space-y-10">
@@ -92,16 +72,17 @@ const Dashboard = () => {
             <h1 className="text-lg text-gray-800 font-bold">
               Recent Customer Queries
             </h1>
-            <span
+            <Link
               className="text-red-600 flex items-center gap-1 text-xs font-semibold hover:scale-105
             transition-all cursor-pointer duration-300"
+              to={"/queries"}
             >
               View all <ArrowRight className="w-4" />
-            </span>
+            </Link>
           </div>
 
           <div>
-            <DataTable columns={columns} data={inquiries} />
+            <DataTable data={dashboardQueries} />
           </div>
         </div>
 
