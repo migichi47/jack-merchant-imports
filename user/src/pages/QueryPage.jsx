@@ -16,15 +16,17 @@ const QueryPage = () => {
     phoneNumber: "",
     email: "",
     budget: "",
+    description: ""
   };
   const [formData, setFormData] = useState(initialForm);
   const [make, setMake] = useState("");
   const [model, setModel] = useState("");
   const [submissionSuccess, setSubmissionSuccess] = useState(false);
   const navigate = useNavigate();
-
   const currentMake = makes.find((m) => m.name === make);
   const availableModels = currentMake?.models ?? [];
+
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -33,10 +35,8 @@ const QueryPage = () => {
       [name]: value,
     }));
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const message = `
     Greetings, I am ${formData.fullName}, loooking for ${make} ${model} year: ${formData.yearFrom} - ${formData.yearTo}\n
     Contact: ${formData.phoneNumber}\n
@@ -49,6 +49,7 @@ const QueryPage = () => {
       contact: formData.phoneNumber,
       email: formData.email,
       budget: formData.budget,
+      description: formData.description,
       car: {
         make,
         model,
@@ -58,6 +59,8 @@ const QueryPage = () => {
         },
       },
     };
+
+    console.log(formSubmitted)
 
     try {
       const response = await api.post("/api/queries", formSubmitted);
@@ -116,10 +119,10 @@ const QueryPage = () => {
           </div>
           <div
             className="grid sm:grid-cols-2 w-full px-10 flex-col items-center gap-5 [&>div]:[&>label]:font-semibold [&>div]:[&>label]:text-sm [&>div]:flex
-          [&>div]:flex-col [&>div]:gap-1 [&>div]:[&>input]:border [&>div]:[&>input]:border-gray-300 [&>div]:[&>input]:w-full
-          [&>div]:[&>input]:px-4 [&>div]:[&>input]:py-2 [&>div]:[&>input]:rounded-lg [&>div]:[&>input]:text-sm [&>div]:w-full
-          [&>div]:[&>select]:px-4 [&>div]:[&>select]:py-2 [&>div]:[&>select]:rounded-lg [&>div]:[&>select]:text-sm [&>div]:[&>select]:border
-          [&>div]:[&>select]:border-gray-300 [&>div]:[&>select]:w-full"
+            [&>div]:flex-col [&>div]:gap-1 [&>div]:[&>input]:border [&>div]:[&>input]:border-gray-300 [&>div]:[&>input]:w-full
+            [&>div]:[&>input]:px-4 [&>div]:[&>input]:py-2 [&>div]:[&>input]:rounded-lg [&>div]:[&>input]:text-sm [&>div]:w-full
+            [&>div]:[&>select]:px-4 [&>div]:[&>select]:py-2 [&>div]:[&>select]:rounded-lg [&>div]:[&>select]:text-sm [&>div]:[&>select]:border
+            [&>div]:[&>select]:border-gray-300 [&>div]:[&>select]:w-full"
           >
             <div>
               <label htmlFor="">
@@ -256,6 +259,18 @@ const QueryPage = () => {
                 placeholder="e.g. 2,500,000"
                 name="budget"
                 value={formData.budget}
+                onChange={handleChange}
+              />
+            </div>
+            <div>
+              <label htmlFor="">Description (optional)</label>
+              <textarea
+                type="text"
+                placeholder="Enter vehicle description..."
+                className="border border-gray-300 w-full px-4 py-2 rounded-lg text-sm"
+                rows="3"
+                name="description"
+                value={formData.description}
                 onChange={handleChange}
               />
             </div>

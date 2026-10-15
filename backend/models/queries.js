@@ -24,6 +24,10 @@ const querySchema = new mongoose.Schema(
       type: String,
     },
 
+    description: {
+      type: String,
+    },
+
     car: {
       make: {
         type: String,

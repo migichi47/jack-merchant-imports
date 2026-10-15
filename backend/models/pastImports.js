@@ -29,12 +29,6 @@ const importSchema = new mongoose.Schema(
       required: true,
     },
 
-    status: {
-      type: String,
-      enum: ["completed", "in-transit"],
-      default: "completed",
-    },
-
     arrival: {
       type: Date,
     },

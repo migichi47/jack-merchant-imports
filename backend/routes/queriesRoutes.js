@@ -13,11 +13,8 @@ router.get("/queries", async (req, res) => {
 });
 
 router.post("/queries", async (req, res) => {
-  console.log("Content-Type:", req.headers["content-type"]);
-  console.log("Request body:", req.body);
-
   try {
-    const { fullName, contact, email, budget, car } = req.body;
+    const { fullName, contact, email, budget, car, description } = req.body;
 
     // Basic validation
     if (
@@ -37,7 +34,8 @@ router.post("/queries", async (req, res) => {
       fullName,
       contact,
       email,
-      budget: budget,
+      budget,
+      description,
       car: {
         make: car.make,
         model: car.model,
