@@ -49,4 +49,13 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.delete("/:id", async (req, res) => {
+  try {
+    const deletedImport = await Import.findByIdAndDelete(req.params.id);
+    res.status(200).send(deletedImport);
+  } catch (err) {
+    res.status(500).json({ error: err, message: "Could not delete import" });
+  }
+});
+
 export default router;

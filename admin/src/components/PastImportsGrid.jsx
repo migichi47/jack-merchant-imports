@@ -13,7 +13,7 @@ export const PastImportsGrid = () => {
         <Link
           className="text-red-600 flex items-center gap-1 text-xs font-semibold hover:scale-105
             transition-all cursor-pointer duration-300"
-            to={"/past-imports"}
+          to={"/past-imports"}
         >
           Manage Imports <ArrowRight className="w-4" />
         </Link>
@@ -28,7 +28,10 @@ export const PastImportsGrid = () => {
   );
 };
 
-export const PastImportCard = ({ make, model, imageUrl }) => {
+export const PastImportCard = ({ make, model, imageUrl, _id: id }) => {
+  const { deleteImport } = useContext(AdminContext);
+
+  
   return (
     <div className="w-full mx-auto space-y-2 border border-gray-300 rounded-lg hover:scale-98 transition-all duration-300">
       <img
@@ -50,7 +53,10 @@ export const PastImportCard = ({ make, model, imageUrl }) => {
             transition-all duration-300"
           >
             <Pencil className="w-4 hover:text-black cursor-pointer" />
-            <Trash className="w-4 hover:text-black cursor-pointer" />
+            <Trash
+              className="w-4 hover:text-black cursor-pointer"
+              onClick={() => deleteImport(id)}
+            />
           </span>
         </div>
       </div>

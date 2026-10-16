@@ -1,5 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import api from "../services/api";
+import { toast } from "react-toastify";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const AdminContext = createContext();
@@ -7,7 +8,7 @@ export const AdminContext = createContext();
 export function AdminContextProvider({ children }) {
   const [pastImports, setPastImports] = useState([]);
   const [queries, setQueries] = useState([]);
-  const dashboardQueries = queries.slice(0, 3)
+  const dashboardQueries = queries.slice(0, 3);
 
   useEffect(() => {
     const fetchImports = async () => {
@@ -28,13 +29,28 @@ export function AdminContextProvider({ children }) {
     return response.data;
   };
 
+  const deleteImport = async (id) => {
+    if (!window.confirm(`Confirm delete import?`)) {
+      return;
+    }
+
+    try {
+      const response = await api.delete(`/api/imports/${id}`);
+      setPastImports((prev) => prev.filter((item) => item._id !== id));
+      toast.success(response.data.message);
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Could not delete import");
+    }
+  };
+
   return (
     <AdminContext.Provider
       value={{
         pastImports,
         addImport,
+        deleteImport,
         queries,
-        dashboardQueries
+        dashboardQueries,
       }}
     >
       {children}
