@@ -13,7 +13,7 @@ function AdminLayout() {
         className={`fixed left-0 top-0 z-50 h-screen w-64 bg-white border-r border-gray-300
         sidebar-animate md:block ${showSidebar ? "" : "hidden"}`}
       >
-        <Sidebar />
+        <Sidebar setShowSidebar={setShowSidebar} />
       </aside>
 
       {/* Fixed topbar, starting after the sidebar */}

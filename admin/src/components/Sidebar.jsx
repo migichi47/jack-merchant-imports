@@ -9,7 +9,7 @@ import {
   Settings,
 } from "lucide-react";
 
-const Sidebar = () => {
+const Sidebar = ({ setShowSidebar }) => {
   const links = [
     {
       name: "Dashboard",
@@ -54,6 +54,7 @@ const Sidebar = () => {
                   : "text-gray-600 hover:bg-pink-100"
               }`
             }
+            onClick={() => setShowSidebar(false)}
           >
             {link.icon}
             {link.name}
