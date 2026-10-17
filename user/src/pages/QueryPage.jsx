@@ -58,7 +58,7 @@ const QueryPage = () => {
       },
     };
 
-    console.log(formSubmitted)
+    console.log(formSubmitted);
 
     try {
       const response = await api.post("/api/queries", formSubmitted);
@@ -116,11 +116,12 @@ const QueryPage = () => {
             </h3>
           </div>
           <div
-            className="grid sm:grid-cols-2 w-full px-10 flex-col items-center gap-5 [&>div]:[&>label]:font-semibold [&>div]:[&>label]:text-sm [&>div]:flex
-            [&>div]:flex-col [&>div]:gap-1 [&>div]:[&>input]:border [&>div]:[&>input]:border-gray-300 [&>div]:[&>input]:w-full
-            [&>div]:[&>input]:px-4 [&>div]:[&>input]:py-2 [&>div]:[&>input]:rounded-lg [&>div]:[&>input]:text-sm [&>div]:w-full
-            [&>div]:[&>select]:px-4 [&>div]:[&>select]:py-2 [&>div]:[&>select]:rounded-lg [&>div]:[&>select]:text-sm [&>div]:[&>select]:border
-            [&>div]:[&>select]:border-gray-300 [&>div]:[&>select]:w-full"
+            className="grid sm:grid-cols-2 w-full px-10 flex-col items-center gap-5 [&>div]:[&>label]:font-semibold
+            [&>div]:[&>label]:text-sm [&>div]:flex [&>div]:flex-col [&>div]:gap-1 [&>div]:[&>input]:border 
+            [&>div]:[&>input]:border-gray-300 [&>div]:[&>input]:w-full [&>div]:[&>input]:px-4 [&>div]:[&>input]:py-2
+            [&>div]:[&>input]:rounded-lg [&>div]:[&>input]:text-sm [&>div]:w-full [&>div]:[&>select]:px-4 [&>div]:[&>select]:py-2 
+            [&>div]:[&>select]:rounded-lg [&>div]:[&>select]:text-sm [&>div]:[&>select]:border [&>div]:[&>select]:border-gray-300
+            [&>div]:[&>select]:w-full"
           >
             <div>
               <label htmlFor="">
