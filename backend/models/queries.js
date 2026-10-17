@@ -27,7 +27,11 @@ const querySchema = new mongoose.Schema(
     description: {
       type: String,
     },
-
+    status: {
+      type: String,
+      default: "new",
+      enum: ["new", "replied", "inprogress"],
+    },
     car: {
       make: {
         type: String,

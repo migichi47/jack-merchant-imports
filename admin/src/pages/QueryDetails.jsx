@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Button from "../components/Button";
 import { CarFront, CheckCheck, Clock } from "lucide-react";
 import StatusBar from "../components/StatusBar";
@@ -6,10 +6,13 @@ import { MdOutlineMail } from "react-icons/md";
 import { FaWhatsapp } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 import api from "../services/api";
+import { AdminContext } from "../context/AdminContext";
 
 const QueryDetails = () => {
   const [query, setQuery] = useState({});
   const { id } = useParams();
+  const [replied, setReplied] = useState(false);
+  const { deleteQuery } = useContext(AdminContext);
 
   useEffect(() => {
     const fetchQuery = async () => {
@@ -17,7 +20,14 @@ const QueryDetails = () => {
       setQuery(response.data);
     };
     fetchQuery();
-  }, [id]);
+  }, [id, replied]);
+
+  const updateQuery = async (newStatus) => {
+    await api.patch(`/api/queries/${query._id ?? query.id}`, {
+      status: newStatus,
+    });
+    setReplied(newStatus === "inprogress" ? false : true);
+  };
 
   return (
     <div className="space-y-5">
@@ -42,14 +52,18 @@ const QueryDetails = () => {
           <div className="bg-gray-100 rounded-xl p-3 flex items-center gap-3">
             <CarFront className="text-gray-500" />
             <div className="leading-5">
-              <h3>Vehicle of Interest</h3>
-              <p className="font-semibold text-lg text-pink-500">
-                {query?.car?.make} {query?.car?.model} {query?.car?.year?.from}{" "}
-                - {query?.car?.year?.to}
+              <h3 className="text-gray-500">Vehicle of Interest</h3>
+              <p className="font-semibold text-lg">
+                {query?.car?.make} {query?.car?.model}{" "}
+                <span className="text-sm text-pink-500">
+                  {query?.car?.year?.from} - {query?.car?.year?.to}
+                </span>
               </p>
             </div>
           </div>
-          <p className="text-gray-600">{query?.description || "__No description__"}</p>
+          <p className="text-gray-600">
+            {query?.description || "__No description__"}
+          </p>
           <div className="flex gap-5">
             <Button variant="secondary">
               <MdOutlineMail className="text-lg" />
@@ -83,25 +97,35 @@ const QueryDetails = () => {
       <div className="bg-white rounded-xl p-5 space-y-4 border border-gray-200">
         <h2 className="font-bold text-lg">Status & Assignment</h2>
         <div className="space-y-5">
-          <StatusBar />
+          <StatusBar status={query?.status} />
           <div className="flex gap-4">
-            <Button variant="secondary">
-              <CheckCheck className="w-4" />
-              Mark as Replied
-            </Button>
-            <Button
-              className="bg-transparent text-black border border-gray-300"
-              variant={null}
-            >
-              <Clock className="w-4" />
-              Mark as In Progress
-            </Button>
+            {!replied ? (
+              <Button
+                className="bg-transparent text-black border border-gray-300 active:bg-black active:text-white"
+                variant={null}
+                onClick={() => updateQuery("replied")}
+              >
+                <CheckCheck className="w-4" />
+                Mark as Replied
+              </Button>
+            ) : (
+              <Button
+                className="bg-transparent text-black border border-gray-300 active:bg-black active:text-white"
+                variant={null}
+                onClick={() => updateQuery("inprogress")}
+              >
+                <Clock className="w-4" />
+                Mark as In Progress
+              </Button>
+            )}
           </div>
         </div>
       </div>
 
       <div className="w-full flex justify-end">
-        <Button>Delete Query</Button>
+        <Button onClick={() => deleteQuery(query?._id ?? query?.id)}>
+          Delete Query
+        </Button>
       </div>
     </div>
   );

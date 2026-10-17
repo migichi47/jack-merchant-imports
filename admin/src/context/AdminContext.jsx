@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import api from "../services/api";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const AdminContext = createContext();
@@ -9,6 +10,7 @@ export function AdminContextProvider({ children }) {
   const [pastImports, setPastImports] = useState([]);
   const [queries, setQueries] = useState([]);
   const dashboardQueries = queries.slice(0, 3);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchImports = async () => {
@@ -43,17 +45,20 @@ export function AdminContextProvider({ children }) {
   };
 
   const deleteQuery = async (id) => {
-     if (!window.confirm(`Confirm delete query?`)) {
+    if (!window.confirm(`Confirm delete query?`)) {
       return;
     }
     try {
-      const response = await api.delete(`/api/queries/${id}`);
+      await api.delete(`/api/queries/${id}`);
       setQueries((prev) => prev.filter((query) => query._id !== id));
-      toast.success(response.data.message);
+      toast.success("query deleted successfully");
+      setTimeout(() => {
+        navigate("/");
+      }, 1000);
     } catch (err) {
       toast.error(err.response?.data?.message || "Could not delete query");
     }
-  }
+  };
 
   return (
     <AdminContext.Provider

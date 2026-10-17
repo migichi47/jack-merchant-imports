@@ -77,4 +77,13 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
+router.patch("/:id", async (req, res) => {
+  try {
+    const updatedQuery = await Query.findByIdAndUpdate(req.params.id, req.body);
+    res.status(200).send(updatedQuery);
+  } catch (err) {
+    res.status(500).json({ error: err, message: "Could not update query" });
+  }
+});
+
 export default router;

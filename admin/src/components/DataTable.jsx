@@ -2,6 +2,8 @@ import { Trash } from "lucide-react";
 import { useContext } from "react";
 import { AdminContext } from "../context/AdminContext";
 import { useNavigate } from "react-router-dom";
+import api from "../services/api";
+import StatusBar from "./StatusBar";
 
 function DataTable({ data }) {
   const navigate = useNavigate();
@@ -42,6 +44,12 @@ function DataTable({ data }) {
   ];
 
   const { deleteQuery } = useContext(AdminContext);
+  const openQuery = async (row) => {
+    navigate(`/queries/${row._id ?? row.id}`);
+    await api.patch(`/api/queries/${row._id ?? row.id}`, {
+      status: "inprogress",
+    });
+  };
 
   return (
     <div className="w-full overflow-x-auto bg-white">
@@ -66,20 +74,23 @@ function DataTable({ data }) {
             <tr
               key={row._id ?? row.id ?? index}
               className="transition-colors hover:bg-gray-50 cursor-pointer"
-              onClick={() => navigate(`/queries/${row._id ?? row.id}`)}
             >
               {columns.map((column) => (
                 <td
                   key={column.key}
                   className="whitespace-nowrap px-6 py-4 text-gray-700"
+                  onClick={() => openQuery(row)}
                 >
                   {column.render ? column.render(row) : row[column.key]}
                 </td>
               ))}
-              <Trash
-                className="mt-3 w-4 text-pink-500 hover:text-red-600"
-                onClick={() => deleteQuery(row._id ?? row.id)}
-              />
+              <div className="mt-3 flex gap-5 items-center">
+                <Trash
+                  className="w-4 text-pink-500 hover:text-red-600"
+                  onClick={() => deleteQuery(row._id ?? row.id)}
+                />
+                <StatusBar status={row?.status} />
+              </div>
             </tr>
           ))}
 

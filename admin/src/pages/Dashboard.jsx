@@ -22,16 +22,19 @@ const Dashboard = () => {
       name: "Total Queries",
       value: queries?.length,
       icon: <MessagesSquare />,
+      to: "/queries",
     },
     {
       name: "Total Imports",
       value: pastImports?.length ?? 0,
       icon: <CarFront />,
+      to: "/past-imports",
     },
     {
       name: "Imported This Month",
       value: 6,
       icon: <ChartNoAxesCombined />,
+      to: "/past-imports",
     },
   ];
 
@@ -52,10 +55,11 @@ const Dashboard = () => {
       <div className="space-y-10">
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
           {dashboardCards.map((card, i) => (
-            <div
+            <Link
               className="bg-white w-full max-w-100 flex flex-col justify-between h-30 border border-gray-200
               rounded-lg py-4 px-5 mx-auto hover:scale-98 transition-all duration-300 cursor-pointer"
               key={i}
+              to={card.to}
             >
               <div className="w-full flex justify-between items-center">
                 <h1 className="text-gray-500 text-sm font-semibold">
@@ -64,7 +68,7 @@ const Dashboard = () => {
                 <span className="">{card.icon}</span>
               </div>
               <span className="text-3xl font-bold">{card.value}</span>
-            </div>
+            </Link>
           ))}
         </div>
 
