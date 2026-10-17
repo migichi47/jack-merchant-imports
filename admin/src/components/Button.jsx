@@ -41,7 +41,7 @@ const Button = ({
       </span>
       <span
         className={twMerge(
-          "absolute bottom-0 left-0 h-0 w-full transition-all duration-500 ease-in-out group-hover:h-full rounded-full",
+          "absolute bottom-0 left-0 h-0 w-full transition-all duration-500 ease-in-out group-hover:h-full rounded-lg",
           overlaySpanVariants[variant],
         )}
       ></span>
