@@ -1,8 +1,10 @@
 import { Trash } from "lucide-react";
 import { useContext } from "react";
 import { AdminContext } from "../context/AdminContext";
+import { useNavigate } from "react-router-dom";
 
 function DataTable({ data }) {
+  const navigate = useNavigate();
   const columns = [
     {
       key: "fullName",
@@ -40,7 +42,6 @@ function DataTable({ data }) {
   ];
 
   const { deleteQuery } = useContext(AdminContext);
-  console.log(data);
 
   return (
     <div className="w-full overflow-x-auto bg-white">
@@ -65,6 +66,7 @@ function DataTable({ data }) {
             <tr
               key={row._id ?? row.id ?? index}
               className="transition-colors hover:bg-gray-50 cursor-pointer"
+              onClick={() => navigate(`/queries/${row._id ?? row.id}`)}
             >
               {columns.map((column) => (
                 <td

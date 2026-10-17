@@ -2,10 +2,17 @@ import { GoDotFill } from "react-icons/go";
 import React from "react";
 import { twMerge } from "tailwind-merge";
 
-const StatusBar = ({ variant = "primary" }) => {
+const StatusBar = ({ variant = "new" }) => {
   const variants = {
-    primary: "bg-amber-100 text-amber-900",
-    secondary: "",
+    new: "bg-green-100 text-green-900",
+    inprogress: "bg-amber-100 text-amber-900",
+    replied: "",
+  };
+
+  const textVariants = {
+    new: "New",
+    inprogress: "In Progress",
+    replied: "Replied",
   };
   return (
     <div
@@ -14,7 +21,7 @@ const StatusBar = ({ variant = "primary" }) => {
         variants[variant],
       )}
     >
-      <GoDotFill className="text-[9px]" /> <span>In Progress</span>
+      <GoDotFill className="text-[9px]" /> <span>{textVariants[variant]}</span>
     </div>
   );
 };

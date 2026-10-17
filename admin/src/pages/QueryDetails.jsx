@@ -1,15 +1,38 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import Button from "../components/Button";
-import { CarFront, Dot } from "lucide-react";
+import { CarFront, CheckCheck, Clock } from "lucide-react";
 import StatusBar from "../components/StatusBar";
+import { MdOutlineMail } from "react-icons/md";
+import { FaWhatsapp } from "react-icons/fa";
+import { useParams } from "react-router-dom";
+import api from "../services/api";
 
 const QueryDetails = () => {
+  const [query, setQuery] = useState({});
+  const { id } = useParams();
+
+  useEffect(() => {
+    const fetchQuery = async () => {
+      const response = await api.get(`/api/queries/${id}`);
+      setQuery(response.data);
+    };
+    fetchQuery();
+  }, [id]);
+
   return (
     <div className="space-y-5">
       <div>
-        <h1 className="text-2xl font-bold">Enquiry from Brian Mwangi</h1>
+        <h1 className="text-2xl font-bold">Enquiry from {query?.fullName}</h1>
         <span className="text-gray-500 text-sm">
-          Received 14 Oct 2026 at 10:42 AM
+          Received{" "}
+          {new Date(query?.createdAt).toLocaleDateString("en-GB", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: true,
+          })}
         </span>
       </div>
 
@@ -20,16 +43,21 @@ const QueryDetails = () => {
             <CarFront className="text-gray-500" />
             <div className="leading-5">
               <h3>Vehicle of Interest</h3>
-              <p className="font-semibold text-lg">Toyota Harrier 2021</p>
+              <p className="font-semibold text-lg text-pink-500">
+                {query?.car?.make} {query?.car?.model} {query?.car?.year?.from}{" "}
+                - {query?.car?.year?.to}
+              </p>
             </div>
           </div>
-          <p className="text-gray-600">
-            Hello jm imports, I am Interested in importing a white Toyota
-            Harrier, manufactured in 2021... Thank you.
-          </p>
+          <p className="text-gray-600">{query?.description || "__No description__"}</p>
           <div className="flex gap-5">
-            <Button variant="secondary">Email Customer</Button>
-            <Button className="bg-green-600">Whatsapp Customer</Button>
+            <Button variant="secondary">
+              <MdOutlineMail className="text-lg" />
+              Email Customer
+            </Button>
+            <Button className="bg-green-600">
+              <FaWhatsapp className="text-lg" /> Whatsapp Customer
+            </Button>
           </div>
         </div>
       </div>
@@ -39,15 +67,15 @@ const QueryDetails = () => {
         <div className="space-y-5">
           <div className="flex flex-col gap-1">
             <span className="text-gray-500 text-xs">Name</span>
-            <span>Brian Mwangi</span>
+            <span>{query?.fullName}</span>
           </div>
           <div className="flex flex-col gap-1">
             <span className="text-gray-500 text-xs">Email</span>
-            <span>BrianMwangi@gmail</span>
+            <span>{query?.email ?? "N/A"}</span>
           </div>
           <div className="flex flex-col gap-1">
             <span className="text-gray-500 text-xs">Phone</span>
-            <span>0721331784</span>
+            <span>{query?.contact}</span>
           </div>
         </div>
       </div>
@@ -57,11 +85,15 @@ const QueryDetails = () => {
         <div className="space-y-5">
           <StatusBar />
           <div className="flex gap-4">
-            <Button variant="secondary">Mark as Replied</Button>
+            <Button variant="secondary">
+              <CheckCheck className="w-4" />
+              Mark as Replied
+            </Button>
             <Button
               className="bg-transparent text-black border border-gray-300"
               variant={null}
             >
+              <Clock className="w-4" />
               Mark as In Progress
             </Button>
           </div>

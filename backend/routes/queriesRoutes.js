@@ -59,6 +59,15 @@ router.post("/", async (req, res) => {
   }
 });
 
+router.get("/:id", async (req, res) => {
+  try {
+    const foundQuery = await Query.findById(req.params.id);
+    res.status(200).send(foundQuery);
+  } catch (err) {
+    res.status(500).json({ error: err, message: "Could not get query" });
+  }
+});
+
 router.delete("/:id", async (req, res) => {
   try {
     const deletedQuery = await Query.findByIdAndDelete(req.params.id);

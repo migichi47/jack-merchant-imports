@@ -7,6 +7,7 @@ import {
   LayoutDashboard,
   MessageCircleQuestionMark,
   Settings,
+  X,
 } from "lucide-react";
 
 const Sidebar = ({ setShowSidebar }) => {
@@ -40,7 +41,13 @@ const Sidebar = ({ setShowSidebar }) => {
 
   return (
     <div className="h-full w-full px-4 py-5 space-y-5">
-      <Logo />
+      <div>
+        <X
+          className="relative left-50 mb-1 cursor-pointer md:hidden"
+          onClick={() => setShowSidebar(false)}
+        />
+        <Logo />
+      </div>
       <div className="[&>a]:py-2 [&>a]:px-1 [&>a]:rounded-lg">
         {links.map((link, i) => (
           <NavLink
