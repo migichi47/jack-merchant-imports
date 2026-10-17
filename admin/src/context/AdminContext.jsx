@@ -33,7 +33,6 @@ export function AdminContextProvider({ children }) {
     if (!window.confirm(`Confirm delete import?`)) {
       return;
     }
-
     try {
       const response = await api.delete(`/api/imports/${id}`);
       setPastImports((prev) => prev.filter((item) => item._id !== id));
@@ -43,12 +42,26 @@ export function AdminContextProvider({ children }) {
     }
   };
 
+  const deleteQuery = async (id) => {
+     if (!window.confirm(`Confirm delete query?`)) {
+      return;
+    }
+    try {
+      const response = await api.delete(`/api/queries/${id}`);
+      setQueries((prev) => prev.filter((query) => query._id !== id));
+      toast.success(response.data.message);
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Could not delete query");
+    }
+  }
+
   return (
     <AdminContext.Provider
       value={{
         pastImports,
         addImport,
         deleteImport,
+        deleteQuery,
         queries,
         dashboardQueries,
       }}

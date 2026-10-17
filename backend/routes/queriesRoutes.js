@@ -3,7 +3,7 @@ import Query from "../models/queries.js";
 
 const router = express.Router();
 
-router.get("/queries", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const queries = await Query.find();
     res.status(200).json(queries);
@@ -12,7 +12,7 @@ router.get("/queries", async (req, res) => {
   }
 });
 
-router.post("/queries", async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     const { fullName, contact, email, budget, car, description } = req.body;
 
@@ -56,6 +56,15 @@ router.post("/queries", async (req, res) => {
     return res.status(500).json({
       message: "Failed to save vehicle request.",
     });
+  }
+});
+
+router.delete("/:id", async (req, res) => {
+  try {
+    const deletedQuery = await Query.findByIdAndDelete(req.params.id);
+    res.status(200).send(deletedQuery);
+  } catch (err) {
+    res.status(500).json({ error: err, message: "Could not delete query" });
   }
 });
 

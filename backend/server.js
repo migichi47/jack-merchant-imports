@@ -9,7 +9,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-app.use("/api", queriesRoutes);
+app.use("/api/queries", queriesRoutes);
 app.use("/api/imports", importRoutes);
 
 app.use(express.urlencoded({ extended: true }));

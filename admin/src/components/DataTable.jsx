@@ -1,3 +1,7 @@
+import { Trash } from "lucide-react";
+import { useContext } from "react";
+import { AdminContext } from "../context/AdminContext";
+
 function DataTable({ data }) {
   const columns = [
     {
@@ -35,6 +39,9 @@ function DataTable({ data }) {
     },
   ];
 
+  const { deleteQuery } = useContext(AdminContext);
+  console.log(data);
+
   return (
     <div className="w-full overflow-x-auto bg-white">
       <table className="w-full text-left text-sm">
@@ -67,6 +74,10 @@ function DataTable({ data }) {
                   {column.render ? column.render(row) : row[column.key]}
                 </td>
               ))}
+              <Trash
+                className="mt-3 w-4 text-pink-500 hover:text-red-600"
+                onClick={() => deleteQuery(row._id ?? row.id)}
+              />
             </tr>
           ))}
 
