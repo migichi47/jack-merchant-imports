@@ -4,18 +4,18 @@ import {
   ArrowRight,
   CarFront,
   ChartNoAxesCombined,
-  Clock,
-  Dot,
   MessagesSquare,
 } from "lucide-react";
 import DataTable from "../components/DataTable";
-import { FaArrowRightLong } from "react-icons/fa6";
 import { PastImportsGrid } from "../components/PastImportsGrid";
 import { AdminContext } from "../context/AdminContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import Spinner from "../components/Spinner";
 
 const Dashboard = () => {
-  const { pastImports, dashboardQueries, queries } = useContext(AdminContext);
+  const { pastImports, dashboardQueries, queries, loadingDashboard } =
+    useContext(AdminContext);
+  const navigate = useNavigate();
 
   const dashboardCards = [
     {
@@ -38,6 +38,14 @@ const Dashboard = () => {
     },
   ];
 
+  if (loadingDashboard) {
+    return (
+      <div className="flex min-h-64 items-center justify-center">
+        <Spinner size={36} className="text-red-600" />
+      </div>
+    );
+  }
+
   return (
     <div className="w-full space-y-10">
       <div className="flex justify-between items-center">
@@ -48,7 +56,7 @@ const Dashboard = () => {
           </span>
         </div>
         <div>
-          <Button>+ Add Import</Button>
+          <Button onClick={() => navigate("/past-imports/new")}>+ Add Import</Button>
         </div>
       </div>
 

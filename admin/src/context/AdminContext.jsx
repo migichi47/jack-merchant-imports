@@ -9,20 +9,26 @@ export const AdminContext = createContext();
 export function AdminContextProvider({ children }) {
   const [pastImports, setPastImports] = useState([]);
   const [queries, setQueries] = useState([]);
+  const [loadingDashboard, setLoadingDashboard] = useState(false);
   const dashboardQueries = queries.slice(0, 3);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchImports = async () => {
-      const response = await api.get("/api/imports");
-      setPastImports(response.data);
+    const fetchData = async () => {
+      try {
+        setLoadingDashboard(true);
+
+        const importsResponse = await api.get("/api/imports");
+        setPastImports(importsResponse.data);
+        const queriesResponse = await api.get("/api/queries");
+        setQueries(queriesResponse.data);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoadingDashboard(false);
+      }
     };
-    const fetchQueries = async () => {
-      const response = await api.get("/api/queries");
-      setQueries(response.data);
-    };
-    fetchQueries();
-    fetchImports();
+    fetchData();
   }, []);
 
   const addImport = async (importData) => {
@@ -67,6 +73,7 @@ export function AdminContextProvider({ children }) {
         addImport,
         deleteImport,
         deleteQuery,
+        loadingDashboard,
         queries,
         dashboardQueries,
       }}

@@ -7,17 +7,28 @@ import { FaWhatsapp } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 import api from "../services/api";
 import { AdminContext } from "../context/AdminContext";
+import Spinner from "../components/Spinner";
 
 const QueryDetails = () => {
   const [query, setQuery] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
   const { id } = useParams();
   const [replied, setReplied] = useState(false);
   const { deleteQuery } = useContext(AdminContext);
 
   useEffect(() => {
     const fetchQuery = async () => {
-      const response = await api.get(`/api/queries/${id}`);
-      setQuery(response.data);
+      try {
+        setLoading(true);
+        const response = await api.get(`/api/queries/${id}`);
+        setQuery(response.data);
+      } catch (err) {
+        setError(err.response?.data?.message || "Failed to fetch queries");
+      } finally {
+        setLoading(false);
+      }
     };
     fetchQuery();
   }, [id, replied]);
@@ -28,6 +39,18 @@ const QueryDetails = () => {
     });
     setReplied(newStatus === "inprogress" ? false : true);
   };
+
+  if (loading) {
+    return (
+      <div className="flex min-h-64 items-center justify-center">
+        <Spinner size={36} className="text-red-600" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return <p className="text-red-600">{error}</p>;
+  }
 
   return (
     <div className="space-y-5">
@@ -65,10 +88,12 @@ const QueryDetails = () => {
             {query?.description || "__No description__"}
           </p>
           <div className="flex gap-5">
-            <Button variant="secondary">
-              <MdOutlineMail className="text-lg" />
-              Email Customer
-            </Button>
+            {query?.email && (
+              <Button variant="secondary">
+                <MdOutlineMail className="text-lg" />
+                Email Customer
+              </Button>
+            )}
             <Button className="bg-green-600">
               <FaWhatsapp className="text-lg" /> Whatsapp Customer
             </Button>
