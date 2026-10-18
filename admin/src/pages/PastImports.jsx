@@ -3,18 +3,17 @@ import React, { useContext } from "react";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { AdminContext } from "../context/AdminContext";
 import { PastImportCard } from "../components/PastImportsGrid";
+import SectionHeading from "../components/SectionHeading";
 
 const PastImports = () => {
   const { pastImports } = useContext(AdminContext);
 
   return (
     <div className="space-y-5">
-      <div>
-        <h1 className="text-2xl font-bold">Past Imports</h1>
-        <span className="text-gray-500 text-sm">
-          Showcase the vehicles that have been successfully sourced and imported
-        </span>
-      </div>
+      <SectionHeading
+        title="Past Imports"
+        description="Showcase the vehicles that have been successfully sourced and imported"
+      />
 
       <div className="flex items-center gap-2 border h-12 bg-white border-gray-200 grow px-2 rounded-lg">
         <Search className="w-4 text-gray-500" />

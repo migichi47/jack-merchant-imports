@@ -11,6 +11,7 @@ import { PastImportsGrid } from "../components/PastImportsGrid";
 import { AdminContext } from "../context/AdminContext";
 import { Link, useNavigate } from "react-router-dom";
 import Spinner from "../components/Spinner";
+import SectionHeading from "../components/SectionHeading";
 
 const Dashboard = () => {
   const { pastImports, dashboardQueries, queries, loadingDashboard } =
@@ -49,14 +50,11 @@ const Dashboard = () => {
   return (
     <div className="w-full space-y-10">
       <div className="flex justify-between items-center">
-        <div className="space-y-2">
-          <h1 className="text-2xl font-bold">Welcome back, Admin</h1>
-          <span className="uppercase text-gray-500 font-semibold text-sm">
-            Overview
-          </span>
-        </div>
+        <SectionHeading title="Welcome back, Admin" description=" Overview" />
         <div>
-          <Button onClick={() => navigate("/past-imports/new")}>+ Add Import</Button>
+          <Button onClick={() => navigate("/past-imports/new")}>
+            + Add Import
+          </Button>
         </div>
       </div>
 

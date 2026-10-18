@@ -3,18 +3,17 @@ import { Search } from "lucide-react";
 import Button from "../components/Button";
 import DataTable from "../components/DataTable";
 import { AdminContext } from "../context/AdminContext";
+import SectionHeading from "../components/SectionHeading";
 
 const Queries = () => {
   const { queries } = useContext(AdminContext);
 
   return (
     <div className="space-y-5">
-      <div>
-        <h1 className="text-2xl font-bold">Customer Queries</h1>
-        <span className="text-gray-500 text-sm">
-          Manage customer enquiries and keep track of every conversation
-        </span>
-      </div>
+      <SectionHeading
+        title="Customer Queries"
+        description="Manage customer enquiries and keep track of every conversation"
+      />
 
       <div className="bg-white border rounded-xl border-gray-300 p-5 space-y-5">
         <div className="flex items-center justify-between h-10 gap-5">

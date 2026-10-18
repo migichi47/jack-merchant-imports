@@ -10,6 +10,7 @@ import AddImport from "./pages/AddImport";
 import EditImport from "./pages/EditImport";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Settings from "./pages/Settings";
 
 const App = () => {
   return (
@@ -23,7 +24,7 @@ const App = () => {
           <Route path="/past-imports" element={<PastImports />} />
           <Route path="/past-imports/new" element={<AddImport />} />
           <Route path="/past-imports/:id/edit" element={<EditImport />} />
-          <Route path="/settings" element={<EditImport />} />
+          <Route path="/settings" element={<Settings />} />
         </Route>
       </Routes>
       <ToastContainer

@@ -4,6 +4,7 @@ import { CalendarDays, CarFront, Image, FileText } from "lucide-react";
 
 import { toast } from "react-toastify";
 import api from "../services/api";
+import SectionHeading from "../components/SectionHeading";
 
 function AddImportForm() {
   const [formData, setFormData] = useState({
@@ -68,12 +69,10 @@ function AddImportForm() {
       onSubmit={handleSubmit}
       className="mx-auto max-w-3xl space-y-6 rounded-2xl bg-white p-6 shadow-sm md:p-8"
     >
-      <div>
-        <h2 className="text-xl font-bold text-gray-900">Add Past Import</h2>
-        <p className="mt-1 text-sm text-gray-500">
-          Record a vehicle imported for a customer.
-        </p>
-      </div>
+      <SectionHeading
+        title="Add Past Import"
+        description="Record a vehicle imported for a customer."
+      />
 
       {/* Vehicle details */}
       <div className="grid gap-5 sm:grid-cols-2">

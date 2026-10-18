@@ -59,7 +59,7 @@ const QueryDetails = () => {
   return (
     <div className="space-y-5">
       <div>
-        <h1 className="text-2xl font-bold">Enquiry from {query?.fullName}</h1>
+        <h1 className="text-xl font-bold">Enquiry from {query?.fullName}</h1>
         <span className="text-gray-500 text-sm">
           Received{" "}
           {new Date(query?.createdAt).toLocaleDateString("en-GB", {
