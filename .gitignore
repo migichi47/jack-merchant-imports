@@ -1,4 +1,14 @@
 
-node_modules
-env*
-backend/.env
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Logs
+*.log
