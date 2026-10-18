@@ -37,12 +37,7 @@ const QueryPage = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const message = `
-    Greetings, I am ${formData.fullName}, loooking for ${make} ${model} year: ${formData.yearFrom} - ${formData.yearTo}\n
-    Contact: ${formData.phoneNumber}\n
-    Email: ${formData.email}\n
-    Budget: ${formData.budget}\n
-    `;
+    
 
     const formSubmitted = {
       fullName: formData.fullName,

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Check, ChevronRight, Save, SlidersHorizontal } from "lucide-react";
+import { ChevronRight, SlidersHorizontal } from "lucide-react";
 import { toast } from "react-toastify";
 import { initialSettings } from "../utils/settings/initialSettings";
 import SectionHeading from "../components/SectionHeading";
@@ -326,7 +326,7 @@ const Settings = () => {
                         : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
                     }`}
                   >
-                    <Icon className="h-[18px] w-[18px] shrink-0" />
+                    <Icon className="h-4.5 w-4.5 shrink-0" />
                     <span>{item.label}</span>
                     {isActive && (
                       <ChevronRight className="ml-auto hidden h-4 w-4 lg:block" />
