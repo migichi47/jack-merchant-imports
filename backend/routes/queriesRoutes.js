@@ -3,10 +3,11 @@ import Query from "../models/queries.js";
 import EmailLog from "../models/emailLog.js";
 import { sendClientEmail } from "../services/emailServices.js";
 import { getGeneralSettings } from "../services/settingServices.js";
+import requireAuth from "../middleware/requireAuth.js";
 
 const router = express.Router();
 
-router.get("/", async (req, res) => {
+router.get("/", requireAuth, async (req, res) => {
   try {
     const queries = await Query.find();
     res.status(200).json(queries);
@@ -15,7 +16,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/", requireAuth, async (req, res) => {
   try {
     const { fullName, contact, email, budget, car, description } = req.body;
 
@@ -111,90 +112,87 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.post(
-  "/:id/email",
-  /* requireAdmin, */ async (req, res) => {
-    const { subject, message } = req.body;
+router.post("/:id/email", requireAuth, async (req, res) => {
+  const { subject, message } = req.body;
 
-    if (
-      typeof subject !== "string" ||
-      !subject.trim() ||
-      typeof message !== "string" ||
-      !message.trim()
-    ) {
-      return res.status(400).json({
-        message: "Subject and message are required",
+  if (
+    typeof subject !== "string" ||
+    !subject.trim() ||
+    typeof message !== "string" ||
+    !message.trim()
+  ) {
+    return res.status(400).json({
+      message: "Subject and message are required",
+    });
+  }
+
+  if (subject.length > 200 || message.length > 10000) {
+    return res.status(400).json({
+      message: "Subject or message is too long",
+    });
+  }
+
+  try {
+    const query = await Query.findById(req.params.id);
+
+    if (!query) {
+      return res.status(404).json({
+        message: "Client query not found",
       });
     }
 
-    if (subject.length > 200 || message.length > 10000) {
+    if (!query.email) {
       return res.status(400).json({
-        message: "Subject or message is too long",
+        message: "This client has no email address",
       });
     }
 
     try {
-      const query = await Query.findById(req.params.id);
+      const result = await sendClientEmail({
+        to: query.email,
+        subject: subject.trim(),
+        message: message.trim(),
+      });
 
-      if (!query) {
-        return res.status(404).json({
-          message: "Client query not found",
-        });
-      }
+      await EmailLog.create({
+        queryId: query._id,
+        to: query.email,
+        subject: subject.trim(),
+        message: message.trim(),
+        type: "manual",
+        status: "sent",
+        providerId: result.id,
+      });
 
-      if (!query.email) {
-        return res.status(400).json({
-          message: "This client has no email address",
-        });
-      }
+      return res.status(200).json({
+        message: "Email accepted by the email service",
+        emailId: result.id,
+      });
+    } catch (emailError) {
+      await EmailLog.create({
+        queryId: query._id,
+        to: query.email,
+        subject: subject.trim(),
+        message: message.trim(),
+        type: "manual",
+        status: "failed",
+        error: emailError.message,
+      });
 
-      try {
-        const result = await sendClientEmail({
-          to: query.email,
-          subject: subject.trim(),
-          message: message.trim(),
-        });
-
-        await EmailLog.create({
-          queryId: query._id,
-          to: query.email,
-          subject: subject.trim(),
-          message: message.trim(),
-          type: "manual",
-          status: "sent",
-          providerId: result.id,
-        });
-
-        return res.status(200).json({
-          message: "Email accepted by the email service",
-          emailId: result.id,
-        });
-      } catch (emailError) {
-        await EmailLog.create({
-          queryId: query._id,
-          to: query.email,
-          subject: subject.trim(),
-          message: message.trim(),
-          type: "manual",
-          status: "failed",
-          error: emailError.message,
-        });
-
-        return res.status(502).json({
-          message: "Unable to send email. Please try again.",
-        });
-      }
-    } catch (error) {
-      console.error("Manual email route error:", error);
-
-      return res.status(500).json({
-        message: "An unexpected error occurred",
+      return res.status(502).json({
+        message: "Unable to send email. Please try again.",
       });
     }
-  },
-);
+  } catch (error) {
+    console.error("Manual email route error:", error);
 
-router.get("/:id", async (req, res) => {
+    return res.status(500).json({
+      message: "An unexpected error occurred",
+    });
+  }
+});
+
+router.get("/:id", requireAuth, async (req, res) => {
   try {
     const foundQuery = await Query.findById(req.params.id);
     res.status(200).send(foundQuery);
@@ -203,7 +201,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", requireAuth, async (req, res) => {
   try {
     const deletedQuery = await Query.findByIdAndDelete(req.params.id);
     res.status(200).send(deletedQuery);
@@ -212,7 +210,7 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-router.patch("/:id", async (req, res) => {
+router.patch("/:id", requireAuth, async (req, res) => {
   try {
     const updatedQuery = await Query.findByIdAndUpdate(req.params.id, req.body);
     res.status(200).send(updatedQuery);

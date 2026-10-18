@@ -1,10 +1,11 @@
 import express from "express";
 import Import from "../models/pastImports.js";
+import requireAuth from "../middleware/requireAuth.js";
 
 const router = express.Router();
 
 // POST /api/imports
-router.post("/", async (req, res) => {
+router.post("/", requireAuth, async (req, res) => {
   try {
     const { make, model, year, description, imageUrl, status, arrival } =
       req.body;
@@ -40,7 +41,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.get("/", async (req, res) => {
+router.get("/", requireAuth, async (req, res) => {
   try {
     const imports = await Import.find();
     res.status(200).json(imports);
@@ -49,7 +50,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", requireAuth, async (req, res) => {
   try {
     const deletedImport = await Import.findByIdAndDelete(req.params.id);
     res.status(200).send(deletedImport);

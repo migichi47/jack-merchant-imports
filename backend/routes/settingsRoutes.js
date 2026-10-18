@@ -1,5 +1,6 @@
 import express from "express";
 import Settings from "../models/settings.js";
+import requireAuth from "../middleware/requireAuth.js";
 
 const router = express.Router();
 
@@ -28,7 +29,7 @@ const defaultSettings = {
 };
 
 // GET /api/settings
-router.get("/", async (req, res) => {
+router.get("/", requireAuth, async (req, res) => {
   try {
     let settings = await Settings.findOne({ key: "general" });
 
@@ -44,7 +45,7 @@ router.get("/", async (req, res) => {
 });
 
 // PATCH /api/settings
-router.patch("/", async (req, res) => {
+router.patch("/", requireAuth, async (req, res) => {
   try {
     const { emails, queries, business } = req.body;
 

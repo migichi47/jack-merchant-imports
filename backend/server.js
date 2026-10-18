@@ -1,20 +1,18 @@
 import "dotenv/config";
 import express from "express";
+import session from "express-session";
+import MongoStore from "connect-mongo";
+import cors from "cors";
+
+import { connectDB } from "./config/db.js";
+import authRoutes from "./routes/loginROutes.js";
 import queriesRoutes from "./routes/queriesRoutes.js";
 import importRoutes from "./routes/importRoutes.js";
 import settingsRoutes from "./routes/settingsRoutes.js";
-import { connectDB } from "./config/db.js";
-import cors from "cors";
 
 const app = express();
-app.use(express.json());
 app.use(cors());
-
-app.use("/api/queries", queriesRoutes);
-app.use("/api/imports", importRoutes);
-app.use("/api/settings", settingsRoutes);
-
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 const startServer = async () => {
   await connectDB();
@@ -24,5 +22,35 @@ const startServer = async () => {
 };
 
 startServer();
+
+app.set("trust proxy", 1);
+app.use(
+  session({
+    name: "jm-imports.sid",
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGO_URI,
+      collectionName: "sessions",
+      ttl: 60 * 60 * 8, // 8 hours
+    }),
+
+    cookie: {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "none", // For cross-site frontend/backend requests
+      maxAge: 1000 * 60 * 60 * 8,
+    },
+  }),
+);
+
+app.use("/api/auth", authRoutes);
+app.use("/api/queries", queriesRoutes);
+app.use("/api/imports", importRoutes);
+app.use("/api/settings", settingsRoutes);
+
+app.use(express.urlencoded({ extended: true }));
 
 export default app;
