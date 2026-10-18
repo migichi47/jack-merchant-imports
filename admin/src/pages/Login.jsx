@@ -1,12 +1,11 @@
-import React from "react";
-import { CircleAlert, Eye, EyeOff, FaceExpressionlessIcon } from "lucide-react";
+
+import { CircleAlert, Eye, EyeOff } from "lucide-react";
 import Button from "../components/Button";
 import Logo from "../components/Logo";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import api from "../services/api";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
   const [form, setForm] = useState({
@@ -20,10 +19,11 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleSubmit = async () => {
+    setLoading(true);
     setError("");
     try {
       await api.post("/api/auth/login", form);
-      toast("Login successful");
+      toast.success("Login successful");
       navigate("/");
     } catch (err) {
       setError(

@@ -66,4 +66,31 @@ router.post("/login", async (req, res) => {
   }
 });
 
+router.get("/me", async (req, res) => {
+  try {
+    if (!req.session?.adminId) {
+      return res.status(401).json({
+        message: "Not authenticated",
+      });
+    }
+
+    const admin = await Admin.findById(req.session.adminId)
+      .select("_id username role");
+
+    if (!admin) {
+      return res.status(401).json({
+        message: "Admin account not found",
+      });
+    }
+
+    res.json({ admin });
+  } catch (error) {
+    console.error("Authentication check failed:", error);
+
+    res.status(500).json({
+      message: "Could not verify authentication",
+    });
+  }
+});
+
 export default router;

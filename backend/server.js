@@ -11,8 +11,6 @@ import importRoutes from "./routes/importRoutes.js";
 import settingsRoutes from "./routes/settingsRoutes.js";
 
 const app = express();
-app.use(cors());
-app.use(express.json());
 
 const startServer = async () => {
   await connectDB();
@@ -22,6 +20,14 @@ const startServer = async () => {
 };
 
 startServer();
+
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL,
+    credentials: true,
+  }),
+);
+app.use(express.json());
 
 app.set("trust proxy", 1);
 app.use(
@@ -39,8 +45,8 @@ app.use(
 
     cookie: {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "none", // For cross-site frontend/backend requests
+      secure: false,
+      sameSite: "lax", // For cross-site frontend/backend requests
       maxAge: 1000 * 60 * 60 * 8,
     },
   }),
