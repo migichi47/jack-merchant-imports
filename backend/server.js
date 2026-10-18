@@ -51,8 +51,8 @@ app.use(
 
     cookie: {
       httpOnly: true,
-      secure: false,
-      sameSite: "lax", // For cross-site frontend/backend requests
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "none", // For cross-site frontend/backend requests
       maxAge: 1000 * 60 * 60 * 8,
     },
   }),
