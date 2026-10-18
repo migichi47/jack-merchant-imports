@@ -23,7 +23,7 @@ startServer();
 
 app.use(
   cors({
-    origin: process.env.CLIENT_URL,
+    origin: ["http://localhost:5173", "http://localhost:5174"],
     methods: ["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Accept"],
     credentials: true,
@@ -48,7 +48,7 @@ app.use(
     cookie: {
       httpOnly: true,
       secure: false,
-      sameSite: "none", // For cross-site frontend/backend requests
+      sameSite: "lax", // For cross-site frontend/backend requests
       maxAge: 1000 * 60 * 60 * 8,
     },
   }),

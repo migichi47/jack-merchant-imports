@@ -40,6 +40,9 @@ router.post("/login", async (req, res) => {
 
       req.session.adminId = admin._id.toString();
 
+      console.log("LOGIN SESSION ID:", req.sessionID);
+      console.log("LOGIN SESSION DATA:", req.session);
+
       req.session.save((err) => {
         if (err) {
           return res.status(500).json({
@@ -67,6 +70,9 @@ router.post("/login", async (req, res) => {
 });
 
 router.get("/me", async (req, res) => {
+  console.log("ME SESSION ID:", req.sessionID);
+  console.log("ME SESSION DATA:", req.session);
+  
   try {
     if (!req.session?.adminId) {
       return res.status(401).json({
@@ -74,8 +80,9 @@ router.get("/me", async (req, res) => {
       });
     }
 
-    const admin = await Admin.findById(req.session.adminId)
-      .select("_id username role");
+    const admin = await Admin.findById(req.session.adminId).select(
+      "_id username role",
+    );
 
     if (!admin) {
       return res.status(401).json({
