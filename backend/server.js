@@ -9,6 +9,7 @@ import authRoutes from "./routes/loginRoutes.js";
 import queriesRoutes from "./routes/queriesRoutes.js";
 import importRoutes from "./routes/importRoutes.js";
 import settingsRoutes from "./routes/settingsRoutes.js";
+import emailRoutes from "./routes/emailRoutes.js";
 
 const app = express();
 
@@ -52,7 +53,7 @@ app.use(
     cookie: {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "none", // For cross-site frontend/backend requests
+      sameSite: "lax", // For cross-site frontend/backend requests
       maxAge: 1000 * 60 * 60 * 8,
     },
   }),
@@ -62,6 +63,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/queries", queriesRoutes);
 app.use("/api/imports", importRoutes);
 app.use("/api/settings", settingsRoutes);
+app.use("/api/emails", emailRoutes);
 
 app.use(express.urlencoded({ extended: true }));
 

@@ -1,10 +1,11 @@
-import React from "react";
+
 import Logo from "./Logo";
 import { NavLink } from "react-router-dom";
 import {
   CarFront,
   CirclePlus,
   LayoutDashboard,
+  Mail,
   MessageCircleQuestionMark,
   Settings,
   X,
@@ -36,6 +37,11 @@ const Sidebar = ({ setShowSidebar }) => {
       name: "Settings",
       to: "/settings",
       icon: <Settings className="w-4" />,
+    },
+    {
+      name: "Past Emails",
+      to: "/emails",
+      icon: <Mail size={18} />,
     },
   ];
 
