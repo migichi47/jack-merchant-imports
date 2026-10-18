@@ -4,10 +4,11 @@ import { CarFront, CheckCheck, Clock } from "lucide-react";
 import StatusBar from "../components/StatusBar";
 import { MdOutlineMail } from "react-icons/md";
 import { FaWhatsapp } from "react-icons/fa";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import api from "../services/api";
 import { AdminContext } from "../context/AdminContext";
 import Spinner from "../components/Spinner";
+import { formatPhoneNumber } from "../services/formatPhone";
 
 const QueryDetails = () => {
   const [query, setQuery] = useState({});
@@ -17,6 +18,7 @@ const QueryDetails = () => {
   const { id } = useParams();
   const [replied, setReplied] = useState(false);
   const { deleteQuery } = useContext(AdminContext);
+  const formatedPhone = formatPhoneNumber(query?.contact);
 
   useEffect(() => {
     const fetchQuery = async () => {
@@ -95,7 +97,13 @@ const QueryDetails = () => {
               </Button>
             )}
             <Button className="bg-green-600">
-              <FaWhatsapp className="text-lg" /> Whatsapp Customer
+              <Link
+                className="flex gap-1"
+                to={`https://wa.me/${formatedPhone}`}
+                target="_blank"
+              >
+                <FaWhatsapp className="text-lg" /> Whatsapp Customer
+              </Link>
             </Button>
           </div>
         </div>
@@ -114,7 +122,7 @@ const QueryDetails = () => {
           </div>
           <div className="flex flex-col gap-1">
             <span className="text-gray-500 text-xs">Phone</span>
-            <span>{query?.contact}</span>
+            <span>{formatedPhone}</span>
           </div>
         </div>
       </div>
