@@ -23,9 +23,11 @@ startServer();
 
 app.use(
   cors({
-    origin: process.env.CLIENT_URL,
-    credentials: true,
-  }),
+  origin: process.env.CLIENT_URL,
+  methods: ['POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Accept'],
+  credentials: true
+}),
 );
 app.use(express.json());
 
