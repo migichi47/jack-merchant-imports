@@ -264,16 +264,6 @@ const Settings = () => {
                 );
               })}
             </nav>
-
-            <div className="mt-5 hidden rounded-lg bg-gray-50 p-3 lg:block">
-              <div className="flex items-center gap-2 text-xs font-semibold text-gray-700">
-                <Check className="h-4 w-4 text-gray-400" />
-                Settings preview
-              </div>
-              <p className="mt-2 text-xs leading-5 text-gray-500">
-                Your changes currently exist only in this page's state.
-              </p>
-            </div>
           </aside>
 
           {/* Settings content */}
