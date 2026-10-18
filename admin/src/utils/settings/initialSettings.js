@@ -7,7 +7,6 @@ export const initialSettings = {
     failedEmailAlerts: true,
   },
   queries: {
-    defaultStatus: "new",
     followUpReminders: false,
     followUpDays: 3,
     requireCancellationReason: true,
@@ -17,8 +16,6 @@ export const initialSettings = {
     contactEmail: "",
     phone: "",
     whatsapp: "",
-    website: "",
-    address: "",
     signature:
       "Thank you,\nJack Merchants Imports\nYour trusted vehicle import partner.",
   },

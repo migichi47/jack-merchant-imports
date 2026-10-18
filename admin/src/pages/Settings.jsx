@@ -5,15 +5,76 @@ import { initialSettings } from "../utils/settings/initialSettings";
 import SectionHeading from "../components/SectionHeading";
 import { Field, SettingRow } from "../components/SettingsComponents";
 import navigation from "../utils/settings/navigation";
-import { updateSetting } from "../services/SettingsServices";
+
+import { useEffect } from "react";
+import { getSettings, updateSetting, updateSettings } from "../services/SettingsServices";
 
 const Settings = () => {
   const [activeTab, setActiveTab] = useState("email");
   const [settings, setSettings] = useState(initialSettings);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
 
-  const handleSave = () => {
-    // Frontend preview only. Connect this to your API later.
-    toast.info("Settings are ready. Backend persistence will be added next.");
+  useEffect(() => {
+    const fetchSettings = async () => {
+      try {
+        const data = await getSettings();
+
+        setSettings({
+          emails: {
+            ...initialSettings.emails,
+            ...data.emails,
+          },
+          queries: {
+            ...initialSettings.queries,
+            ...data.queries,
+          },
+          business: {
+            ...initialSettings.business,
+            ...data.business,
+          },
+        });
+      } catch (error) {
+        toast.error(
+          error.response?.data?.message || "Failed to load settings.",
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSettings();
+  }, []);
+
+  const handleSave = async () => {
+    setSaving(true);
+
+    try {
+      const response = await updateSettings(settings);
+
+      if (response.settings) {
+        setSettings({
+          emails: {
+            ...initialSettings.emails,
+            ...response.settings.emails,
+          },
+          queries: {
+            ...initialSettings.queries,
+            ...response.settings.queries,
+          },
+          business: {
+            ...initialSettings.business,
+            ...response.settings.business,
+          },
+        });
+      }
+
+      toast.success(response.message || "Settings saved successfully.");
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to save settings.");
+    } finally {
+      setSaving(false);
+    }
   };
 
   const renderEmailSettings = () => (
@@ -199,6 +260,14 @@ const Settings = () => {
   const activeItem = navigation.find((item) => item.id === activeTab);
   const ActiveIcon = activeItem.icon;
 
+  if (loading) {
+    return (
+      <div className="flex min-h-64 items-center justify-center">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-gray-200 border-t-red-600" />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-full bg-gray-50/70 p-4 sm:p-6 lg:p-8">
       <div className="mx-auto max-w-7xl">
@@ -224,10 +293,12 @@ const Settings = () => {
           <button
             type="button"
             onClick={handleSave}
-            className="inline-flex items-center justify-center gap-2 rounded-lg bg-red-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-red-700"
+            disabled={saving || loading}
+            className="rounded-lg bg-red-600 px-5 py-2.5 font-semibold text-white
+            transition hover:bg-red-700 disabled:cursor-not-allowed
+            disabled:opacity-60"
           >
-            <Save className="h-4 w-4" />
-            Save changes
+            {saving ? "Saving..." : "Save changes"}
           </button>
         </div>
 

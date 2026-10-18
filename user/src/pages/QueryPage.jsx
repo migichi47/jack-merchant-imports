@@ -16,12 +16,14 @@ const QueryPage = () => {
     phoneNumber: "",
     email: "",
     budget: "",
-    description: ""
+    description: "",
   };
   const [formData, setFormData] = useState(initialForm);
   const [make, setMake] = useState("");
   const [model, setModel] = useState("");
   const [submissionSuccess, setSubmissionSuccess] = useState(false);
+  const [saving, setSaving] = useState(false);
+
   const navigate = useNavigate();
   const currentMake = makes.find((m) => m.name === make);
   const availableModels = currentMake?.models ?? [];
@@ -58,8 +60,7 @@ const QueryPage = () => {
       },
     };
 
-    console.log(formSubmitted);
-
+    setSaving(true);
     try {
       const response = await api.post("/api/queries", formSubmitted);
       toast.success(
@@ -84,6 +85,8 @@ const QueryPage = () => {
         "Submission failed:",
         error.response?.data || error.message,
       );
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -283,7 +286,7 @@ const QueryPage = () => {
           </div>
 
           <Button type="submit">
-            Request my quote
+            {saving ? "Saving..." : "Request my quote"}
             <MoveUpRightIcon className="w-4" />
           </Button>
         </form>

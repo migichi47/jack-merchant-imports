@@ -2,6 +2,7 @@ import express from "express";
 import Query from "../models/queries.js";
 import EmailLog from "../models/emailLog.js";
 import { sendClientEmail } from "../services/emailServices.js";
+import { getGeneralSettings } from "../services/settingServices.js";
 
 const router = express.Router();
 
@@ -48,7 +49,9 @@ router.post("/", async (req, res) => {
       },
     });
 
-    if (newQuery.email) {
+    const settings = await getGeneralSettings();
+
+    if (newQuery.email && settings.emails.queryConfirmation) {
       const subject = "We received your vehicle import request";
 
       const message =
