@@ -23,11 +23,11 @@ startServer();
 
 app.use(
   cors({
-  origin: process.env.CLIENT_URL,
-  methods: ['POST', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Accept'],
-  credentials: true
-}),
+    origin: process.env.CLIENT_URL,
+    methods: ["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Accept"],
+    credentials: true,
+  }),
 );
 app.use(express.json());
 
@@ -48,7 +48,7 @@ app.use(
     cookie: {
       httpOnly: true,
       secure: false,
-      sameSite: "lax", // For cross-site frontend/backend requests
+      sameSite: "none", // For cross-site frontend/backend requests
       maxAge: 1000 * 60 * 60 * 8,
     },
   }),
