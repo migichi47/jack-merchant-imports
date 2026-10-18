@@ -41,7 +41,7 @@ router.post("/", requireAuth, async (req, res) => {
   }
 });
 
-router.get("/", requireAuth, async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const imports = await Import.find();
     res.status(200).json(imports);

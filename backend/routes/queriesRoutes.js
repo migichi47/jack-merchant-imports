@@ -7,7 +7,7 @@ import requireAuth from "../middleware/requireAuth.js";
 
 const router = express.Router();
 
-router.get("/", requireAuth, async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const queries = await Query.find();
     res.status(200).json(queries);
@@ -16,7 +16,7 @@ router.get("/", requireAuth, async (req, res) => {
   }
 });
 
-router.post("/", requireAuth, async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     const { fullName, contact, email, budget, car, description } = req.body;
 
