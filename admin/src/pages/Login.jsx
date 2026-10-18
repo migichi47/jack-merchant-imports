@@ -1,10 +1,38 @@
 import React from "react";
+import { CircleAlert, Eye, EyeOff, FaceExpressionlessIcon } from "lucide-react";
 import Button from "../components/Button";
 import Logo from "../components/Logo";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import api from "../services/api";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
+  const [form, setForm] = useState({
+    username: "",
+    password: "",
+  });
+  const [error, setError] = useState();
+  const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
   const navigate = useNavigate();
+
+  const handleSubmit = async () => {
+    setError("");
+    try {
+      await api.post("/api/auth/login", form);
+      toast("Login successful");
+      navigate("/");
+    } catch (err) {
+      setError(
+        err?.response?.data?.message || "Unable to log in. Please try again.",
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="max-w-120 mx-auto my-auto flex flex-col px-5 h-screen mt-30 space-y-20">
@@ -15,28 +43,61 @@ const Login = () => {
           <p className="text-gray-500 text-[15px] font-semibold">
             Sign in to manage customer enquiries and past imports.
           </p>
+          {error && (
+            <p className="text-red-600 flex gap-2">
+              <CircleAlert className="w-4" />
+              {error}
+            </p>
+          )}
         </div>
 
-        <div className="space-y-5">
+        <form className="space-y-5">
           <div className="flex flex-col gap-2">
             <label htmlFor="" className="text-sm font-semibold">
-              Email
+              Username
             </label>
             <input
-              type="email"
-              placeholder="johndoe@example.com"
+              type="text"
+              name="username"
+              required
+              value={form.username}
+              onChange={(e) => {
+                setForm({
+                  ...form,
+                  username: e.target.value,
+                });
+              }}
+              placeholder="johndoe123"
               className="border border-gray-300 rounded-lg px-3 text-xs h-10 outline-pink-500"
             />
           </div>
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 relative">
             <label htmlFor="" className="text-sm font-semibold">
               Password
             </label>
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
+              required
               placeholder="Enter Password"
               className="border border-gray-300 rounded-lg px-3 text-xs h-10 outline-pink-500"
+              value={form.password}
+              onChange={(e) => {
+                setForm({
+                  ...form,
+                  password: e.target.value,
+                });
+              }}
             />
+            <span
+              className="cursor-pointer absolute right-5 bottom-2"
+              onClick={() => setShowPassword((prev) => !prev)}
+            >
+              {showPassword ? (
+                <EyeOff className="w-5" />
+              ) : (
+                <Eye className="w-5" />
+              )}
+            </span>
           </div>
           <div className="flex justify-between">
             <div className="flex items-center space-x-2">
@@ -47,9 +108,11 @@ const Login = () => {
               Forgot Password
             </span>
           </div>
-        </div>
+        </form>
 
-        <Button onClick={() => navigate("/")}>Sign In</Button>
+        <Button type={"submit"} onClick={handleSubmit} disabled={loading}>
+          {loading ? "Signing in..." : "Sign In"}
+        </Button>
       </div>
     </div>
   );
