@@ -5,7 +5,7 @@ import MongoStore from "connect-mongo";
 import cors from "cors";
 
 import { connectDB } from "./config/db.js";
-import authRoutes from "./routes/loginROutes.js";
+import authRoutes from "./routes/loginRoutes.js";
 import queriesRoutes from "./routes/queriesRoutes.js";
 import importRoutes from "./routes/importRoutes.js";
 import settingsRoutes from "./routes/settingsRoutes.js";
