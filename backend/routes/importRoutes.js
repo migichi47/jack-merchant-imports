@@ -59,4 +59,60 @@ router.delete("/:id", requireAuth, async (req, res) => {
   }
 });
 
+router.patch("/:id", requireAuth, async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const allowedFields = ["make", "model", "year", "description", "imageUrl"];
+
+    // Only accept fields that can be updated
+    const updates = {};
+
+    for (const field of allowedFields) {
+      if (req.body[field] !== undefined) {
+        updates[field] = req.body[field];
+      }
+    }
+
+    if (Object.keys(updates).length === 0) {
+      return res.status(400).json({
+        message: "No valid fields provided for update",
+      });
+    }
+
+    // Validate MongoDB ObjectId
+    if (!/^[a-f\d]{24}$/i.test(id)) {
+      return res.status(400).json({
+        message: "Invalid import ID",
+      });
+    }
+
+    const updatedImport = await Import.findByIdAndUpdate(
+      id,
+      { $set: updates },
+      {
+        new: true,
+        runValidators: true,
+      },
+    );
+
+    if (!updatedImport) {
+      return res.status(404).json({
+        message: "Past import not found",
+      });
+    }
+
+    return res.status(200).json({
+      message: "Past import updated successfully",
+      pastImport: updatedImport,
+    });
+  } catch (error) {
+    console.error("Update past import error:", error);
+
+    return res.status(500).json({
+      message: "Failed to update past import",
+    });
+  }
+});
+
 export default router;
