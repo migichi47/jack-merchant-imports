@@ -9,11 +9,13 @@ import api from "../services/api";
 import { AdminContext } from "../context/AdminContext";
 import Spinner from "../components/Spinner";
 import { formatPhoneNumber } from "../services/formatPhone";
+import EmailClientForm from "../components/EmailClientForm";
 
 const QueryDetails = () => {
   const [query, setQuery] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [showEmailForm, setShowEmailForm] = useState(false);
 
   const { id } = useParams();
   const [replied, setReplied] = useState(false);
@@ -91,7 +93,10 @@ const QueryDetails = () => {
           </p>
           <div className="flex gap-5">
             {query?.email && (
-              <Button variant="secondary">
+              <Button
+                variant="secondary"
+                onClick={() => setShowEmailForm(true)}
+              >
                 <MdOutlineMail className="text-lg" />
                 Email Customer
               </Button>
@@ -106,6 +111,12 @@ const QueryDetails = () => {
               </Link>
             </Button>
           </div>
+          {showEmailForm && (
+            <EmailClientForm
+              query={query}
+              onClose={() => setShowEmailForm(false)}
+            />
+          )}
         </div>
       </div>
 
