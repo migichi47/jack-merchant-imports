@@ -7,7 +7,12 @@ import { Field, SettingRow } from "../components/SettingsComponents";
 import navigation from "../utils/settings/navigation";
 
 import { useEffect } from "react";
-import { getSettings, updateSetting, updateSettings } from "../services/SettingsServices";
+import {
+  getSettings,
+  updateSetting,
+  updateSettings,
+} from "../services/SettingsServices";
+import Breadcrumbs from "../components/BreadCrumbs";
 
 const Settings = () => {
   const [activeTab, setActiveTab] = useState("email");
@@ -269,97 +274,101 @@ const Settings = () => {
   }
 
   return (
-    <div className="min-h-full bg-gray-50/70 p-4 sm:p-6 lg:p-8">
-      <div className="mx-auto max-w-7xl">
-        {/* Page heading */}
-        <div className="mb-7 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
-          <div>
-            <div className="flex items-center gap-2 text-sm text-gray-500">
-              <SlidersHorizontal className="h-4 w-4" />
-              Administration
-              <ChevronRight className="h-3.5 w-3.5" />
-              <span className="text-gray-800">Settings</span>
+    <>
+      <Breadcrumbs
+        items={[
+          {
+            label: "Settings",
+          },
+        ]}
+      />
+      <div className="min-h-full bg-gray-50/70 p-4 sm:p-6 lg:p-8">
+        <div className="mx-auto max-w-7xl">
+          {/* Page heading */}
+          <div className="mb-7 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+            <div>
+              <h1 className="mt-3 text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
+                Settings
+              </h1>
+
+              <p className="mt-2 text-sm leading-6 text-gray-500">
+                Manage your business preferences and administrative controls.
+              </p>
             </div>
 
-            <h1 className="mt-3 text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
-              Settings
-            </h1>
-
-            <p className="mt-2 text-sm leading-6 text-gray-500">
-              Manage your business preferences and administrative controls.
-            </p>
-          </div>
-
-          <button
-            type="button"
-            onClick={handleSave}
-            disabled={saving || loading}
-            className="rounded-lg bg-red-600 px-5 py-2.5 font-semibold text-white
+            <button
+              type="button"
+              onClick={handleSave}
+              disabled={saving || loading}
+              className="rounded-lg bg-red-600 px-5 py-2.5 font-semibold text-white
             transition hover:bg-red-700 disabled:cursor-not-allowed
             disabled:opacity-60"
-          >
-            {saving ? "Saving..." : "Save changes"}
-          </button>
-        </div>
+            >
+              {saving ? "Saving..." : "Save changes"}
+            </button>
+          </div>
 
-        {/* Main settings layout */}
-        <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-[250px_minmax(0,1fr)]">
-          {/* Settings navigation */}
-          <aside className="rounded-xl border border-gray-200 bg-white p-3 shadow-sm">
-            <p className="px-3 pb-3 pt-2 text-xs font-bold uppercase tracking-wider text-gray-400">
-              Preferences
-            </p>
+          {/* Main settings layout */}
+          <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-[250px_minmax(0,1fr)]">
+            {/* Settings navigation */}
+            <aside className="rounded-xl border border-gray-200 bg-white p-3 shadow-sm">
+              <p className="px-3 pb-3 pt-2 text-xs font-bold uppercase tracking-wider text-gray-400">
+                Preferences
+              </p>
 
-            <nav className="flex gap-1 overflow-x-auto lg:flex-col">
-              {navigation.map((item) => {
-                const Icon = item.icon;
-                const isActive = activeTab === item.id;
+              <nav className="flex gap-1 overflow-x-auto lg:flex-col">
+                {navigation.map((item) => {
+                  const Icon = item.icon;
+                  const isActive = activeTab === item.id;
 
-                return (
-                  <button
-                    key={item.id}
-                    type="button"
-                    onClick={() => setActiveTab(item.id)}
-                    className={`flex shrink-0 items-center gap-3 rounded-lg px-3 py-3 text-left text-sm font-medium transition lg:w-full ${
-                      isActive
-                        ? "bg-red-50 text-red-700"
-                        : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
-                    }`}
-                  >
-                    <Icon className="h-4.5 w-4.5 shrink-0" />
-                    <span>{item.label}</span>
-                    {isActive && (
-                      <ChevronRight className="ml-auto hidden h-4 w-4 lg:block" />
-                    )}
-                  </button>
-                );
-              })}
-            </nav>
-          </aside>
+                  return (
+                    <button
+                      key={item.id}
+                      type="button"
+                      onClick={() => setActiveTab(item.id)}
+                      className={`flex shrink-0 items-center gap-3 rounded-lg px-3 py-3 text-left text-sm font-medium transition lg:w-full ${
+                        isActive
+                          ? "bg-red-50 text-red-700"
+                          : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                      }`}
+                    >
+                      <Icon className="h-4.5 w-4.5 shrink-0" />
+                      <span>{item.label}</span>
+                      {isActive && (
+                        <ChevronRight className="ml-auto hidden h-4 w-4 lg:block" />
+                      )}
+                    </button>
+                  );
+                })}
+              </nav>
+            </aside>
 
-          {/* Settings content */}
-          <main className="min-w-0 rounded-xl border border-gray-200 bg-white p-5 shadow-sm sm:p-7">
-            <div className="mb-6 flex items-center gap-3 border-b border-gray-100 pb-5">
-              <div className="rounded-lg bg-red-50 p-2.5">
-                <ActiveIcon className="h-5 w-5 text-red-600" />
+            {/* Settings content */}
+            <main className="min-w-0 rounded-xl border border-gray-200 bg-white p-5 shadow-sm sm:p-7">
+              <div className="mb-6 flex items-center gap-3 border-b border-gray-100 pb-5">
+                <div className="rounded-lg bg-red-50 p-2.5">
+                  <ActiveIcon className="h-5 w-5 text-red-600" />
+                </div>
+                <div>
+                  <h2 className="font-bold text-gray-900">
+                    {activeItem.label}
+                  </h2>
+                  <p className="mt-0.5 text-xs text-gray-500">
+                    Jack Merchants Imports administration
+                  </p>
+                </div>
               </div>
-              <div>
-                <h2 className="font-bold text-gray-900">{activeItem.label}</h2>
-                <p className="mt-0.5 text-xs text-gray-500">
-                  Jack Merchants Imports administration
-                </p>
-              </div>
-            </div>
 
-            {content[activeTab]()}
-          </main>
+              {content[activeTab]()}
+            </main>
+          </div>
+
+          <p className="mt-5 text-center text-xs text-gray-400">
+            Jack Merchants Imports · Admin Settings
+          </p>
         </div>
-
-        <p className="mt-5 text-center text-xs text-gray-400">
-          Jack Merchants Imports · Admin Settings
-        </p>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -1,8 +1,6 @@
-import React from "react";
 import { GoDotFill } from "react-icons/go";
-import { useNavigate } from "react-router-dom";
-import { Bell, Dot, Menu, Search } from "lucide-react";
-import Button from "./Button";
+import { Link, useNavigate } from "react-router-dom";
+import { Bell, Menu } from "lucide-react";
 
 const Topbar = ({ setShowSidebar }) => {
   const navigate = useNavigate();
@@ -19,10 +17,10 @@ const Topbar = ({ setShowSidebar }) => {
         <h1 className="text-gray-500 text-sm">Dashboard</h1>
       </div>
       <div className="flex items-center gap-5">
-        <span className="relative">
+        <Link className="relative" to={"/notifications"}>
           <Bell className="text-gray-500 w-5" />
           <GoDotFill className="text-red-500 text-xs absolute -top-1 -right-1" />
-        </span>
+        </Link>
         <Menu
           className="md:hidden cursor-pointer"
           onClick={() => setShowSidebar((prev) => !prev)}

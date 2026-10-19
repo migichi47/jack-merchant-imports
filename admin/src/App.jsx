@@ -7,13 +7,13 @@ import Queries from "./pages/Queries";
 import QueryDetails from "./pages/QueryDetails";
 import PastImports from "./pages/PastImports";
 import AddImport from "./pages/AddImport";
-import EditImport from "./pages/EditImport";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Settings from "./pages/Settings";
 import ProtectedRoute from "./components/ProtectedRoute";
 import PastEmails from "./pages/EmailLogs";
 import ImportDetails from "./pages/ImportDetails";
+import Notifications from "./pages/Notifications";
 
 const App = () => {
   return (
@@ -27,10 +27,10 @@ const App = () => {
             <Route path="/queries/:id" element={<QueryDetails />} />
             <Route path="/past-imports" element={<PastImports />} />
             <Route path="/past-imports/new" element={<AddImport />} />
-            <Route path="/past-imports/:id/edit" element={<EditImport />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/emails" element={<PastEmails />} />
             <Route path="/import-details/:id" element={<ImportDetails />} />
+            <Route path="/notifications" element={<Notifications />} />
           </Route>
         </Route>
       </Routes>

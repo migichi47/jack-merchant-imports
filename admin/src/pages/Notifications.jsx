@@ -1,11 +1,18 @@
-import React from 'react'
+import Breadcrumbs from "../components/BreadCrumbs";
 
 const Notifications = () => {
   return (
-    <div>
-      
-    </div>
-  )
-}
+    <>
+      <Breadcrumbs
+        items={[
+          {
+            label: "Notifications",
+          },
+        ]}
+      />
+      <div></div>
+    </>
+  );
+};
 
-export default Notifications
+export default Notifications;

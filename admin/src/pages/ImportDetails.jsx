@@ -5,6 +5,7 @@ import SectionHeading from "../components/SectionHeading";
 import { Check, Pencil, X } from "lucide-react";
 import { toast } from "react-toastify";
 import { formatDate } from "../services/formatDate";
+import Breadcrumbs from "../components/BreadCrumbs";
 
 const ImportDetails = () => {
   const { id } = useParams();
@@ -73,86 +74,98 @@ const ImportDetails = () => {
   ];
 
   return (
-    <div className="flex flex-col">
-      <SectionHeading
-        title={`Import Details for ${pastImport?.make} ${pastImport?.model}`}
-        description={"View or change details of this past import."}
+    <>
+      <Breadcrumbs
+        items={[
+          { label: "Past Imports", to: "/past-imports" },
+          {
+            label:
+              `${pastImport?.make || ""} ${pastImport?.model || ""}`.trim() ||
+              "Import Details",
+          },
+        ]}
       />
-      <div className="flex flex-col sm:flex-row gap-10">
-        <img src={pastImport?.imageUrl} alt="" className="w-100 max-w-150" />
-        <div className="space-y-3">
-          {detailFields.map((detailField) => {
-            return (
-              <div className="flex gap-3 w-fit">
-                <h1 className="text-pink-500">{detailField.label}:</h1>
+      <div className="flex flex-col">
+        <SectionHeading
+          title={`Import Details for ${pastImport?.make} ${pastImport?.model}`}
+          description={"View or change details of this past import."}
+        />
+        <div className="flex flex-col sm:flex-row gap-10">
+          <img src={pastImport?.imageUrl} alt="" className="w-100 max-w-150" />
+          <div className="space-y-3">
+            {detailFields.map((detailField) => {
+              return (
+                <div className="flex gap-3 w-fit">
+                  <h1 className="text-pink-500">{detailField.label}:</h1>
 
-                <div className="flex flex-col gap-2">
-                  <div className="flex gap-5 items-center">
-                    {updating && editingField === detailField.key ? (
-                      <span className="text-pink-500">Updating...</span>
-                    ) : (
-                      <span className="font-semibold text-gray-900 cursor-pointer">
-                        {detailField.value}
-                      </span>
-                    )}
+                  <div className="flex flex-col gap-2">
+                    <div className="flex gap-5 items-center">
+                      {updating && editingField === detailField.key ? (
+                        <span className="text-pink-500">Updating...</span>
+                      ) : (
+                        <span className="font-semibold text-gray-900 cursor-pointer">
+                          {detailField.value}
+                        </span>
+                      )}
 
-                    {editingField === detailField.key ? (
-                      <div className="flex gap-2">
+                      {editingField === detailField.key ? (
+                        <div className="flex gap-2">
+                          <button
+                            type="button"
+                            disabled={updating}
+                            onClick={updateImport}
+                            className="disabled:opacity-50"
+                          >
+                            <Check className="w-5 text-green-600" />
+                          </button>
+
+                          <button
+                            type="button"
+                            disabled={updating}
+                            onClick={() => {
+                              setEditingField(null);
+                              setUpdate("");
+                            }}
+                          >
+                            <X className="w-4 text-gray-500" />
+                          </button>
+                        </div>
+                      ) : (
                         <button
                           type="button"
-                          disabled={updating}
-                          onClick={updateImport}
-                          className="disabled:opacity-50"
-                        >
-                          <Check className="w-5 text-green-600" />
-                        </button>
-
-                        <button
-                          type="button"
-                          disabled={updating}
                           onClick={() => {
-                            setEditingField(null);
-                            setUpdate("");
+                            setEditingField(detailField.key);
+                            setUpdate(String(detailField.value ?? ""));
                           }}
                         >
-                          <X className="w-4 text-gray-500" />
+                          <Pencil className="w-4 hover:text-pink-500" />
                         </button>
-                      </div>
-                    ) : (
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setEditingField(detailField.key);
-                          setUpdate(String(detailField.value ?? ""));
+                      )}
+                    </div>
+
+                    {editingField === detailField.key && (
+                      <input
+                        autoFocus
+                        value={update}
+                        type="text"
+                        disabled={updating}
+                        className="border border-gray-400 rounded-sm outline-red-600 pl-1 text-sm py-1"
+                        onChange={(e) => setUpdate(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") {
+                            updateImport();
+                          }
                         }}
-                      >
-                        <Pencil className="w-4 hover:text-pink-500" />
-                      </button>
+                      />
                     )}
                   </div>
-
-                  {editingField === detailField.key && (
-                    <input
-                      autoFocus
-                      value={update}
-                      type="text"
-                      disabled={updating}
-                      className="border border-gray-400 rounded-sm outline-red-600 pl-1 text-sm py-1"
-                      onChange={(e) => setUpdate(e.target.value)}
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter") {
-                          updateImport();
-                        }
-                      }}
-                    />
-                  )}
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
