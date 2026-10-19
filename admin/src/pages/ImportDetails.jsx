@@ -13,15 +13,18 @@ const ImportDetails = () => {
   const [update, setUpdate] = useState();
   const [updating, setUpdating] = useState(false);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const fetchPastImports = async () => {
     const response = await api.get(`/api/imports/${id}`);
     setPastImport(response.data);
   };
+
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+    const fetchPastImports = async () => {
+      const response = await api.get(`/api/imports/${id}`);
+      setPastImport(response.data);
+    };
     fetchPastImports();
-  }, [fetchPastImports]);
+  }, [id]);
 
   const updateImport = async () => {
     if (!update) return;
@@ -136,6 +139,11 @@ const ImportDetails = () => {
                       disabled={updating}
                       className="border border-gray-400 rounded-sm outline-red-600 pl-1 text-sm py-1"
                       onChange={(e) => setUpdate(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          updateImport();
+                        }
+                      }}
                     />
                   )}
                 </div>

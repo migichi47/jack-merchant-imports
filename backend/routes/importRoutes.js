@@ -100,7 +100,7 @@ router.patch("/:id", requireAuth, async (req, res) => {
       id,
       { $set: updates },
       {
-        new: true,
+        returnDocument: "after",
         runValidators: true,
       },
     );

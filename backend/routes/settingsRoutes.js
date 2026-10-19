@@ -159,8 +159,8 @@ router.patch("/", requireAuth, async (req, res) => {
         $setOnInsert: { key: "general" },
       },
       {
-        new: true,
         upsert: true,
+        returnDocument: "after",
         runValidators: true,
         setDefaultsOnInsert: true,
       },
