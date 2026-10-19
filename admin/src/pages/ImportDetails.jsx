@@ -10,7 +10,6 @@ const ImportDetails = () => {
   const { id } = useParams();
   const [pastImport, setPastImport] = useState({});
   const [editingField, setEditingField] = useState([]);
-  const [isEditing, setIsEditing] = useState(false);
   const [update, setUpdate] = useState();
   const [updating, setUpdating] = useState(false);
 
@@ -32,6 +31,8 @@ const ImportDetails = () => {
         [editingField]: update,
       });
       toast.success(response.message || "Import updated succeessfully");
+      setUpdate("");
+      setEditingField("");
       fetchPastImports();
     } catch (err) {
       toast.error(err.message || err.response || "failed to update import");
