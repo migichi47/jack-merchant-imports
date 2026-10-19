@@ -2,6 +2,7 @@ import { ArrowRight, Pencil, Trash } from "lucide-react";
 import { useContext } from "react";
 import { AdminContext } from "../context/AdminContext";
 import { Link } from "react-router-dom";
+import { formatDate } from "../services/formatDate";
 
 export const PastImportsGrid = () => {
   const { pastImports } = useContext(AdminContext);
@@ -28,12 +29,22 @@ export const PastImportsGrid = () => {
   );
 };
 
-export const PastImportCard = ({ make, model, imageUrl, _id: id }) => {
+export const PastImportCard = ({
+  make,
+  model,
+  imageUrl,
+  _id: id,
+  year,
+  description,
+  arrival,
+}) => {
   const { deleteImport } = useContext(AdminContext);
 
-  
   return (
-    <div className="w-full mx-auto space-y-2 border border-gray-300 rounded-lg hover:scale-98 transition-all duration-300">
+    <Link
+      className="w-full mx-auto space-y-2 border border-gray-300 rounded-lg hover:shadow-md transition"
+      to={`/import-details/${id}`}
+    >
       <img
         src={imageUrl}
         alt=""
@@ -46,20 +57,19 @@ export const PastImportCard = ({ make, model, imageUrl, _id: id }) => {
         <div className="flex items-center justify-between">
           <div className="flex flex-col text-gray-500 text-xs">
             <span>2021 manufacture</span>
-            <span>Added 09 Oct 2026</span>
+            <span>
+              Imported{" "}
+              <span className="text-pink-500 font-semibold">
+                {formatDate(arrival)}
+              </span>
+            </span>
           </div>
-          <span
-            className="flex gap-5 sm:gap-2.5 items-center font-semibold text-xs text-red-600
-            transition-all duration-300"
-          >
-            <Pencil className="w-4 hover:text-black cursor-pointer" />
-            <Trash
-              className="w-4 hover:text-black cursor-pointer"
-              onClick={() => deleteImport(id)}
-            />
-          </span>
+          <Trash
+            className="w-4 text-red-600 hover:text-black cursor-pointer"
+            onClick={() => deleteImport(id)}
+          />
         </div>
       </div>
-    </div>
+    </Link>
   );
 };

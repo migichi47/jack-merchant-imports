@@ -13,6 +13,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Settings from "./pages/Settings";
 import ProtectedRoute from "./components/ProtectedRoute";
 import PastEmails from "./pages/EmailLogs";
+import ImportDetails from "./pages/ImportDetails";
 
 const App = () => {
   return (
@@ -29,6 +30,7 @@ const App = () => {
             <Route path="/past-imports/:id/edit" element={<EditImport />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/emails" element={<PastEmails />} />
+            <Route path="/import-details/:id" element={<ImportDetails />} />
           </Route>
         </Route>
       </Routes>

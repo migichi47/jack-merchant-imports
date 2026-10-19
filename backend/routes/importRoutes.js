@@ -50,6 +50,15 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/:id", async (req, res) => {
+  try {
+    const pastImport = await Import.findById(req.params.id);
+    res.status(200).json(pastImport);
+  } catch (err) {
+    res.status(404).json({ msg: "Could not fetch import", error: err });
+  }
+});
+
 router.delete("/:id", requireAuth, async (req, res) => {
   try {
     const deletedImport = await Import.findByIdAndDelete(req.params.id);
