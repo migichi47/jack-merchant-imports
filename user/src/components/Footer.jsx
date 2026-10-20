@@ -1,4 +1,4 @@
-import React from "react";
+
 import Logo from "./Logo";
 import { Dot } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -7,7 +7,7 @@ const Footer = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="bg-zinc-950 p-5 text-white w-full">
+    <div className="bg-zinc-950 px-5 py-20 text-white w-full">
       <div className="max-w-300 mx-auto grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
         <div className="space-y-5 [&>div]:space-y-2.5">
           <Logo variant="secondary" />
