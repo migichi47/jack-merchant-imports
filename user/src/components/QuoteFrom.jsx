@@ -80,7 +80,8 @@ const QuoteFrom = ({
                   setForm({ ...form, fullName: event.target.value })
                 }
                 placeholder="Your full name"
-                className="w-full rounded-lg border border-neutral-200 px-4 py-3 text-sm outline-none focus:border-red-600 focus:ring-2 focus:ring-red-600/10"
+                className="w-full rounded-lg border border-neutral-200 px-4 py-3 text-sm outline-none
+                focus:border-pink-500 focus:ring-2 focus:ring-red-600/10"
               />
             </label>
 
@@ -96,7 +97,8 @@ const QuoteFrom = ({
                   setForm({ ...form, contact: event.target.value })
                 }
                 placeholder="07XX XXX XXX"
-                className="w-full rounded-lg border border-neutral-200 px-4 py-3 text-sm outline-none focus:border-red-600 focus:ring-2 focus:ring-red-600/10"
+                className="w-full rounded-lg border border-neutral-200 px-4 py-3 text-sm outline-none
+                focus:border-pink-500 focus:ring-2 focus:ring-red-600/10"
               />
             </label>
 
@@ -111,7 +113,8 @@ const QuoteFrom = ({
                   setForm({ ...form, email: event.target.value })
                 }
                 placeholder="you@example.com"
-                className="w-full rounded-lg border border-neutral-200 px-4 py-3 text-sm outline-none focus:border-red-600 focus:ring-2 focus:ring-red-600/10"
+                className="w-full rounded-lg border border-neutral-200 px-4 py-3 text-sm outline-none
+                focus:border-pink-500 focus:ring-2 focus:ring-red-600/10"
               />
             </label>
 
@@ -126,7 +129,8 @@ const QuoteFrom = ({
                 }
                 inputMode="numeric"
                 placeholder="e.g. 3000000"
-                className="w-full rounded-lg border border-neutral-200 px-4 py-3 text-sm outline-none focus:border-red-600 focus:ring-2 focus:ring-red-600/10"
+                className="w-full rounded-lg border border-neutral-200 px-4 py-3 text-sm outline-none
+                focus:border-pink-500 focus:ring-2 focus:ring-red-600/10"
               />
             </label>
 
@@ -142,7 +146,8 @@ const QuoteFrom = ({
                   setForm({ ...form, message: event.target.value })
                 }
                 placeholder="Make, model, preferred year, budget and anything else we should know..."
-                className="w-full resize-y rounded-lg border border-neutral-200 px-4 py-3 text-sm outline-none focus:border-red-600 focus:ring-2 focus:ring-red-600/10"
+                className="w-full resize-y rounded-lg border border-neutral-200 px-4 py-3 text-sm outline-none
+                focus:border-red-600 focus:ring-2 focus:ring-red-600/10 text-pink-500 font-semibold"
               />
             </label>
           </div>
@@ -150,7 +155,8 @@ const QuoteFrom = ({
           <button
             type="submit"
             disabled={submitting}
-            className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-red-600 px-6 py-4 font-semibold text-white transition hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-60"
+            className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-red-600 px-6 py-4 font-semibold
+            text-white transition hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-60 cursor-pointer"
           >
             {submitting ? "Processing..." : "Submit enquiry"}
             {!submitting && <ArrowBigRight size={18} />}

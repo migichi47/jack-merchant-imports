@@ -20,7 +20,7 @@ export default function VehicleCard({ vehicle, onRequestQuote }) {
       </div>
 
       <div className="p-5">
-        <p className="mb-1 text-xs font-medium uppercase tracking-widest text-red-600">
+        <p className="mb-1 text-xs font-medium uppercase tracking-widest text-pink-500">
           {vehicle.region || "Japan"}
         </p>
 
@@ -45,7 +45,7 @@ export default function VehicleCard({ vehicle, onRequestQuote }) {
           </span>
           <span className="flex items-center gap-2 capitalize">
             <ShieldCheck size={16} className="text-red-600" />
-            {vehicle.has_accident === false
+            {vehicle?.has_accident === false
               ? "No accident reported"
               : vehicle.has_accident === true
                 ? "Accident reported"

@@ -5,7 +5,6 @@ import { useSearchParams } from "react-router-dom";
 
 export function CarProvider({ children }) {
   const [vehicles, setVehicles] = useState([]);
-  const [popular, setPopular] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const [searchParams] = useSearchParams();
@@ -14,25 +13,11 @@ export function CarProvider({ children }) {
   const yearFrom = searchParams.get("yearFrom") || "";
   const yearTo = searchParams.get("yearTo") || "";
 
-
-  useEffect(() => {
-    const getPopularCars = async () => {
-      try {
-        const response = await api.get("/api/popular-cars");
-        setPopular(response.data[0].results);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    getPopularCars();
-  }, []);
-
-
   useEffect(() => {
     const fetchVehicles = async () => {
       try {
         setLoading(true);
-        const response = await api.get("/api/vehicles", {
+        const response = await api.get("/api/carapis/vehicles?source=sbtjapan&page_size=5", {
           params: {
             make,
             model,
@@ -47,12 +32,12 @@ export function CarProvider({ children }) {
       }
     };
 
+    
     fetchVehicles();
   }, [make, model, yearFrom, yearTo]);
-
+  
   const value = {
     vehicles,
-    popular,
     setVehicles,
     loading,
     setLoading,

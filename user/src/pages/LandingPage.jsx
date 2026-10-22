@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import { demoVehicles } from "../services/UtilityFunctions";
 import Header from "../components/Header";
 import Hero from "../components/Hero";
@@ -8,11 +8,11 @@ import HowItWorks from "../components/HowItWorks";
 import AboutAndCTA from "../components/AboutAndCTA";
 import QuoteFrom from "../components/QuoteFrom";
 import Footer from "../components/Footer";
+import { CarContext } from "../context/CarContext";
 
-export default function LandingPage({ vehicles: suppliedVehicles }) {
+export default function LandingPage() {
   // Passing `vehicles` from a parent overrides the demo data.
-  const vehicles = suppliedVehicles ?? demoVehicles;
-
+  const {vehicles} = useContext(CarContext)
   const [search, setSearch] = useState("");
   const [make, setMake] = useState("All makes");
   const [maxPrice, setMaxPrice] = useState("Any budget");
