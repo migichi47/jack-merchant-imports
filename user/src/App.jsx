@@ -11,14 +11,14 @@ import ContacUsPage from "./pages/ContacUsPage";
 function App() {
   return (
     <Routes>
-      <Route element={<Layout />}>
-        <Route element={<LandingPage />} path="/" />
-        <Route path="/services" element={<OurServicesPage />} />
-        <Route path="/query" element={<QueryPage />} />
-        <Route path="/about" element={<AboutPage />} />
-        <Route path="/how-it-works" element={<HowItWorksPage />} />
-        <Route path="/contact-us" element={<ContacUsPage />} />
-      </Route>
+      {/* <Route element={<Layout />}> */}
+      <Route element={<LandingPage />} path="/" />
+      <Route path="/services" element={<OurServicesPage />} />
+      <Route path="/query" element={<QueryPage />} />
+      <Route path="/about" element={<AboutPage />} />
+      <Route path="/how-it-works" element={<HowItWorksPage />} />
+      <Route path="/contact-us" element={<ContacUsPage />} />
+      {/* </Route> */}
     </Routes>
   );
 }

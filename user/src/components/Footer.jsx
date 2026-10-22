@@ -1,84 +1,39 @@
+import { Ship } from "lucide-react";
 
-import Logo from "./Logo";
-import { Dot } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 
 const Footer = () => {
-  const navigate = useNavigate();
-
   return (
-    <div className="bg-zinc-950 px-5 py-20 text-white w-full">
-      <div className="max-w-300 mx-auto grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
-        <div className="space-y-5 [&>div]:space-y-2.5">
-          <Logo variant="secondary" />
-          <p className="text-zinc-400 text-sm">
-            Personalized vehicle sourcing and guided importation into Kenya.
-            Start with your preferences. Move forward with a clearer plan.
-          </p>
+    <footer className="bg-black text-white">
+      <div className="mx-auto flex max-w-7xl flex-col gap-6 px-5 py-9 sm:px-8 md:flex-row md:items-center md:justify-between">
+        <a href="#home" className="flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-red-600">
+            <Ship size={21} />
+          </div>
+          <div>
+            <p className="font-black">JACK MERCHANTS IMPORTS</p>
+            <p className="mt-1 text-xs text-neutral-400">
+              Your car import journey starts here.
+            </p>
+          </div>
+        </a>
+
+        <div className="flex flex-wrap gap-5 text-sm text-neutral-400">
+          <a href="#vehicles" className="hover:text-white">
+            Find a car
+          </a>
+          <a href="#how-it-works" className="hover:text-white">
+            How it works
+          </a>
+          <a href="#request-quote" className="hover:text-white">
+            Contact us
+          </a>
         </div>
 
-        <div className="space-y-5 [&>div]:space-y-2.5">
-          <h1 className="uppercase font-semibold text-sm">Explore</h1>
-          <div
-            className="flex flex-col text-zinc-400 text-sm [&>span]:hover:text-white
-          [&>span]:cursor-pointer [&>span]:hover:underline [&>span]:w-fit"
-          >
-            {[
-              { name: "Home", link: "/" },
-              { name: "Our Services", link: "/services" },
-              { name: "How it works", link: "/" },
-              { name: "About Us", link: "/about" },
-              { name: "Contact Us", link: "/contact-us" },
-            ].map((link, i) => (
-              <span key={i} onClick={() => navigate(link.link)}>
-                {link.name}
-              </span>
-            ))}
-          </div>
-        </div>
-        <div className="space-y-5 [&>div]:space-y-2.5">
-          <h1 className="uppercase font-semibold text-sm">Our services</h1>
-          <div className="flex flex-col text-zinc-400 text-sm">
-            {[
-              "Vehicle Sourcing",
-              "Vehicle Importation",
-              "Importation Guidance",
-              "Personalized Import Quotes",
-              "Customer Assistance",
-            ].map((link) => (
-              <span key={link}>{link}</span>
-            ))}
-          </div>
-        </div>
-        <div className="space-y-5 [&>div]:space-y-2.5">
-          <h1 className="uppercase font-semibold text-sm">contact</h1>
-          <div
-            className="flex flex-col text-zinc-400 text-sm [&>span]:flex [&>span]:items-center [&>span]:gap-1
-          [&>span]:[&>span]:text-zinc-300"
-          >
-            {[
-              {
-                name: "Phone",
-                contact: "0715366111",
-              },
-              {
-                name: "WhatsApp",
-                contact: "0715366111",
-              },
-              {
-                name: "Email",
-                contact: "jackkamau36@gmail.com",
-              },
-            ].map((contact, i) => (
-              <span key={i}>
-                {contact.name} <Dot className="w-4" />{" "}
-                <span>{contact.contact}</span>
-              </span>
-            ))}
-          </div>
-        </div>
+        <p className="text-xs text-neutral-500">
+          © {new Date().getFullYear()} Jack Merchants Imports.
+        </p>
       </div>
-    </div>
+    </footer>
   );
 };
 
