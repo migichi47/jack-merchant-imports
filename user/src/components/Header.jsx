@@ -10,13 +10,12 @@ export default function Header() {
     <header className="sticky top-0 z-40 border-b border-neutral-200 bg-white/95 backdrop-blur">
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-5 sm:px-8">
         <Logo />
-
         <nav className="hidden items-center gap-8 md:flex">
           {navLinks.map((link) => (
             <a
               key={link.label}
               href={link.href}
-              className="text-sm font-medium text-neutral-600 transition hover:text-red-600"
+              className="text-sm font-medium text-neutral-600 transition hover:text-pink-500"
             >
               {link.label}
             </a>

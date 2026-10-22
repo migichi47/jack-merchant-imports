@@ -1,3 +1,4 @@
+import { useContext, useMemo, useState } from "react";
 import VehicleCard from "./VehicleCard";
 import {
   ArrowRight,
@@ -5,18 +6,56 @@ import {
   Search,
   SlidersHorizontal,
 } from "lucide-react";
+import { CarContext } from "../context/CarContext";
 
 const QuerySection = ({
   openQuote,
   search,
   setSearch,
-  make,
-  setMake,
-  makes,
   maxPrice,
   setMaxPrice,
-  filteredVehicles,
 }) => {
+  const [make, setMake] = useState();
+  const { vehicles } = useContext(CarContext);
+  const filteredVehicles = useMemo(() => {
+    const query = search.trim().toLowerCase();
+
+    return vehicles.filter((vehicle) => {
+      const name = `${vehicle.brand_name} ${vehicle.model_name} ${
+        vehicle.trim || ""
+      }`.toLowerCase();
+
+      const matchesSearch = !query || name.includes(query);
+      const matchesMake = make === "All makes" || vehicle.brand_name === make;
+
+      const budgetLimits = {
+        "Under $3,000": 3000,
+        "Under $5,000": 5000,
+        "Under $10,000": 10000,
+        "Under $15,000": 15000,
+      };
+
+      const matchesPrice =
+        maxPrice === "Any budget" ||
+        (vehicle.price_usd ?? Infinity) <= budgetLimits[maxPrice];
+
+      return (
+        vehicle.is_available !== false &&
+        matchesSearch &&
+        matchesMake &&
+        matchesPrice
+      );
+    });
+  }, [vehicles, search, make, maxPrice]);
+
+  const makes = useMemo(
+    () => [
+      "All makes",
+      ...new Set(vehicles.map((vehicle) => vehicle.brand_name).filter(Boolean)),
+    ],
+    [vehicles],
+  );
+
   return (
     <section
       id="vehicles"
@@ -40,7 +79,9 @@ const QuerySection = ({
 
           <button
             onClick={() => openQuote()}
-            className="inline-flex shrink-0 items-center justify-center gap-2 self-start rounded-lg border border-neutral-300 bg-white px-5 py-3 text-sm font-semibold transition hover:border-red-600 hover:text-red-600 md:self-auto"
+            className="inline-flex shrink-0 items-center justify-center gap-2 self-start rounded-lg
+            border border-neutral-300 bg-white px-5 py-3 text-sm font-semibold transition hover:border-red-600
+            hover:text-red-600 md:self-auto"
           >
             Can't find your car? <ArrowRight size={16} />
           </button>
@@ -48,7 +89,86 @@ const QuerySection = ({
 
         {/* Search and filters */}
         <div className="mt-10 rounded-2xl border border-neutral-200 bg-white p-4 shadow-sm sm:p-5">
-          <div className="grid gap-4 md:grid-cols-[1.5fr_1fr_1fr]">
+          <div className="space-y-4">
+            <div className="flex gap-4">
+              <label className="grow">
+                <span className="mb-2 block text-xs font-semibold text-neutral-700">
+                  Make
+                </span>
+                <div className="relative">
+                  <select
+                    value={make}
+                    onChange={(event) => setMake(event.target.value)}
+                    className="w-full appearance-none rounded-lg border border-neutral-200 bg-white px-3 py-3 pr-9
+                  text-sm outline-none focus:border-pink-500"
+                  >
+                    {makes.map((item) => (
+                      <option key={item} value={item}>
+                        {item}
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown
+                    size={16}
+                    className="pointer-events-none absolute right-3 top-3.5 text-neutral-400"
+                  />
+                </div>
+              </label>
+
+              <label className="grow">
+                <span className="mb-2 block text-xs font-semibold text-neutral-700">
+                  Model
+                </span>
+                <div className="relative">
+                  <select
+                    value={make}
+                    onChange={(event) => setMake(event.target.value)}
+                    className="w-full appearance-none rounded-lg border border-neutral-200 bg-white px-3 py-3 pr-9
+                  text-sm outline-none focus:border-pink-500"
+                  >
+                    {makes.map((item) => (
+                      <option key={item} value={item}>
+                        {item}
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown
+                    size={16}
+                    className="pointer-events-none absolute right-3 top-3.5 text-neutral-400"
+                  />
+                </div>
+              </label>
+
+              <label className="grow">
+                <span className="mb-2 block text-xs font-semibold text-neutral-700">
+                  Maximum listed price
+                </span>
+                <div className="relative">
+                  <select
+                    value={maxPrice}
+                    onChange={(event) => setMaxPrice(event.target.value)}
+                    className="w-full appearance-none rounded-lg border border-neutral-200 bg-white px-3 py-3 pr-9 text-sm
+                  outline-none focus:border-pink-500"
+                  >
+                    {[
+                      "Any budget",
+                      "Under $3,000",
+                      "Under $5,000",
+                      "Under $10,000",
+                      "Under $15,000",
+                    ].map((item) => (
+                      <option key={item} value={item}>
+                        {item}
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown
+                    size={16}
+                    className="pointer-events-none absolute right-3 top-3.5 text-neutral-400"
+                  />
+                </div>
+              </label>
+            </div>
             <label className="relative block">
               <span className="mb-2 block text-xs font-semibold text-neutral-700">
                 Search vehicles
@@ -61,60 +181,9 @@ const QuerySection = ({
                 value={search}
                 onChange={(event) => setSearch(event.target.value)}
                 placeholder="e.g. Toyota Harrier"
-                className="w-full rounded-lg border border-neutral-200 bg-white py-3 pl-10 pr-3 text-sm outline-none transition focus:border-red-600 focus:ring-2 focus:ring-red-600/10"
+                className="w-full rounded-lg border border-neutral-200 bg-white py-3 pl-10 pr-3 text-sm outline-none transition
+                focus:border-pink-500 focus:ring-2 focus:ring-red-600/10"
               />
-            </label>
-
-            <label>
-              <span className="mb-2 block text-xs font-semibold text-neutral-700">
-                Make
-              </span>
-              <div className="relative">
-                <select
-                  value={make}
-                  onChange={(event) => setMake(event.target.value)}
-                  className="w-full appearance-none rounded-lg border border-neutral-200 bg-white px-3 py-3 pr-9 text-sm outline-none focus:border-red-600"
-                >
-                  {makes.map((item) => (
-                    <option key={item} value={item}>
-                      {item}
-                    </option>
-                  ))}
-                </select>
-                <ChevronDown
-                  size={16}
-                  className="pointer-events-none absolute right-3 top-3.5 text-neutral-400"
-                />
-              </div>
-            </label>
-
-            <label>
-              <span className="mb-2 block text-xs font-semibold text-neutral-700">
-                Maximum listed price
-              </span>
-              <div className="relative">
-                <select
-                  value={maxPrice}
-                  onChange={(event) => setMaxPrice(event.target.value)}
-                  className="w-full appearance-none rounded-lg border border-neutral-200 bg-white px-3 py-3 pr-9 text-sm outline-none focus:border-red-600"
-                >
-                  {[
-                    "Any budget",
-                    "Under $3,000",
-                    "Under $5,000",
-                    "Under $10,000",
-                    "Under $15,000",
-                  ].map((item) => (
-                    <option key={item} value={item}>
-                      {item}
-                    </option>
-                  ))}
-                </select>
-                <ChevronDown
-                  size={16}
-                  className="pointer-events-none absolute right-3 top-3.5 text-neutral-400"
-                />
-              </div>
             </label>
           </div>
 

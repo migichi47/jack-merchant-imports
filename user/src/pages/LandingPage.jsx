@@ -1,5 +1,4 @@
-import { useContext, useMemo, useState } from "react";
-import { demoVehicles } from "../services/UtilityFunctions";
+import {useState } from "react";
 import Header from "../components/Header";
 import Hero from "../components/Hero";
 import TrustStrip from "../components/TrustStrip";
@@ -8,11 +7,8 @@ import HowItWorks from "../components/HowItWorks";
 import AboutAndCTA from "../components/AboutAndCTA";
 import QuoteFrom from "../components/QuoteFrom";
 import Footer from "../components/Footer";
-import { CarContext } from "../context/CarContext";
 
 export default function LandingPage() {
-  // Passing `vehicles` from a parent overrides the demo data.
-  const {vehicles} = useContext(CarContext)
   const [search, setSearch] = useState("");
   const [make, setMake] = useState("All makes");
   const [maxPrice, setMaxPrice] = useState("Any budget");
@@ -26,45 +22,6 @@ export default function LandingPage() {
   });
   const [submitting, setSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState("");
-
-  const makes = useMemo(
-    () => [
-      "All makes",
-      ...new Set(vehicles.map((vehicle) => vehicle.brand_name).filter(Boolean)),
-    ],
-    [vehicles],
-  );
-
-  const filteredVehicles = useMemo(() => {
-    const query = search.trim().toLowerCase();
-
-    return vehicles.filter((vehicle) => {
-      const name = `${vehicle.brand_name} ${vehicle.model_name} ${
-        vehicle.trim || ""
-      }`.toLowerCase();
-
-      const matchesSearch = !query || name.includes(query);
-      const matchesMake = make === "All makes" || vehicle.brand_name === make;
-
-      const budgetLimits = {
-        "Under $3,000": 3000,
-        "Under $5,000": 5000,
-        "Under $10,000": 10000,
-        "Under $15,000": 15000,
-      };
-
-      const matchesPrice =
-        maxPrice === "Any budget" ||
-        (vehicle.price_usd ?? Infinity) <= budgetLimits[maxPrice];
-
-      return (
-        vehicle.is_available !== false &&
-        matchesSearch &&
-        matchesMake &&
-        matchesPrice
-      );
-    });
-  }, [vehicles, search, make, maxPrice]);
 
   function openQuote(vehicle = null) {
     setSelectedVehicle(vehicle);
@@ -127,10 +84,8 @@ export default function LandingPage() {
           setSearch={setSearch}
           make={make}
           setMake={setMake}
-          makes={makes}
           maxPrice={maxPrice}
           setMaxPrice={setMaxPrice}
-          filteredVehicles={filteredVehicles}
         />
         <HowItWorks />
         <AboutAndCTA />
