@@ -1,12 +1,18 @@
 import { ArrowUpRight, Fuel, Gauge, ShieldCheck, Zap } from "lucide-react";
 import { formatMileage, formatUSD } from "../services/UtilityFunctions";
 import VehicleImage from "./VehicleImage";
+import { useContext } from "react";
+import { CarContext } from "../context/CarContext";
 
-export default function VehicleCard({ vehicle, onRequestQuote }) {
+export default function VehicleCard({ vehicle }) {
   const vehicleName = `${vehicle.brand_name} ${vehicle.model_name}`;
+  const { handleEnquire } = useContext(CarContext);
 
   return (
-    <article className="group overflow-hidden rounded-2xl border border-neutral-200 bg-white transition hover:-translate-y-1 hover:shadow-xl">
+    <article
+      className="group overflow-hidden rounded-2xl border border-neutral-200
+    bg-white transition hover:-translate-y-1 hover:shadow-xl"
+    >
       <div className="relative h-52 overflow-hidden">
         <VehicleImage vehicle={vehicle} />
 
@@ -62,8 +68,9 @@ export default function VehicleCard({ vehicle, onRequestQuote }) {
           </div>
 
           <button
-            onClick={() => onRequestQuote(vehicle)}
-            className="flex items-center gap-2 rounded-lg bg-red-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-red-700"
+            onClick={() => handleEnquire(vehicle)}
+            className="flex items-center gap-2 rounded-lg bg-red-600 px-4 py-3 text-sm font-semibold text-white
+            transition hover:bg-red-700"
           >
             Enquire <ArrowUpRight size={16} />
           </button>

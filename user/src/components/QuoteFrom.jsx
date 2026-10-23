@@ -1,7 +1,8 @@
 import { ArrowBigRight, CheckCircle2 } from "lucide-react";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import api from "../api";
+import { CarContext } from "../context/CarContext";
 
 const QuoteFrom = () => {
   const initialForm = {
@@ -17,11 +18,27 @@ const QuoteFrom = () => {
   };
   const [form, setForm] = useState(initialForm);
   const [submitting, setSubmitting] = useState(false);
+  const { selectedVehicle } = useContext(CarContext);
+
+  useEffect(() => {
+    if (!selectedVehicle) return;
+    console.log("there is a vehicle");
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setForm((prev) => ({
+      ...prev,
+      car: {
+        ...prev.car,
+        make: selectedVehicle.brand_name ?? "",
+        model: selectedVehicle.model_name ?? "",
+      },
+    }));
+  }, [selectedVehicle]);
+
+  console.log(form);
 
   async function handleSubmit(event) {
     event.preventDefault();
     setSubmitting(true);
-
     try {
       await api.post("/api/queries", { ...form });
       toast.success("Query submitted successfully");
@@ -71,8 +88,17 @@ const QuoteFrom = () => {
           onSubmit={handleSubmit}
           className="rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm sm:p-8"
         >
-          <h3 className="text-xl font-bold">Request an import quotation</h3>
-          <p className="mt-2 text-sm text-neutral-500">
+          {selectedVehicle ? (
+            <h2 className="font-semibold text-gray-700">
+              Confirm query for{" "}
+              <span className="text-xl text-black">
+                {selectedVehicle.brand_name} {selectedVehicle.model_name} {selectedVehicle.year}
+              </span>
+            </h2>
+          ) : (
+            <h3 className="text-xl font-bold">Request an import quotation</h3>
+          )}
+          <p className="mt-2 text-xs text-neutral-500">
             Fields marked with * are required.
           </p>
           <div className="mt-6 grid gap-5 sm:grid-cols-2">
@@ -87,8 +113,8 @@ const QuoteFrom = () => {
                   setForm({ ...form, fullName: event.target.value })
                 }
                 placeholder="Your full name"
-                className="w-full rounded-lg border border-neutral-200 px-4 py-3 text-sm outline-none
-                focus:border-pink-500 focus:ring-2 focus:ring-red-600/10"
+                className="w-full rounded-lg border border-neutral-200 px-4 py-3 text-xs outline-none
+                focus:border-pink-500 focus:ring-2 focus:ring-red-600/10 font-semibold"
               />
             </label>
 
@@ -104,8 +130,8 @@ const QuoteFrom = () => {
                   setForm({ ...form, contact: event.target.value })
                 }
                 placeholder="07XX XXX XXX"
-                className="w-full rounded-lg border border-neutral-200 px-4 py-3 text-sm outline-none
-                focus:border-pink-500 focus:ring-2 focus:ring-red-600/10"
+                className="w-full rounded-lg border border-neutral-200 px-4 py-3 text-xs outline-none
+                focus:border-pink-500 focus:ring-2 focus:ring-red-600/10 font-semibold"
               />
             </label>
 
@@ -120,8 +146,8 @@ const QuoteFrom = () => {
                   setForm({ ...form, email: event.target.value })
                 }
                 placeholder="you@example.com"
-                className="w-full rounded-lg border border-neutral-200 px-4 py-3 text-sm outline-none
-                focus:border-pink-500 focus:ring-2 focus:ring-red-600/10"
+                className="w-full rounded-lg border border-neutral-200 px-4 py-3 text-xs outline-none
+                focus:border-pink-500 focus:ring-2 focus:ring-red-600/10 font-semibold"
               />
             </label>
             <label className="block">
@@ -140,8 +166,8 @@ const QuoteFrom = () => {
                   }))
                 }
                 placeholder="eg. Toyota"
-                className="w-full rounded-lg border border-neutral-200 px-4 py-3 text-sm outline-none
-                focus:border-pink-500 focus:ring-2 focus:ring-red-600/10"
+                className="w-full rounded-lg border border-neutral-200 px-4 py-3 text-sm text-pink-500 outline-none
+                focus:border-pink-500 focus:ring-2 focus:ring-red-600/10 font-semibold"
               />
             </label>
             <label className="block">
@@ -160,8 +186,8 @@ const QuoteFrom = () => {
                   }))
                 }
                 placeholder="eg. premio"
-                className="w-full rounded-lg border border-neutral-200 px-4 py-3 text-sm outline-none
-                focus:border-pink-500 focus:ring-2 focus:ring-red-600/10"
+                className="w-full rounded-lg border border-neutral-200 px-4 py-3 text-sm text-pink-500 outline-none
+                focus:border-pink-500 focus:ring-2 focus:ring-red-600/10 font-semibold"
               />
             </label>
             <label className="block">
@@ -175,8 +201,8 @@ const QuoteFrom = () => {
                 }
                 inputMode="numeric"
                 placeholder="e.g. 3000000"
-                className="w-full rounded-lg border border-neutral-200 px-4 py-3 text-sm outline-none
-                focus:border-pink-500 focus:ring-2 focus:ring-red-600/10"
+                className="w-full rounded-lg border border-neutral-200 px-4 py-3 text-xs outline-none
+                focus:border-pink-500 focus:ring-2 focus:ring-red-600/10 font-semibold"
               />
             </label>
 
@@ -190,9 +216,9 @@ const QuoteFrom = () => {
                 onChange={(event) =>
                   setForm({ ...form, message: event.target.value })
                 }
-                placeholder="Make, model, preferred year, budget and anything else we should know..."
-                className="w-full resize-y rounded-lg border border-neutral-200 px-4 py-3 text-sm outline-none
-                focus:border-red-600 focus:ring-2 focus:ring-red-600/10 text-pink-500 font-semibold"
+                placeholder="Anything else we should know..."
+                className="w-full resize-y rounded-lg border border-neutral-200 px-4 py-3 text-xs outline-none
+                focus:border-red-600 focus:ring-2 focus:ring-red-600/10 font-semibold"
               />
             </label>
           </div>

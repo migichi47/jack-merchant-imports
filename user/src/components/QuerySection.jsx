@@ -2,12 +2,14 @@ import { useEffect, useState } from "react";
 import { carMakes, carYears } from "../services/UtilityFunctions";
 import VehicleCard from "./VehicleCard";
 import api from "../api";
+import dummyVehicles from "../data/dummyVehicles";
 
 function VehicleSearch() {
-  const [vehicles, setVehicles] = useState([]);
+  const [vehicles, setVehicles] = useState([...dummyVehicles]);
   const [make, setMake] = useState("");
   const [model, setModel] = useState("");
   const [fetching, setFetching] = useState(false);
+  const [filtering, setFiltering] = useState(false);
   const [yearFrom, setYearFrom] = useState();
   const [yearTo, setYearTo] = useState();
 
@@ -31,7 +33,7 @@ function VehicleSearch() {
   }, []);
 
   const availableModels = make ? (carMakes[make] ?? []) : [];
-  const availableYearsTo = carYears.filter((year) => year > Number(yearFrom));
+  const availableYearsTo = carYears.filter((year) => year >= Number(yearFrom));
 
   const handleMakeChange = (event) => {
     setMake(event.target.value);
@@ -39,22 +41,34 @@ function VehicleSearch() {
   };
 
   const handleSubmit = async () => {
+    const fallbackYearTo = Number(yearTo) || new Date().getFullYear();
+    const fallbackYearFrom = Number(yearFrom) || 2000;
+
     if (!make && !model) return;
     setFetching(true);
     try {
       const response = await api.get(
         `/api/carapis/vehicles?source=sbtjapan&page_size=20&make=${make}&model=${model}`,
       );
-      await setVehicles(response?.data?.results);
+      await setVehicles(
+        yearFrom || yearTo
+          ? response?.data?.results?.filter(
+              (vehicle) =>
+                Number(vehicle?.year) >= fallbackYearFrom &&
+                Number(vehicle?.year) <= fallbackYearTo,
+            )
+          : response?.data?.results,
+      );
     } catch (err) {
       throw new Error(err, { cause: err });
     } finally {
       setFetching(false);
+      setFiltering(true);
     }
   };
 
   return (
-    <div className="max-w-7xl mx-auto space-y-10 px-10 mt-20">
+    <div id="quick-search" className="max-w-7xl mx-auto space-y-10 px-10 mt-20">
       <div className="shadow-md flex flex-col pb-5">
         <div className="font-bold text-white bg-gray-950 p-2 text-xl">
           Quick Search
@@ -100,7 +114,17 @@ function VehicleSearch() {
             <span>YEAR FROM</span>
             <select
               value={yearFrom}
-              onChange={(event) => setYearFrom(event.target.value)}
+              onChange={(event) => {
+                const selectedYear = event.target.value;
+                setYearFrom(selectedYear);
+                if (
+                  selectedYear &&
+                  yearTo &&
+                  Number(yearTo) < Number(selectedYear)
+                ) {
+                  setYearTo("");
+                }
+              }}
               className="w-full rounded-lg border border-gray-500 focus:border-pink-500 p-3"
             >
               <option value="">Any</option>
@@ -129,8 +153,8 @@ function VehicleSearch() {
           </label>
         </div>
         <button
-          onClick={handleSubmit}
-          disabled={!make || !model || fetching}
+          // onClick={handleSubmit}
+          disabled={fetching}
           className="rounded-lg bg-red-600 px-6 py-3 text-white disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer
           max-w-50 max-h-12 mx-auto"
         >
@@ -139,16 +163,50 @@ function VehicleSearch() {
       </div>
       <div className="space-y-5">
         <div className="space-y-2">
-          <h1 className="font-bold text-2xl">All Vehicles</h1>
+          <h1 className="font-bold text-2xl">
+            {filtering ? "Search Results" : "All Vehicles"}
+          </h1>
           <p className="text-gray-600">
             Showing <span className="font-bold">1 - 20</span> vehicles
           </p>
         </div>
 
-        <div className="p-5 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {vehicles?.map((vehicle) => (
-            <VehicleCard vehicle={vehicle} />
-          ))}
+        <div className="py-5">
+          {vehicles?.length > 0 ? (
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              {vehicles?.map((vehicle) => (
+                <VehicleCard vehicle={vehicle} />
+              ))}
+            </div>
+          ) : (
+            <div className="flex flex-col items-center justify-center py-16 px-4 text-center">
+              <div className="flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-4">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-8 h-8 text-gray-400"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={1.5}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M8 16h8M9 11h.01M15 11h.01M3 13l2-6h14l2 6M5 13v5m14-5v5M3 13h18"
+                  />
+                </svg>
+              </div>
+
+              <h2 className="text-xl font-bold text-gray-900">
+                No vehicles found
+              </h2>
+
+              <p className="mt-2 max-w-md text-sm text-gray-500">
+                We couldn't find any vehicles to display. Try adjusting your
+                search filters or check back later.
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </div>
