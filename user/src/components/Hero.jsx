@@ -4,7 +4,7 @@ const Hero = () => {
   return (
     <section
       id="home"
-      className="relative isolate overflow-hidden bg-neutral-950 text-white"
+      className="relative isolate overflow-hidden bg-neutral-950 text-white min-h-[90vh] flex items-center"
     >
       <div className="absolute -right-40 -top-40 -z-10 h-1255w-125nded-full bg-red-600/20 blur-3xl" />
       <div className="absolute -bottom-40 -left-40 -z-10 h-100 w-100nded-full bg-red-600/10 blur-3xl" />
