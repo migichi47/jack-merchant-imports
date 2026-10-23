@@ -24,12 +24,13 @@ function DataTable({ data }) {
     {
       key: "year",
       label: "Year",
-      render: (row) => `${row.car.year.from} - ${row.car.year.to}`,
+      render: (row) =>
+        `${row?.car?.year?.from || "any"} - ${row?.car?.year?.to || "any"}`,
     },
     {
       key: "budget",
       label: "Budget",
-      render: (row) => `Ksh ${row.budget}`,
+      render: (row) => `Ksh ${row?.budget || "N/A"}`,
     },
     {
       key: "createdAt",

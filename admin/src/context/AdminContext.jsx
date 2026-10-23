@@ -58,9 +58,6 @@ export function AdminContextProvider({ children }) {
       await api.delete(`/api/queries/${id}`);
       setQueries((prev) => prev.filter((query) => query._id !== id));
       toast.success("query deleted successfully");
-      setTimeout(() => {
-        navigate("/");
-      }, 1000);
     } catch (err) {
       toast.error(err.response?.data?.message || "Could not delete query");
     }
