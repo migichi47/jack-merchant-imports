@@ -1,14 +1,37 @@
 import { ArrowBigRight, CheckCircle2 } from "lucide-react";
-import { formatUSD } from "../services/UtilityFunctions";
+import { useState } from "react";
+import { toast } from "react-toastify";
+import api from "../api";
 
-const QuoteFrom = ({
-  handleSubmit,
-  selectedVehicle,
-  form,
-  setForm,
-  submitting,
-  submitMessage,
-}) => {
+const QuoteFrom = () => {
+  const initialForm = {
+    fullName: "",
+    contact: "",
+    email: "",
+    budget: "",
+    description: "",
+    car: {
+      make: "",
+      model: "",
+    },
+  };
+  const [form, setForm] = useState(initialForm);
+  const [submitting, setSubmitting] = useState(false);
+
+  async function handleSubmit(event) {
+    event.preventDefault();
+    setSubmitting(true);
+
+    try {
+      await api.post("/api/queries", { ...form });
+      toast.success("Query submitted successfully");
+      setForm(initialForm);
+    } catch {
+      toast.error("Something went wrong. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
+  }
   return (
     <section
       id="request-quote"
@@ -52,22 +75,6 @@ const QuoteFrom = ({
           <p className="mt-2 text-sm text-neutral-500">
             Fields marked with * are required.
           </p>
-
-          {selectedVehicle && (
-            <div className="mt-5 rounded-xl border border-red-100 bg-red-50 p-4">
-              <p className="text-xs font-semibold uppercase tracking-wider text-red-600">
-                Vehicle of interest
-              </p>
-              <p className="mt-1 font-bold text-neutral-900">
-                {selectedVehicle.year} {selectedVehicle.brand_name}{" "}
-                {selectedVehicle.model_name}
-              </p>
-              <p className="mt-1 text-sm text-neutral-600">
-                Listed at {formatUSD(selectedVehicle.price_usd)} in Japan
-              </p>
-            </div>
-          )}
-
           <div className="mt-6 grid gap-5 sm:grid-cols-2">
             <label className="block">
               <span className="mb-2 block text-sm font-semibold">
@@ -117,7 +124,46 @@ const QuoteFrom = ({
                 focus:border-pink-500 focus:ring-2 focus:ring-red-600/10"
               />
             </label>
-
+            <label className="block">
+              <span className="mb-2 block text-sm font-semibold">Make</span>
+              <input
+                type="text"
+                value={form.car.make}
+                required
+                onChange={(event) =>
+                  setForm((prev) => ({
+                    ...prev,
+                    car: {
+                      ...prev.car,
+                      make: event.target.value,
+                    },
+                  }))
+                }
+                placeholder="eg. Toyota"
+                className="w-full rounded-lg border border-neutral-200 px-4 py-3 text-sm outline-none
+                focus:border-pink-500 focus:ring-2 focus:ring-red-600/10"
+              />
+            </label>
+            <label className="block">
+              <span className="mb-2 block text-sm font-semibold">Model</span>
+              <input
+                type="text"
+                required
+                value={form.car.model}
+                onChange={(event) =>
+                  setForm((prev) => ({
+                    ...prev,
+                    car: {
+                      ...prev.car,
+                      model: event.target.value,
+                    },
+                  }))
+                }
+                placeholder="eg. premio"
+                className="w-full rounded-lg border border-neutral-200 px-4 py-3 text-sm outline-none
+                focus:border-pink-500 focus:ring-2 focus:ring-red-600/10"
+              />
+            </label>
             <label className="block">
               <span className="mb-2 block text-sm font-semibold">
                 Approximate budget (KES)
@@ -136,10 +182,9 @@ const QuoteFrom = ({
 
             <label className="block sm:col-span-2">
               <span className="mb-2 block text-sm font-semibold">
-                Vehicle requirements *
+                Query Description
               </span>
               <textarea
-                required
                 rows={4}
                 value={form.message}
                 onChange={(event) =>
@@ -161,16 +206,6 @@ const QuoteFrom = ({
             {submitting ? "Processing..." : "Submit enquiry"}
             {!submitting && <ArrowBigRight size={18} />}
           </button>
-
-          {submitMessage && (
-            <p
-              role="status"
-              className="mt-4 rounded-lg bg-neutral-100 p-4 text-sm leading-6 text-neutral-700"
-            >
-              {submitMessage}
-            </p>
-          )}
-
           <p className="mt-4 text-center text-xs leading-5 text-neutral-500">
             Your enquiry will not be sent until this form is connected to the
             Jack Merchants backend.

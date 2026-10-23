@@ -42,17 +42,6 @@ const querySchema = new mongoose.Schema(
         type: String,
         required: true,
       },
-
-      year: {
-        from: {
-          type: Number,
-          required: true,
-        },
-        to: {
-          type: Number,
-          required: true,
-        },
-      },
     },
   },
   { timestamps: true },

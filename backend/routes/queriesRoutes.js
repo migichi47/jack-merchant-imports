@@ -21,14 +21,7 @@ router.post("/", async (req, res) => {
     const { fullName, contact, email, budget, car, description } = req.body;
 
     // Basic validation
-    if (
-      !fullName ||
-      !contact ||
-      !car?.make ||
-      !car?.model ||
-      car?.year?.from === undefined ||
-      car?.year?.to === undefined
-    ) {
+    if (!fullName || !contact || !car?.make || !car?.model) {
       return res.status(400).json({
         message: "Please provide all required fields.",
       });
@@ -43,10 +36,6 @@ router.post("/", async (req, res) => {
       car: {
         make: car.make,
         model: car.model,
-        year: {
-          from: Number(car.year.from),
-          to: Number(car.year.to),
-        },
       },
     });
 

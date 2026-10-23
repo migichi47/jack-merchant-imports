@@ -1,245 +1,158 @@
-import { useContext, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
+import { carMakes, carYears } from "../services/UtilityFunctions";
 import VehicleCard from "./VehicleCard";
-import {
-  ArrowRight,
-  ChevronDown,
-  Search,
-  SlidersHorizontal,
-} from "lucide-react";
-import { CarContext } from "../context/CarContext";
+import api from "../api";
 
-const QuerySection = ({
-  openQuote,
-  search,
-  setSearch,
-  maxPrice,
-  setMaxPrice,
-}) => {
-  const [make, setMake] = useState();
-  const { vehicles } = useContext(CarContext);
-  const filteredVehicles = useMemo(() => {
-    const query = search.trim().toLowerCase();
+function VehicleSearch() {
+  const [vehicles, setVehicles] = useState([]);
+  const [make, setMake] = useState("");
+  const [model, setModel] = useState("");
+  const [fetching, setFetching] = useState(false);
+  const [yearFrom, setYearFrom] = useState();
+  const [yearTo, setYearTo] = useState();
 
-    return vehicles.filter((vehicle) => {
-      const name = `${vehicle.brand_name} ${vehicle.model_name} ${
-        vehicle.trim || ""
-      }`.toLowerCase();
+  useEffect(() => {
+    const fetchVehicles = async () => {
+      try {
+        setFetching(true);
+        const response = await api.get(
+          "/api/carapis/vehicles?source=sbtjapan&page_size=20",
+        );
 
-      const matchesSearch = !query || name.includes(query);
-      const matchesMake = make === "All makes" || vehicle.brand_name === make;
+        setVehicles(response.data.results ?? response.data.vehicles ?? []);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setFetching(false);
+      }
+    };
 
-      const budgetLimits = {
-        "Under $3,000": 3000,
-        "Under $5,000": 5000,
-        "Under $10,000": 10000,
-        "Under $15,000": 15000,
-      };
+    // fetchVehicles();
+  }, []);
 
-      const matchesPrice =
-        maxPrice === "Any budget" ||
-        (vehicle.price_usd ?? Infinity) <= budgetLimits[maxPrice];
+  const availableModels = make ? (carMakes[make] ?? []) : [];
+  const availableYearsTo = carYears.filter((year) => year > Number(yearFrom));
 
-      return (
-        vehicle.is_available !== false &&
-        matchesSearch &&
-        matchesMake &&
-        matchesPrice
+  const handleMakeChange = (event) => {
+    setMake(event.target.value);
+    setModel("");
+  };
+
+  const handleSubmit = async () => {
+    if (!make && !model) return;
+    setFetching(true);
+    try {
+      const response = await api.get(
+        `/api/carapis/vehicles?source=sbtjapan&page_size=20&make=${make}&model=${model}`,
       );
-    });
-  }, [vehicles, search, make, maxPrice]);
-
-  const makes = useMemo(
-    () => [
-      "All makes",
-      ...new Set(vehicles.map((vehicle) => vehicle.brand_name).filter(Boolean)),
-    ],
-    [vehicles],
-  );
+      await setVehicles(response?.data?.results);
+    } catch (err) {
+      throw new Error(err, { cause: err });
+    } finally {
+      setFetching(false);
+    }
+  };
 
   return (
-    <section
-      id="vehicles"
-      className="scroll-mt-24 bg-neutral-50 py-20 sm:py-24"
-    >
-      <div className="mx-auto max-w-7xl px-5 sm:px-8">
-        <div className="flex flex-col justify-between gap-5 md:flex-row md:items-end">
-          <div>
-            <p className="text-xs font-bold uppercase tracking-[0.25em] text-red-600">
-              Find your car
-            </p>
-            <h2 className="mt-3 text-3xl font-black tracking-tight sm:text-5xl">
-              Find a vehicle that fits you.
-            </h2>
-            <p className="mt-4 max-w-2xl leading-7 text-neutral-600">
-              Explore sample listings and tell us which vehicle you are
-              interested in importing. Availability and pricing must be
-              confirmed before you make a decision.
-            </p>
-          </div>
-
-          <button
-            onClick={() => openQuote()}
-            className="inline-flex shrink-0 items-center justify-center gap-2 self-start rounded-lg
-            border border-neutral-300 bg-white px-5 py-3 text-sm font-semibold transition hover:border-red-600
-            hover:text-red-600 md:self-auto"
-          >
-            Can't find your car? <ArrowRight size={16} />
-          </button>
+    <div className="max-w-7xl mx-auto space-y-10 px-10 mt-20">
+      <div className="shadow-md flex flex-col pb-5">
+        <div className="font-bold text-white bg-gray-950 p-2 text-xl">
+          Quick Search
         </div>
-
-        {/* Search and filters */}
-        <div className="mt-10 rounded-2xl border border-neutral-200 bg-white p-4 shadow-sm sm:p-5">
-          <div className="space-y-4">
-            <div className="flex gap-4">
-              <label className="grow">
-                <span className="mb-2 block text-xs font-semibold text-neutral-700">
-                  Make
-                </span>
-                <div className="relative">
-                  <select
-                    value={make}
-                    onChange={(event) => setMake(event.target.value)}
-                    className="w-full appearance-none rounded-lg border border-neutral-200 bg-white px-3 py-3 pr-9
-                  text-sm outline-none focus:border-pink-500"
-                  >
-                    {makes.map((item) => (
-                      <option key={item} value={item}>
-                        {item}
-                      </option>
-                    ))}
-                  </select>
-                  <ChevronDown
-                    size={16}
-                    className="pointer-events-none absolute right-3 top-3.5 text-neutral-400"
-                  />
-                </div>
-              </label>
-
-              <label className="grow">
-                <span className="mb-2 block text-xs font-semibold text-neutral-700">
-                  Model
-                </span>
-                <div className="relative">
-                  <select
-                    value={make}
-                    onChange={(event) => setMake(event.target.value)}
-                    className="w-full appearance-none rounded-lg border border-neutral-200 bg-white px-3 py-3 pr-9
-                  text-sm outline-none focus:border-pink-500"
-                  >
-                    {makes.map((item) => (
-                      <option key={item} value={item}>
-                        {item}
-                      </option>
-                    ))}
-                  </select>
-                  <ChevronDown
-                    size={16}
-                    className="pointer-events-none absolute right-3 top-3.5 text-neutral-400"
-                  />
-                </div>
-              </label>
-
-              <label className="grow">
-                <span className="mb-2 block text-xs font-semibold text-neutral-700">
-                  Maximum listed price
-                </span>
-                <div className="relative">
-                  <select
-                    value={maxPrice}
-                    onChange={(event) => setMaxPrice(event.target.value)}
-                    className="w-full appearance-none rounded-lg border border-neutral-200 bg-white px-3 py-3 pr-9 text-sm
-                  outline-none focus:border-pink-500"
-                  >
-                    {[
-                      "Any budget",
-                      "Under $3,000",
-                      "Under $5,000",
-                      "Under $10,000",
-                      "Under $15,000",
-                    ].map((item) => (
-                      <option key={item} value={item}>
-                        {item}
-                      </option>
-                    ))}
-                  </select>
-                  <ChevronDown
-                    size={16}
-                    className="pointer-events-none absolute right-3 top-3.5 text-neutral-400"
-                  />
-                </div>
-              </label>
-            </div>
-            <label className="relative block">
-              <span className="mb-2 block text-xs font-semibold text-neutral-700">
-                Search vehicles
-              </span>
-              <Search
-                size={18}
-                className="absolute left-3 top-10.75 text-neutral-400"
-              />
-              <input
-                value={search}
-                onChange={(event) => setSearch(event.target.value)}
-                placeholder="e.g. Toyota Harrier"
-                className="w-full rounded-lg border border-neutral-200 bg-white py-3 pl-10 pr-3 text-sm outline-none transition
-                focus:border-pink-500 focus:ring-2 focus:ring-red-600/10"
-              />
-            </label>
-          </div>
-
-          <div className="mt-4 flex items-center justify-between border-t border-neutral-100 pt-4">
-            <p className="flex items-center gap-2 text-sm text-neutral-500">
-              <SlidersHorizontal size={16} />
-              {filteredVehicles.length} vehicles matching your filters
-            </p>
-            <button
-              onClick={() => {
-                setSearch("");
-                setMake("All makes");
-                setMaxPrice("Any budget");
-              }}
-              className="text-sm font-semibold text-red-600 hover:text-red-700"
+        <div
+          className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-300 mx-auto w-full [&>label]:w-full 
+          [&>label]:[&>span]:text-gray-500 [&>label]:[&>span]:font-semibold [&>label]:[&>span]:text-xs p-5"
+        >
+          <label htmlFor="">
+            <span>MAKE</span>
+            <select
+              value={make}
+              required
+              onChange={handleMakeChange}
+              className="w-full rounded-lg border border-gray-500 focus:border-pink-500 p-3"
             >
-              Reset filters
-            </button>
-          </div>
+              <option value="">Any make</option>
+              {Object.keys(carMakes).map((carMake) => (
+                <option key={carMake} value={carMake} className="text-black">
+                  {carMake}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <label htmlFor="">
+            <span>MODEL</span>
+            <select
+              value={model}
+              required
+              onChange={(event) => setModel(event.target.value)}
+              className="w-full rounded-lg border border-gray-500 focus:border-pink-500 p-3"
+            >
+              <option value="">Any model</option>
+              {availableModels.map((carModel) => (
+                <option key={carModel} value={carModel}>
+                  {carModel}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label htmlFor="">
+            <span>YEAR FROM</span>
+            <select
+              value={yearFrom}
+              onChange={(event) => setYearFrom(event.target.value)}
+              className="w-full rounded-lg border border-gray-500 focus:border-pink-500 p-3"
+            >
+              <option value="">Any</option>
+              {carYears.map((year) => (
+                <option key={year} value={year}>
+                  {year}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <label htmlFor="">
+            <span>YEAR TO</span>
+            <select
+              value={yearTo}
+              onChange={(event) => setYearTo(event.target.value)}
+              className="w-full rounded-lg border border-gray-500 focus:border-pink-500 p-3"
+            >
+              <option value="">Any</option>
+              {availableYearsTo.map((year) => (
+                <option key={year} value={year}>
+                  {year}
+                </option>
+              ))}
+            </select>
+          </label>
         </div>
-
-        {/* Vehicle cards */}
-        {filteredVehicles.length > 0 ? (
-          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {filteredVehicles.slice(0, 9).map((vehicle) => (
-              <VehicleCard
-                key={vehicle.id}
-                vehicle={vehicle}
-                onRequestQuote={openQuote}
-              />
-            ))}
-          </div>
-        ) : (
-          <div className="mt-8 rounded-2xl border border-dashed border-neutral-300 bg-white px-6 py-16 text-center">
-            <Search size={32} className="mx-auto text-neutral-400" />
-            <h3 className="mt-4 text-xl font-bold">No matching vehicles</h3>
-            <p className="mt-2 text-sm text-neutral-500">
-              Try different filters or ask us to source your preferred car.
-            </p>
-            <button
-              onClick={() => openQuote()}
-              className="mt-5 rounded-lg bg-red-600 px-5 py-3 text-sm font-semibold text-white hover:bg-red-700"
-            >
-              Request a vehicle
-            </button>
-          </div>
-        )}
-
-        <p className="mt-8 text-center text-xs leading-6 text-neutral-500">
-          Demo listings are provided for UI development. Vehicle details,
-          availability, pricing and condition should be verified before
-          publication. Displayed prices are not Kenyan landed costs.
-        </p>
+        <button
+          onClick={handleSubmit}
+          disabled={!make || !model || fetching}
+          className="rounded-lg bg-red-600 px-6 py-3 text-white disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer
+          max-w-50 max-h-12 mx-auto"
+        >
+          {fetching ? "searching..." : "Search vehicles"}
+        </button>
       </div>
-    </section>
-  );
-};
+      <div className="space-y-5">
+        <div className="space-y-2">
+          <h1 className="font-bold text-2xl">All Vehicles</h1>
+          <p className="text-gray-600">
+            Showing <span className="font-bold">1 - 20</span> vehicles
+          </p>
+        </div>
 
-export default QuerySection;
+        <div className="p-5 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {vehicles?.map((vehicle) => (
+            <VehicleCard vehicle={vehicle} />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default VehicleSearch;

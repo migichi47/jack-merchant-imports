@@ -79,3 +79,31 @@ export const demoVehicles = [
     photos: [],
   },
 ];
+
+export const carMakes = {
+  Toyota: [
+    "Harrier",
+    "Land Cruiser",
+    "Prado",
+    "RAV4",
+    "Corolla",
+    "Vitz",
+    "Aqua",
+    "Hilux",
+    "Noah",
+    "Voxy",
+  ],
+
+  Mazda: ["CX-5", "CX-3", "Demio", "Atenza", "Axela"],
+
+  Honda: ["Vezel", "Fit", "CR-V", "Civic", "Freed"],
+
+  Nissan: ["X-Trail", "Note", "Juke", "Serena", "Leaf"],
+
+  Subaru: ["Forester", "Impreza", "Outback", "XV"],
+};
+
+export const carYears = Array.from(
+  { length: new Date().getFullYear() - 2000 + 1 },
+  (_, index) => 2000 + index,
+);
