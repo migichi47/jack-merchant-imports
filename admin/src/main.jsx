@@ -7,7 +7,7 @@ import { AdminContextProvider } from "./context/AdminContext.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename="/admin">
       <AdminContextProvider>
         <App />
       </AdminContextProvider>
