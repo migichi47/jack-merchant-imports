@@ -15,18 +15,15 @@ const Hero = () => {
             <span className="h-2 w-2 rounded-full bg-red-500" />
             Your trusted car import partner in Kenya
           </div>
-
           <h1 className="max-w-3xl text-4xl font-black leading-[1.08] tracking-tight sm:text-6xl lg:text-7xl">
             Your next car.
             <br />
             <span className="text-red-500">From Japan</span> to Kenya.
           </h1>
-
           <p className="mt-7 max-w-xl text-base leading-8 text-neutral-300 sm:text-lg">
             Find the right vehicle, get guidance through the import process, and
             receive a personalised quotation from Jack Merchants Imports.
           </p>
-
           <div className="mt-9 flex flex-col gap-3 sm:flex-row">
             <a
               href="#vehicles"
@@ -41,7 +38,6 @@ const Hero = () => {
               How importing works <ArrowDown size={17} />
             </a>
           </div>
-
           <div className="mt-10 flex flex-wrap gap-x-6 gap-y-3 text-sm text-neutral-300">
             <span className="flex items-center gap-2">
               <CheckCircle2 size={17} className="text-red-500" />
@@ -53,8 +49,7 @@ const Hero = () => {
             </span>
           </div>
         </div>
-
-        <div className="relative">
+        <div className="relative hidden lg:block">
           <div className="rounded-3xl border border-white/10 bg-white/4 p-7 sm:p-9">
             <p className="text-xs font-semibold uppercase tracking-[0.25em] text-red-400">
               Your import journey

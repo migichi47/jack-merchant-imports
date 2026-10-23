@@ -3,7 +3,7 @@ import { MessageCircle, Search, ShieldCheck } from "lucide-react";
 
 const TrustStrip = () => {
   return (
-    <section className="border-b border-neutral-200 bg-white">
+    <section className="border-b border-neutral-200 bg-white hidden lg:block">
       <div className="mx-auto grid max-w-7xl grid-cols-1 gap-5 px-5 py-7 sm:grid-cols-3 sm:px-8">
         {[
           {

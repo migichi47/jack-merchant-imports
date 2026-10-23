@@ -2,10 +2,9 @@ import { useEffect, useState } from "react";
 import { carMakes, carYears } from "../services/UtilityFunctions";
 import VehicleCard from "./VehicleCard";
 import api from "../api";
-import dummyVehicles from "../data/dummyVehicles";
 
 function VehicleSearch() {
-  const [vehicles, setVehicles] = useState([...dummyVehicles]);
+  const [vehicles, setVehicles] = useState([]);
   const [make, setMake] = useState("");
   const [model, setModel] = useState("");
   const [fetching, setFetching] = useState(false);
@@ -29,7 +28,7 @@ function VehicleSearch() {
       }
     };
 
-    // fetchVehicles();
+    fetchVehicles();
   }, []);
 
   const availableModels = make ? (carMakes[make] ?? []) : [];
@@ -153,7 +152,7 @@ function VehicleSearch() {
           </label>
         </div>
         <button
-          // onClick={handleSubmit}
+          onClick={handleSubmit}
           disabled={fetching}
           className="rounded-lg bg-red-600 px-6 py-3 text-white disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer
           max-w-50 max-h-12 mx-auto"
