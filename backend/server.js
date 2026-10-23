@@ -28,6 +28,7 @@ app.use(
       "http://localhost:5173",
       "http://localhost:5174",
       "https://adminjack-merchant-imports.vercel.app",
+      "https://jack-merchant-imports.vercel.app/",
     ],
     methods: ["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Accept"],
@@ -64,7 +65,7 @@ app.use("/api/queries", queriesRoutes);
 app.use("/api/imports", importRoutes);
 app.use("/api/settings", settingsRoutes);
 app.use("/api/emails", emailRoutes);
-app.use("/api/carapis", carapisRoutes)
+app.use("/api/carapis", carapisRoutes);
 
 app.use(express.urlencoded({ extended: true }));
 
