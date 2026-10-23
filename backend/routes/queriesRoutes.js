@@ -190,6 +190,17 @@ router.get("/:id", requireAuth, async (req, res) => {
   }
 });
 
+router.delete("/all", async (req, res) => {
+  try {
+    await Query.deleteMany({});
+    res.sendStatus(200);
+  } catch (err) {
+    res
+      .status(500)
+      .json({ error: err, message: "Could not delete all queries" });
+  }
+});
+
 router.delete("/:id", requireAuth, async (req, res) => {
   try {
     const deletedQuery = await Query.findByIdAndDelete(req.params.id);

@@ -4,9 +4,11 @@ import { AdminContext } from "../context/AdminContext";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api";
 import StatusBar from "./StatusBar";
+import { toast } from "react-toastify";
 
 function DataTable({ data }) {
   const navigate = useNavigate();
+  const { deleteQuery, setQueries, queries } = useContext(AdminContext);
   const columns = [
     {
       key: "fullName",
@@ -44,7 +46,6 @@ function DataTable({ data }) {
     },
   ];
 
-  const { deleteQuery } = useContext(AdminContext);
   const openQuery = async (row) => {
     navigate(`/queries/${row._id ?? row.id}`);
     await api.patch(`/api/queries/${row._id ?? row.id}`, {
@@ -56,7 +57,7 @@ function DataTable({ data }) {
     <div className="w-full overflow-x-auto bg-white">
       <table className="w-full text-left text-sm">
         {/* Table headings */}
-        <thead className="bg-gray-50 text-gray-600">
+        <thead className="bg-gray-50 relative text-gray-600">
           <tr>
             {columns.map((column) => (
               <th
@@ -66,6 +67,23 @@ function DataTable({ data }) {
                 {column.label}
               </th>
             ))}
+          </tr>
+          <tr
+            onClick={async () => {
+              if (!queries || queries.length === 0) return;
+              const response = confirm("delete all queries");
+              if (!response) return;
+              await api.delete("/api/queries/all");
+              toast.success("all queries deleted");
+              setQueries([]);
+            }}
+          >
+            <td
+              className={`absolute right-2 top-2 bg-red-600 py-2 px-4 text-white rounded-full
+              hover:bg-red-800 transition ${!queries || queries.length === 0 ? "cursor-not-allowed" : "cursor-pointer"}`}
+            >
+              delete all
+            </td>
           </tr>
         </thead>
 

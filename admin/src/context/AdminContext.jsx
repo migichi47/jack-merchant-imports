@@ -72,6 +72,7 @@ export function AdminContextProvider({ children }) {
         deleteQuery,
         loadingDashboard,
         queries,
+        setQueries,
         dashboardQueries,
       }}
     >
