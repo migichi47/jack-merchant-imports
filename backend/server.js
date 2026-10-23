@@ -3,14 +3,13 @@ import express from "express";
 import session from "express-session";
 import MongoStore from "connect-mongo";
 import cors from "cors";
-
 import { connectDB } from "./config/db.js";
 import authRoutes from "./routes/loginRoutes.js";
 import queriesRoutes from "./routes/queriesRoutes.js";
 import importRoutes from "./routes/importRoutes.js";
 import settingsRoutes from "./routes/settingsRoutes.js";
 import emailRoutes from "./routes/emailRoutes.js";
-import carapisRoutes from "./routes/CarapisRoutes.js";
+import carapisRoutes from "./routes/carapisRoutes.js";
 
 const app = express();
 
