@@ -1,12 +1,11 @@
 import { ArrowUpRight, Fuel, Gauge, ShieldCheck, Zap } from "lucide-react";
 import { formatMileage, formatUSD } from "../services/UtilityFunctions";
 import VehicleImage from "./VehicleImage";
-import { useContext } from "react";
-import { CarContext } from "../context/CarContext";
+import { useCars } from "../hooks/useCars";
 
 export default function VehicleCard({ vehicle }) {
   const vehicleName = `${vehicle.brand_name} ${vehicle.model_name}`;
-  const { handleEnquire } = useContext(CarContext);
+  const { handleEnquire } = useCars();
 
   return (
     <article

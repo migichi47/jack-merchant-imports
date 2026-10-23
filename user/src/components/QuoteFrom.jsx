@@ -1,8 +1,8 @@
 import { ArrowBigRight, CheckCircle2 } from "lucide-react";
-import { useContext, useEffect, useState } from "react";
+import {  useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import api from "../api";
-import { CarContext } from "../context/CarContext";
+import { useCars } from "../hooks/useCars";
 
 const QuoteFrom = () => {
   const initialForm = {
@@ -18,7 +18,7 @@ const QuoteFrom = () => {
   };
   const [form, setForm] = useState(initialForm);
   const [submitting, setSubmitting] = useState(false);
-  const { selectedVehicle } = useContext(CarContext);
+  const { selectedVehicle } = useCars();
 
   useEffect(() => {
     if (!selectedVehicle) return;
@@ -92,7 +92,8 @@ const QuoteFrom = () => {
             <h2 className="font-semibold text-gray-700">
               Confirm query for{" "}
               <span className="text-xl text-black">
-                {selectedVehicle.brand_name} {selectedVehicle.model_name} {selectedVehicle.year}
+                {selectedVehicle.brand_name} {selectedVehicle.model_name}{" "}
+                {selectedVehicle.year}
               </span>
             </h2>
           ) : (
