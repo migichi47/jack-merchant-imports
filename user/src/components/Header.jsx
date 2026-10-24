@@ -1,7 +1,7 @@
 import { ArrowRight, Menu, X } from "lucide-react";
 import { useState } from "react";
 import Logo from "./Logo";
-import { navLinks } from "../services/UtilityFunctions";
+import { navLinks } from "../data/navlinks";
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);

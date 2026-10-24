@@ -1,8 +1,9 @@
 import { ArrowBigRight, CheckCircle2 } from "lucide-react";
 import {  useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import api from "../api";
+
 import { useCars } from "../hooks/useCars";
+import api from "../services/api";
 
 const QuoteFrom = () => {
   const initialForm = {

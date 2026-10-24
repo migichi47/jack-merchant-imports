@@ -1,6 +1,6 @@
-import React from "react";
+
 import { useState } from "react";
-import { CalendarDays, CarFront, Image, FileText } from "lucide-react";
+import { CalendarDays, Image } from "lucide-react";
 
 import { toast } from "react-toastify";
 import api from "../services/api";

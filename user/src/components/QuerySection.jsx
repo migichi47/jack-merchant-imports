@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { carMakes, carYears } from "../services/UtilityFunctions";
 import VehicleCard from "./VehicleCard";
-import api from "../api";
+import api from "../services/api";
+import { makes } from "../data/vehicleOptions";
+import { carYears } from "../data/carYears";
 
 function VehicleSearch() {
   const [vehicles, setVehicles] = useState([]);
@@ -31,7 +32,7 @@ function VehicleSearch() {
     fetchVehicles();
   }, []);
 
-  const availableModels = make ? (carMakes[make] ?? []) : [];
+  const availableModels = make ? (makes[make] ?? []) : [];
   const availableYearsTo = carYears.filter((year) => year >= Number(yearFrom));
 
   const handleMakeChange = (event) => {
@@ -85,7 +86,7 @@ function VehicleSearch() {
               className="w-full rounded-lg border border-gray-500 focus:border-pink-500 p-3"
             >
               <option value="">Any make</option>
-              {Object.keys(carMakes).map((carMake) => (
+              {Object.keys(makes).map((carMake) => (
                 <option key={carMake} value={carMake} className="text-black">
                   {carMake}
                 </option>
