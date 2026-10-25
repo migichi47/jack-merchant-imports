@@ -154,7 +154,7 @@ function VehicleSearch() {
         </div>
         <button
           onClick={handleSubmit}
-          disabled={fetching}
+          disabled={fetching || !model}
           className="rounded-lg bg-red-600 px-6 py-3 text-white disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer
           max-w-50 max-h-12 mx-auto"
         >
