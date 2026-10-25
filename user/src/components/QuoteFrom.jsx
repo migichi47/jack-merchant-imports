@@ -1,5 +1,5 @@
 import { ArrowBigRight, CheckCircle2 } from "lucide-react";
-import {  useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 import { useCars } from "../hooks/useCars";
@@ -34,8 +34,6 @@ const QuoteFrom = () => {
       },
     }));
   }, [selectedVehicle]);
-
-  console.log(form);
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -127,6 +125,7 @@ const QuoteFrom = () => {
               <input
                 required
                 type="tel"
+                maxLength={13}
                 value={form.contact}
                 onChange={(event) =>
                   setForm({ ...form, contact: event.target.value })
@@ -210,7 +209,12 @@ const QuoteFrom = () => {
 
             <label className="block sm:col-span-2">
               <span className="mb-2 block text-sm font-semibold">
-                Query Description
+                Query Description{" "}
+                {form?.message?.length >= 500 && (
+                  <span className="text-xs text-red-600">
+                    *max limit reached
+                  </span>
+                )}
               </span>
               <textarea
                 rows={4}
@@ -218,10 +222,14 @@ const QuoteFrom = () => {
                 onChange={(event) =>
                   setForm({ ...form, message: event.target.value })
                 }
+                maxLength={500}
                 placeholder="Anything else we should know..."
                 className="w-full resize-y rounded-lg border border-neutral-200 px-4 py-3 text-xs outline-none
                 focus:border-red-600 focus:ring-2 focus:ring-red-600/10 font-semibold"
               />
+              <p className="text-sm text-gray-500">
+                {form?.message?.length || 0} / 500 characters
+              </p>
             </label>
           </div>
 

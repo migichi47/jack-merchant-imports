@@ -164,7 +164,7 @@ function VehicleSearch() {
       <div className="space-y-5">
         <div className="space-y-2">
           <h1 className="font-bold text-2xl">
-            {filtering ? "Search Results" : "All Vehicles"}
+            {filtering ? "Search Results" : "Top Viewed Vehicles"}
           </h1>
           <p className="text-gray-600">
             Showing <span className="font-bold">1 - 20</span> vehicles

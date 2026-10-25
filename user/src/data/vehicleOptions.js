@@ -262,7 +262,7 @@ export const makes = {
     "MU-7",
     "MU-X 4x4",
   ],
-  MercedesBenz: [
+  Mercedes_Benz: [
     "A-Class",
     "B-Class",
     "C-Class",
