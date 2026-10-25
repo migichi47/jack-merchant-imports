@@ -26,7 +26,7 @@ const Hero = () => {
           </p>
           <div className="mt-9 flex flex-col gap-3 sm:flex-row">
             <a
-              href="#vehicles"
+              href="/#quick-search"
               className="inline-flex items-center justify-center gap-2 rounded-lg bg-red-600 px-6 py-4 font-semibold text-white transition hover:bg-red-700"
             >
               Explore vehicles <ArrowRight size={18} />
