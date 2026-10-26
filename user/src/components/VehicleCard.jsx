@@ -12,29 +12,23 @@ export default function VehicleCard({ vehicle }) {
       className="group overflow-hidden rounded-2xl border border-neutral-200
     bg-white transition hover:-translate-y-1 hover:shadow-xl"
     >
-      <div className="relative h-52 overflow-hidden">
+      <div className="relative h-70 overflow-hidden">
         <VehicleImage vehicle={vehicle} />
-
         <span className="absolute left-3 top-3 rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-neutral-900 shadow-sm">
           {vehicle.year}
         </span>
-
         <span className="absolute right-3 top-3 rounded-full bg-black/80 px-3 py-1.5 text-xs font-medium text-white">
           {vehicle.is_available ? "Available listing" : "Check availability"}
         </span>
       </div>
-
       <div className="p-5">
         <p className="mb-1 text-xs font-medium uppercase tracking-widest text-pink-500">
           {vehicle.region || "Japan"}
         </p>
-
         <h3 className="text-xl font-bold text-neutral-950">{vehicleName}</h3>
-
         <p className="mt-1 text-sm text-neutral-500">
           {vehicle.trim || "Standard trim"}
         </p>
-
         <div className="my-4 grid grid-cols-2 gap-3 border-y border-neutral-100 py-4 text-sm text-neutral-600">
           <span className="flex items-center gap-2">
             <Gauge size={16} className="text-red-600" />
