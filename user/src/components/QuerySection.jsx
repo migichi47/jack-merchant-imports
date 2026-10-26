@@ -1,36 +1,18 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import VehicleCard from "./VehicleCard";
 import api from "../services/api";
 import { makes } from "../data/vehicleOptions";
 import { carYears } from "../data/carYears";
+import { useCars } from "../hooks/useCars";
 
 function VehicleSearch() {
-  const [vehicles, setVehicles] = useState([]);
   const [make, setMake] = useState("");
   const [model, setModel] = useState("");
-  const [fetching, setFetching] = useState(false);
   const [filtering, setFiltering] = useState(false);
   const [yearFrom, setYearFrom] = useState();
   const [yearTo, setYearTo] = useState();
 
-  useEffect(() => {
-    const fetchVehicles = async () => {
-      try {
-        setFetching(true);
-        const response = await api.get(
-          "/api/carapis/vehicles?source=sbtjapan&page_size=20",
-        );
-
-        setVehicles(response.data.results ?? response.data.vehicles ?? []);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setFetching(false);
-      }
-    };
-
-    fetchVehicles();
-  }, []);
+  const { setFetching, setVehicles, vehicles, fetching } = useCars();
 
   const availableModels = make ? (makes[make] ?? []) : [];
   const availableYearsTo = carYears.filter((year) => year >= Number(yearFrom));
@@ -175,7 +157,7 @@ function VehicleSearch() {
           {vehicles?.length > 0 ? (
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
               {vehicles?.map((vehicle) => (
-                <VehicleCard vehicle={vehicle} />
+                <VehicleCard key={vehicle.id} vehicle={vehicle} />
               ))}
             </div>
           ) : (
