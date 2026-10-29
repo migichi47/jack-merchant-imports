@@ -13,7 +13,7 @@ export function CarProvider({ children }) {
       try {
         setFetching(true);
         const response = await api.get(
-          "/api/carapis/vehicles?source=sbtjapan&page_size=20",
+          "/api/carapis/vehicles?source=sbtjapan&page_size=20&min_year=2022",
         );
         const fetchedData =
           response.data.results ?? response.data.vehicles ?? [];
