@@ -1,6 +1,5 @@
 import { useState } from "react";
 import VehicleCard from "./VehicleCard";
-import { makes } from "../data/vehicleOptions";
 import { carYears } from "../data/carYears";
 import { useCars } from "../hooks/useCars";
 import PaginationButtons from "./PaginationButtons";
@@ -15,9 +14,9 @@ function VehicleSearch() {
     maxYear: "",
     fuel_type: "",
     transmission: "",
-    body_type: "",
   });
-  const { setFetching, fetchVehicles, vehicles, fetching } = useCars();
+  const { setFetching, fetchVehicles, vehicles, fetching, availableMakes } =
+    useCars();
   const availableYearsTo = carYears.filter((year) => year >= Number(yearFrom));
 
   const handleSubmit = async () => {
@@ -57,11 +56,17 @@ function VehicleSearch() {
               name="make"
               value={filters.make}
               required
-              onChange={handleChange}
+              onChange={(e) => {
+                handleChange(e);
+                setFilters((prev) => ({
+                  ...prev,
+                  model: "",
+                }));
+              }}
               className="w-full rounded-lg border border-gray-500 focus:border-pink-500 p-3"
             >
               <option value="">Any make</option>
-              {Object.keys(makes).map((carMake) => (
+              {Object.keys(availableMakes).map((carMake) => (
                 <option key={carMake} value={carMake} className="text-black">
                   {carMake}
                 </option>
@@ -78,6 +83,11 @@ function VehicleSearch() {
               className="w-full rounded-lg border border-gray-500 focus:border-pink-500 p-3"
             >
               <option value="">Any model</option>
+              {(availableMakes[filters.make] || []).map((model) => (
+                <option key={model} value={model}>
+                  {model}
+                </option>
+              ))}
             </select>
           </label>
           <label htmlFor="">
@@ -111,6 +121,40 @@ function VehicleSearch() {
               {availableYearsTo.map((year) => (
                 <option key={year} value={year}>
                   {year}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label htmlFor="">
+            <span>FUEL TYPE</span>
+            <select
+              name="fuel_type"
+              value={filters.fuel_type}
+              required
+              onChange={handleChange}
+              className="w-full rounded-lg border border-gray-500 focus:border-pink-500 p-3"
+            >
+              <option value="">Any</option>
+              {["gasoline", "diesel", "hybrid", "electric"].map((carMake) => (
+                <option key={carMake} value={carMake} className="text-black">
+                  {carMake}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label htmlFor="">
+            <span>TRANSMISIION</span>
+            <select
+              name="transmission"
+              value={filters.transmission}
+              required
+              onChange={handleChange}
+              className="w-full rounded-lg border border-gray-500 focus:border-pink-500 p-3"
+            >
+              <option value="">Any</option>
+              {["auto", "manual"].map((carMake) => (
+                <option key={carMake} value={carMake} className="text-black">
+                  {carMake}
                 </option>
               ))}
             </select>

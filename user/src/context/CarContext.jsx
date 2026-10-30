@@ -8,6 +8,7 @@ export function CarProvider({ children }) {
   const [sliderVehicles, setSliderVehicles] = useState([]);
   const [fetching, setFetching] = useState(false);
   const [pagination, setPagination] = useState({});
+  const [availableMakes, setAvailableMakes] = useState({});
 
   const fetchVehicles = async (filters = {}, page = 1) => {
     try {
@@ -52,10 +53,20 @@ export function CarProvider({ children }) {
     }
   };
 
+  const fetchAvailableMakes = async () => {
+    try {
+      const response = await api.get("/api/vehicles/available-makes");
+      setAvailableMakes(response.data.availableMakes ?? {});
+    } catch (err) {
+      console.error("Failed to fetch available makes:", err);
+    }
+  };
+
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchSliderVehicles();
     fetchVehicles();
+    fetchAvailableMakes();
   }, []);
 
   const handleEnquire = (vehicle) => {
@@ -79,6 +90,7 @@ export function CarProvider({ children }) {
         fetchVehicles,
         sliderVehicles,
         pagination,
+        availableMakes,
       }}
     >
       {children}
