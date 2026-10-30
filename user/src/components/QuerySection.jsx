@@ -1,52 +1,44 @@
 import { useState } from "react";
 import VehicleCard from "./VehicleCard";
-import api from "../services/api";
 import { makes } from "../data/vehicleOptions";
 import { carYears } from "../data/carYears";
 import { useCars } from "../hooks/useCars";
 import PaginationButtons from "./PaginationButtons";
 
 function VehicleSearch() {
-  const [make, setMake] = useState("");
-  const [model, setModel] = useState("");
   const [filtering, setFiltering] = useState(false);
   const [yearFrom, setYearFrom] = useState();
-  const [yearTo, setYearTo] = useState();
-  const { setFetching, setVehicles, vehicles, fetching } = useCars();
-
-  const availableModels = make ? (makes[make] ?? []) : [];
+  const [filters, setFilters] = useState({
+    make: "",
+    model: "",
+    minYear: "",
+    maxYear: "",
+    fuel_type: "",
+    transmission: "",
+    body_type: "",
+  });
+  const { setFetching, fetchVehicles, vehicles, fetching } = useCars();
   const availableYearsTo = carYears.filter((year) => year >= Number(yearFrom));
 
-  const handleMakeChange = (event) => {
-    setMake(event.target.value);
-    setModel("");
-  };
-
   const handleSubmit = async () => {
-    const fallbackYearTo = Number(yearTo) || new Date().getFullYear();
-    const fallbackYearFrom = Number(yearFrom) || 2000;
-
-    if (!make && !model) return;
     setFetching(true);
     try {
-      const response = await api.get(
-        `/api/carapis/vehicles?source=sbtjapan&page_size=20&make=${make}&model=${model}`,
-      );
-      await setVehicles(
-        yearFrom || yearTo
-          ? response?.data?.results?.filter(
-              (vehicle) =>
-                Number(vehicle?.year) >= fallbackYearFrom &&
-                Number(vehicle?.year) <= fallbackYearTo,
-            )
-          : response?.data?.results,
-      );
+      fetchVehicles(filters, 1);
     } catch (err) {
       throw new Error(err, { cause: err });
     } finally {
       setFetching(false);
       setFiltering(true);
     }
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    setFilters((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   return (
@@ -62,9 +54,10 @@ function VehicleSearch() {
           <label htmlFor="">
             <span>MAKE</span>
             <select
-              value={make}
+              name="make"
+              value={filters.make}
               required
-              onChange={handleMakeChange}
+              onChange={handleChange}
               className="w-full rounded-lg border border-gray-500 focus:border-pink-500 p-3"
             >
               <option value="">Any make</option>
@@ -78,33 +71,23 @@ function VehicleSearch() {
           <label htmlFor="">
             <span>MODEL</span>
             <select
-              value={model}
+              name="model"
+              value={filters.model}
               required
-              onChange={(event) => setModel(event.target.value)}
+              onChange={handleChange}
               className="w-full rounded-lg border border-gray-500 focus:border-pink-500 p-3"
             >
               <option value="">Any model</option>
-              {availableModels.map((carModel) => (
-                <option key={carModel} value={carModel}>
-                  {carModel}
-                </option>
-              ))}
             </select>
           </label>
           <label htmlFor="">
             <span>YEAR FROM</span>
             <select
-              value={yearFrom}
-              onChange={(event) => {
-                const selectedYear = event.target.value;
-                setYearFrom(selectedYear);
-                if (
-                  selectedYear &&
-                  yearTo &&
-                  Number(yearTo) < Number(selectedYear)
-                ) {
-                  setYearTo("");
-                }
+              name="minYear"
+              value={filters.minYear}
+              onChange={(e) => {
+                handleChange(e);
+                setYearFrom(e.target.value);
               }}
               className="w-full rounded-lg border border-gray-500 focus:border-pink-500 p-3"
             >
@@ -119,8 +102,9 @@ function VehicleSearch() {
           <label htmlFor="">
             <span>YEAR TO</span>
             <select
-              value={yearTo}
-              onChange={(event) => setYearTo(event.target.value)}
+              name="maxYear"
+              value={filters.maxYear}
+              onChange={handleChange}
               className="w-full rounded-lg border border-gray-500 focus:border-pink-500 p-3"
             >
               <option value="">Any</option>
@@ -134,7 +118,7 @@ function VehicleSearch() {
         </div>
         <button
           onClick={handleSubmit}
-          disabled={fetching || !model}
+          disabled={fetching}
           className="rounded-lg bg-red-600 px-6 py-3 text-white disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer
           max-w-50 max-h-12 mx-auto"
         >

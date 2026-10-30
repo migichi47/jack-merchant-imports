@@ -9,10 +9,25 @@ export function CarProvider({ children }) {
   const [fetching, setFetching] = useState(false);
   const [pagination, setPagination] = useState({});
 
-  const fetchVehicles = async (page = 1) => {
+  const fetchVehicles = async (filters = {}, page = 1) => {
     try {
       setFetching(true);
-      const response = await api.get(`/api/vehicles?page=${page}&limit=20`);
+
+      // Remove empty filter values
+      const activeFilters = Object.fromEntries(
+        Object.entries(filters).filter(
+          ([key, value]) =>
+            value !== "" && value !== null && value !== undefined,
+        ),
+      );
+
+      const response = await api.get("/api/vehicles", {
+        params: {
+          ...activeFilters,
+          page,
+          limit: 20,
+        },
+      });
       const data = response.data ?? {};
       const fetchedVehicles = data.vehicles ?? [];
       await setVehicles(fetchedVehicles ?? []);
