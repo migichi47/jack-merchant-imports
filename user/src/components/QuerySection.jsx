@@ -50,7 +50,7 @@ function VehicleSearch() {
   };
 
   return (
-    <div id="quick-search" className="max-w-7xl mx-auto space-y-10 px-10 mt-20">
+    <div id="quick-search" className="max-w-7xl mx-auto space-y-20 px-10 mt-20">
       <div className="shadow-md flex flex-col pb-5">
         <div className="font-bold text-white bg-gray-950 p-2 text-xl">
           Quick Search
@@ -75,7 +75,6 @@ function VehicleSearch() {
               ))}
             </select>
           </label>
-
           <label htmlFor="">
             <span>MODEL</span>
             <select
@@ -117,7 +116,6 @@ function VehicleSearch() {
               ))}
             </select>
           </label>
-
           <label htmlFor="">
             <span>YEAR TO</span>
             <select
@@ -145,10 +143,10 @@ function VehicleSearch() {
       </div>
       <div className="space-y-5">
         <div className="flex items-center justify-between">
-          <h1 className="font-bold text-2xl">
+          <h1 className="font-bold text-[20px] sm:text-2xl">
             {filtering ? "Search Results" : "Top Viewed Vehicles"}
           </h1>
-          <PaginationButtons />
+          <PaginationButtons className="hidden sm:flex" />
         </div>
 
         <div className="py-5">

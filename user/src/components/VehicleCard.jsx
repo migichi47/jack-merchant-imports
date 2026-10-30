@@ -20,9 +20,6 @@ export default function VehicleCard({ vehicle }) {
         <span className="absolute left-3 top-3 rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-neutral-900 shadow-sm">
           {vehicle.year}
         </span>
-        <span className="absolute right-3 top-3 rounded-full bg-black/80 px-3 py-1.5 text-xs font-medium text-white">
-          {vehicle.is_available ? "Available listing" : "Check availability"}
-        </span>
       </div>
       <div className="p-5">
         <p className="mb-1 text-xs font-medium uppercase tracking-widest text-pink-500">
@@ -59,11 +56,6 @@ export default function VehicleCard({ vehicle }) {
             Enquire <ArrowUpRight size={16} />
           </button>
         </div>
-
-        <p className="mt-3 text-xs leading-5 text-neutral-500">
-          Japan listing price only. Shipping, taxes, duties and other import
-          costs require a separate quotation.
-        </p>
       </div>
     </article>
   );
