@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import {
   ArrowLeft,
@@ -16,6 +16,7 @@ import {
 
 import api from "../services/api";
 import { CarContext } from "../context/CarContext";
+import { QueryForm } from "../components/QueryForm";
 
 const VehicleDetails = () => {
   const { id } = useParams();
@@ -24,6 +25,14 @@ const VehicleDetails = () => {
   const [activeImage, setActiveImage] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const targetRef = useRef(null);
+
+  const scrollToSection = () => {
+    targetRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  };
 
   useEffect(() => {
     const fetchVehicle = async () => {
@@ -197,24 +206,19 @@ const VehicleDetails = () => {
               <p className="text-sm text-gray-500 mb-2">
                 Estimated listing price
               </p>
-
               <h2 className="text-3xl font-bold text-gray-900">
                 {vehicle.price_usd
                   ? `$${Number(vehicle.price_usd).toLocaleString()}`
                   : "Price on request"}
               </h2>
-
               <p className="text-xs text-gray-400 mt-2">
                 Indicative vehicle price. Final import costs and charges will be
                 confirmed through a quotation.
               </p>
-
               <div className="border-t border-gray-100 my-6" />
-
               <h3 className="font-semibold text-gray-900 mb-4">
                 Vehicle overview
               </h3>
-
               <div className="grid grid-cols-2 gap-5">
                 {specifications.map((spec) => {
                   const Icon = spec.icon;
@@ -238,7 +242,10 @@ const VehicleDetails = () => {
 
               {/* CTA */}
               <button
-                onClick={() => handleEnquire(vehicle)}
+                onClick={() => {
+                  handleEnquire(vehicle);
+                  scrollToSection();
+                }}
                 className="w-full mt-8 bg-red-600 hover:bg-red-700 text-white font-semibold py-4 rounded-xl flex items-center justify-center gap-3 transition"
               >
                 <MessageCircle size={19} />
@@ -293,7 +300,10 @@ const VehicleDetails = () => {
             </p>
 
             <button
-              onClick={() => handleEnquire(vehicle)}
+              onClick={() => {
+                handleEnquire(vehicle);
+                scrollToSection();
+              }}
               className="bg-red-600 hover:bg-red-700 px-6 py-3 rounded-lg font-semibold inline-flex items-center gap-3 transition"
             >
               Request a quote
@@ -302,6 +312,7 @@ const VehicleDetails = () => {
           </div>
         </section>
       </div>
+      <QueryForm ref={targetRef} />
     </main>
   );
 };
