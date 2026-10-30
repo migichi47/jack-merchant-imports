@@ -39,10 +39,8 @@ const VehicleDetails = () => {
       try {
         setLoading(true);
         setError("");
-
         const response = await api.get(`/api/vehicles/${id}`);
         const data = response.data;
-
         setVehicle(data);
         setActiveImage(data.thumbUrl);
       } catch (err) {
@@ -52,7 +50,6 @@ const VehicleDetails = () => {
         setLoading(false);
       }
     };
-
     fetchVehicle();
   }, [id]);
 

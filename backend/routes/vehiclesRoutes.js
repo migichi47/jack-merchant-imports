@@ -61,7 +61,6 @@ router.get("/", async (req, res) => {
       Vehicle.countDocuments(filters),
     ]);
     const totalPages = Math.ceil(totalVehicles / limit);
-
     res.status(200).json({
       success: true,
       vehicles,
@@ -78,6 +77,48 @@ router.get("/", async (req, res) => {
     console.error("Failed to fetch vehicles:", error);
     res.status(500).json({
       message: "Could not retrieve vehicles from server",
+    });
+  }
+});
+
+router.get("/available-makes", async (req, res) => {
+  try {
+    const makes = await Vehicle.aggregate([
+      {
+        $group: {
+          _id: "$make",
+          models: { $addToSet: "$model" },
+        },
+      },
+      {
+        $sort: {
+          _id: 1,
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          make: "$_id",
+          models: 1,
+        },
+      },
+    ]);
+
+    const availableMakes = {};
+
+    makes.forEach((item) => {
+      availableMakes[item.make] = item.models.sort();
+    });
+
+    res.status(200).json({
+      success: true,
+      availableMakes,
+    });
+  } catch (err) {
+    console.error("Failed to fetch available makes:", err);
+    res.status(500).json({
+      success: false,
+      message: "Failed to retrieve available makes",
     });
   }
 });
