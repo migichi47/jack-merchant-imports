@@ -1,4 +1,4 @@
-import { ArrowUpRight, Fuel, Gauge, ShieldCheck, Zap } from "lucide-react";
+import { ArrowUpRight, Fuel, Gauge, Zap } from "lucide-react";
 import { formatMileage, formatUSD } from "../services/UtilityFunctions";
 import VehicleImage from "./VehicleImage";
 import { useCars } from "../hooks/useCars";

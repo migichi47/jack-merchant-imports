@@ -4,6 +4,7 @@ import api from "../services/api";
 import { makes } from "../data/vehicleOptions";
 import { carYears } from "../data/carYears";
 import { useCars } from "../hooks/useCars";
+import PaginationButtons from "./PaginationButtons";
 
 function VehicleSearch() {
   const [make, setMake] = useState("");
@@ -11,7 +12,6 @@ function VehicleSearch() {
   const [filtering, setFiltering] = useState(false);
   const [yearFrom, setYearFrom] = useState();
   const [yearTo, setYearTo] = useState();
-
   const { setFetching, setVehicles, vehicles, fetching } = useCars();
 
   const availableModels = make ? (makes[make] ?? []) : [];
@@ -144,21 +144,22 @@ function VehicleSearch() {
         </button>
       </div>
       <div className="space-y-5">
-        <div className="space-y-2">
+        <div className="flex items-center justify-between">
           <h1 className="font-bold text-2xl">
             {filtering ? "Search Results" : "Top Viewed Vehicles"}
           </h1>
-          <p className="text-gray-600">
-            Showing <span className="font-bold">1 - 20</span> vehicles
-          </p>
+          <PaginationButtons />
         </div>
 
         <div className="py-5">
           {vehicles?.length > 0 ? (
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              {vehicles?.map((vehicle) => (
-                <VehicleCard key={vehicle.id} vehicle={vehicle} />
-              ))}
+            <div className="space-y-10 flex flex-col items-end">
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                {vehicles?.map((vehicle) => (
+                  <VehicleCard key={vehicle.id} vehicle={vehicle} />
+                ))}
+              </div>
+              <PaginationButtons />
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center py-16 px-4 text-center">

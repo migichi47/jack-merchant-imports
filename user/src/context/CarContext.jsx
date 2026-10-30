@@ -7,23 +7,39 @@ export function CarProvider({ children }) {
   const [selectedVehicle, setSelectedVehicle] = useState(null);
   const [sliderVehicles, setSliderVehicles] = useState([]);
   const [fetching, setFetching] = useState(false);
+  const [pagination, setPagination] = useState({});
+
+  const fetchVehicles = async (page = 1) => {
+    try {
+      setFetching(true);
+      const response = await api.get(`/api/vehicles?page=${page}&limit=20`);
+      const data = response.data ?? {};
+      const fetchedVehicles = data.vehicles ?? [];
+      await setVehicles(fetchedVehicles ?? []);
+      setPagination(data.pagination);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setFetching(false);
+    }
+  };
+  const fetchSliderVehicles = async () => {
+    try {
+      setFetching(true);
+      const response = await api.get("/api/vehicles");
+      const data = response.data ?? {};
+      const fetchedVehicles = data.vehicles ?? [];
+      await setSliderVehicles(fetchedVehicles ?? []);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setFetching(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchVehicles = async () => {
-      try {
-        setFetching(true);
-        const response = await api.get("/api/vehicles");
-        const fetchedData = response.data ?? [];
-
-        await setVehicles(fetchedData ?? []);
-        await setSliderVehicles(fetchedData ?? []);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setFetching(false);
-      }
-    };
-
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    fetchSliderVehicles();
     fetchVehicles();
   }, []);
 
@@ -45,7 +61,9 @@ export function CarProvider({ children }) {
         setVehicles,
         fetching,
         setFetching,
+        fetchVehicles,
         sliderVehicles,
+        pagination,
       }}
     >
       {children}
