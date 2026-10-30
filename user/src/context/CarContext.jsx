@@ -12,11 +12,8 @@ export function CarProvider({ children }) {
     const fetchVehicles = async () => {
       try {
         setFetching(true);
-        const response = await api.get(
-          "/api/carapis/vehicles?source=sbtjapan&page_size=20&min_year=2022",
-        );
-        const fetchedData =
-          response.data.results ?? response.data.vehicles ?? [];
+        const response = await api.get("/api/vehicles");
+        const fetchedData = response.data ?? [];
 
         await setVehicles(fetchedData ?? []);
         await setSliderVehicles(fetchedData ?? []);

@@ -4,7 +4,7 @@ import VehicleImage from "./VehicleImage";
 import { useCars } from "../hooks/useCars";
 
 export default function VehicleCard({ vehicle }) {
-  const vehicleName = `${vehicle.brand_name} ${vehicle.model_name}`;
+  const vehicleName = `${vehicle.make} ${vehicle.model}`;
   const { handleEnquire } = useCars();
 
   return (
@@ -26,29 +26,18 @@ export default function VehicleCard({ vehicle }) {
           {vehicle.region || "Japan"}
         </p>
         <h3 className="text-xl font-bold text-neutral-950">{vehicleName}</h3>
-        <p className="mt-1 text-sm text-neutral-500">
-          {vehicle.trim || "Standard trim"}
-        </p>
-        <div className="my-4 grid grid-cols-2 gap-3 border-y border-neutral-100 py-4 text-sm text-neutral-600">
+        <div className="m-4 flex justify-between border-y border-neutral-100 py-4 text-sm text-neutral-600">
           <span className="flex items-center gap-2">
-            <Gauge size={16} className="text-red-600" />
+            <Gauge size={16} className="text-pink-600" />
             {formatMileage(vehicle.mileage)}
           </span>
           <span className="flex items-center gap-2 capitalize">
-            <Fuel size={16} className="text-red-600" />
+            <Fuel size={16} className="text-pink-600" />
             {vehicle.fuel_type || "Not specified"}
           </span>
           <span className="flex items-center gap-2 capitalize">
-            <Zap size={16} className="text-red-600" />
+            <Zap size={16} className="text-pink-600" />
             {vehicle.transmission || "Not specified"}
-          </span>
-          <span className="flex items-center gap-2 capitalize">
-            <ShieldCheck size={16} className="text-red-600" />
-            {vehicle?.has_accident === false
-              ? "No accident reported"
-              : vehicle.has_accident === true
-                ? "Accident reported"
-                : "Condition unverified"}
           </span>
         </div>
 

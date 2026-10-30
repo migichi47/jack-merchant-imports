@@ -23,14 +23,13 @@ const QuoteFrom = () => {
 
   useEffect(() => {
     if (!selectedVehicle) return;
-    console.log("there is a vehicle");
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setForm((prev) => ({
       ...prev,
       car: {
         ...prev.car,
-        make: selectedVehicle.brand_name ?? "",
-        model: selectedVehicle.model_name ?? "",
+        make: selectedVehicle.make ?? "",
+        model: selectedVehicle.model ?? "",
       },
     }));
   }, [selectedVehicle]);

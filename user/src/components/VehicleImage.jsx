@@ -3,7 +3,7 @@ import { useState } from "react";
 
 export default function VehicleImage({ vehicle }) {
   const [failed, setFailed] = useState(false);
-  const imageUrl = vehicle.thumb?.url || vehicle.photos?.[0]?.url;
+  const imageUrl = vehicle.thumbUrl;
 
   if (!imageUrl || failed) {
     return (

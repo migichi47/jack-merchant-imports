@@ -3,6 +3,7 @@ import express from "express";
 import session from "express-session";
 import MongoStore from "connect-mongo";
 import cors from "cors";
+
 import { connectDB } from "./config/db.js";
 import authRoutes from "./routes/loginRoutes.js";
 import queriesRoutes from "./routes/queriesRoutes.js";

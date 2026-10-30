@@ -17,6 +17,16 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/:id", async (req, res) => {
+  if (!req.params.id) return;
+  try {
+    const foundVehicle = await Vehicle.findById(req.params.id);
+    res.status(200).json(foundVehicle);
+  } catch (err) {
+    res.send(500).json({ msg: "Could not get vehicle", error: err });
+  }
+});
+
 router.delete("/all", requireAuth, async (req, res) => {
   try {
     await Vehicle.deleteMany();

@@ -50,6 +50,34 @@ async function syncVehicles() {
   let imported = 0;
   let failed = 0;
   let totalPages = Infinity;
+  const MIN_YEAR = 2021;
+  const POPULAR_MAKES = [
+    "Toyota",
+    "Mazda",
+    "Nissan",
+    "Honda",
+    "Subaru",
+    "Mitsubishi",
+    "Suzuki",
+    "Lexus",
+    "Mercedes-Benz",
+    "BMW",
+    "Volkswagen",
+    "Audi",
+    "Volvo",
+    "Land Rover",
+    "Porsche",
+  ];
+
+  const isPopularVehicle = (car) => {
+    const make = car.brand_name?.trim().toLowerCase();
+    const popularMakes = POPULAR_MAKES.map((item) => item.toLowerCase());
+    return (
+      popularMakes.includes(make) &&
+      Number(car.year) >= MIN_YEAR &&
+      Number(car.year) <= new Date().getFullYear()
+    );
+  };
 
   try {
     while (page <= totalPages) {
@@ -75,6 +103,7 @@ async function syncVehicles() {
 
       const data = await response.json();
       const cars = data.results || [];
+      const filteredCars = cars.filter(isPopularVehicle);
 
       totalPages = Number(
         data.pages ?? Math.ceil((data.count ?? cars.length) / PAGE_SIZE),
@@ -82,7 +111,7 @@ async function syncVehicles() {
 
       if (cars.length === 0) break;
 
-      for (const car of cars) {
+      for (const car of filteredCars) {
         try {
           if (
             !car.id ||
@@ -100,7 +129,6 @@ async function syncVehicles() {
           }
 
           const vehicle = mapVehicle(car);
-
           if (!vehicle.thumbUrl) {
             console.warn(
               `Skipping ${car.brand_name} ${car.model_name}: no image`,
@@ -123,7 +151,7 @@ async function syncVehicles() {
       }
 
       console.log(
-        `Processed page ${page} of ${totalPages} (${cars.length} listings)`,
+        `Fetched ${cars.length} cars. ${filteredCars.length} passed the filters.`,
       );
 
       page++;

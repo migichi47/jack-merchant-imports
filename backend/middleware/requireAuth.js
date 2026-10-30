@@ -4,7 +4,6 @@ const requireAuth = (req, res, next) => {
       message: "Please log in to continue",
     });
   }
-
   next();
 };
 
