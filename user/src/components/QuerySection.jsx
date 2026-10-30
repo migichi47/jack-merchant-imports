@@ -15,18 +15,16 @@ function VehicleSearch() {
     fuel_type: "",
     transmission: "",
   });
-  const { setFetching, fetchVehicles, vehicles, fetching, availableMakes } =
+  const { fetchVehicles, vehicles, fetching, availableMakes } =
     useCars();
   const availableYearsTo = carYears.filter((year) => year >= Number(yearFrom));
 
   const handleSubmit = async () => {
-    setFetching(true);
     try {
       fetchVehicles(filters, 1);
     } catch (err) {
       throw new Error(err, { cause: err });
     } finally {
-      setFetching(false);
       setFiltering(true);
     }
   };
@@ -179,7 +177,7 @@ function VehicleSearch() {
 
         <div className="py-5">
           {vehicles?.length > 0 ? (
-            <div className="space-y-10 flex flex-col items-end">
+            <div className="space-y-10">
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
                 {vehicles?.map((vehicle) => (
                   <VehicleCard key={vehicle.id} vehicle={vehicle} />

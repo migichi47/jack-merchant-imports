@@ -7,12 +7,8 @@ const Hero = () => {
 
   return (
     <section id="home" className="py-10 px-5 flex items-center">
-      <div className="max-w-7xl mx-auto space-y-4 sm:space-y-10">
-        <h1 className=" text-lg sm:text-2xl inline-flex font-black leading-[1.08] tracking-tight gap-2">
-          <span className="text-red-500">Import</span>
-          Your next car
-          <span className="text-red-500">From Japan</span> to Kenya.
-        </h1>
+      <div className="max-w-7xl mx-auto">
+        
         {sliderVehicles.length === 0 ? <HeroFallback /> : <CarSlider />}
       </div>
     </section>
