@@ -1,16 +1,19 @@
 import { ArrowUpRight, Fuel, Gauge, Zap } from "lucide-react";
 import { formatMileage, formatUSD } from "../services/UtilityFunctions";
 import VehicleImage from "./VehicleImage";
-import { useCars } from "../hooks/useCars";
+import { useNavigate } from "react-router-dom";
 
 export default function VehicleCard({ vehicle }) {
   const vehicleName = `${vehicle.make} ${vehicle.model}`;
-  const { handleEnquire } = useCars();
+  const navigate = useNavigate();
 
   return (
     <article
       className="group overflow-hidden rounded-2xl border border-neutral-200
     bg-white transition hover:-translate-y-1 hover:shadow-xl"
+      onClick={() => {
+        navigate(`/vehicles/${vehicle._id}`);
+      }}
     >
       <div className="relative h-70 overflow-hidden">
         <VehicleImage vehicle={vehicle} />
@@ -50,7 +53,6 @@ export default function VehicleCard({ vehicle }) {
           </div>
 
           <button
-            onClick={() => handleEnquire(vehicle)}
             className="flex items-center gap-2 rounded-lg bg-red-600 px-4 py-3 text-sm font-semibold text-white
             transition hover:bg-red-700"
           >

@@ -7,9 +7,11 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
+import { useNavigate } from "react-router-dom";
 
 const CarSlider = () => {
   const { sliderVehicles } = useCars();
+  const navigate = useNavigate();
 
   return (
     <Swiper
@@ -64,7 +66,10 @@ const CarSlider = () => {
                   <span className="capitalize">{car.transmission}</span>
                 </span>
               </div>
-              <button className="bg-red-600 text-white px-2 font-semibold py-2 cursor-pointer">
+              <button
+                className="bg-red-600 text-white px-2 font-semibold py-2 cursor-pointer"
+                onClick={() => navigate(`/vehicles/${car._id}`)}
+              >
                 Enquire similar car
               </button>
             </div>
