@@ -200,10 +200,6 @@ export function QueryForm({ ref }) {
         {submitting ? "Processing..." : "Submit enquiry"}
         {!submitting && <ArrowBigRight size={18} />}
       </button>
-      <p className="mt-4 text-center text-xs leading-5 text-neutral-500">
-        Your enquiry will not be sent until this form is connected to the Jack
-        Merchants backend.
-      </p>
     </form>
   );
 }
