@@ -8,7 +8,6 @@ const router = Router();
 
 // POST /api/imports
 router.post("/", requireAuth, upload.single("image"), async (req, res) => {
-  console.log(req.body);
   try {
     const { make, model, year, description, status, arrival } = req.body;
 

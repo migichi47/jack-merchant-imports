@@ -4,9 +4,12 @@ import { AdminContext } from "../context/AdminContext";
 import { PastImportCard } from "../components/PastImportsGrid";
 import SectionHeading from "../components/SectionHeading";
 import Breadcrumbs from "../components/BreadCrumbs";
+import { useNavigate } from "react-router-dom";
+import Button from "../components/Button";
 
 const PastImports = () => {
   const { pastImports } = useContext(AdminContext);
+  const navigate = useNavigate();
 
   return (
     <>
@@ -18,10 +21,15 @@ const PastImports = () => {
         ]}
       />
       <div className="space-y-5">
-        <SectionHeading
-          title="Past Imports"
-          description="Showcase the vehicles that have been successfully sourced and imported"
-        />
+        <div className="flex items-center justify-between">
+          <SectionHeading
+            title="Past Imports"
+            description="Showcase the vehicles that have been successfully sourced and imported"
+          />
+          <Button onClick={() => navigate("/past-imports/new")}>
+            + Add Import
+          </Button>
+        </div>
 
         <div className="flex items-center gap-2 border h-12 bg-white border-gray-200 grow px-2 rounded-lg">
           <Search className="w-4 text-gray-500" />

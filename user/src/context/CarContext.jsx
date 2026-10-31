@@ -27,7 +27,7 @@ export function CarProvider({ children }) {
         params: {
           ...activeFilters,
           page,
-          limit: 20,
+          limit: 15,
         },
       });
       const data = response.data ?? {};
@@ -43,7 +43,7 @@ export function CarProvider({ children }) {
   const fetchSliderVehicles = async () => {
     try {
       setFetching(true);
-      const response = await api.get("/api/vehicles");
+      const response = await api.get("/api/vehicles?page=2");
       const data = response.data ?? {};
       const fetchedVehicles = data.vehicles ?? [];
       await setSliderVehicles(fetchedVehicles ?? []);
