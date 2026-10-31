@@ -1,21 +1,45 @@
-import express from "express";
+import { Router } from "express";
 import Import from "../models/pastImports.js";
 import requireAuth from "../middleware/requireAuth.js";
+import cloudinary from "../config/cloudinary.js";
+import upload from "../middleware/upload.js";
 
-const router = express.Router();
+const router = Router();
 
 // POST /api/imports
-router.post("/", requireAuth, async (req, res) => {
+router.post("/", requireAuth, upload.single("image"), async (req, res) => {
+  console.log(req.body);
   try {
-    const { make, model, year, description, imageUrl, status, arrival } =
-      req.body;
+    const { make, model, year, description, status, arrival } = req.body;
 
     // Validate required fields
-    if (!make || !model || !year || !imageUrl) {
+    if (!make || !model || !year) {
       return res.status(400).json({
-        message: "Make, model, year, and image URL are required.",
+        message: "Make, model, year, are required.",
       });
     }
+
+    if (!req.file) {
+      return res.status(400).json({
+        message: "Please upload a vehicle image",
+      });
+    }
+
+    // upload image to cloudinary
+    const result = await new Promise((resolve, reject) => {
+      cloudinary.uploader
+        .upload_stream(
+          {
+            folder: "jm-imports",
+            resource_type: "image",
+          },
+          (error, result) => {
+            if (error) reject(error);
+            else resolve(result);
+          },
+        )
+        .end(req.file.buffer);
+    });
 
     // Create and save the import
     const newImport = await Import.create({
@@ -23,7 +47,7 @@ router.post("/", requireAuth, async (req, res) => {
       model,
       year,
       description,
-      imageUrl,
+      imageUrl: result.secure_url,
       status,
       arrival,
     });
@@ -34,7 +58,6 @@ router.post("/", requireAuth, async (req, res) => {
     });
   } catch (error) {
     console.error("Error saving import:", error);
-
     return res.status(500).json({
       message: "Failed to save import.",
     });

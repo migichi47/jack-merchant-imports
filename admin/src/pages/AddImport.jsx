@@ -1,11 +1,11 @@
-
 import { useState } from "react";
-import { CalendarDays, Image } from "lucide-react";
+import { CalendarDays, Image, ImagePlus, X } from "lucide-react";
 
 import { toast } from "react-toastify";
 import api from "../services/api";
 import SectionHeading from "../components/SectionHeading";
 import Breadcrumbs from "../components/BreadCrumbs";
+import { useRef } from "react";
 
 function AddImportForm() {
   const [formData, setFormData] = useState({
@@ -13,12 +13,14 @@ function AddImportForm() {
     model: "",
     year: "",
     description: "",
-    imageUrl: "",
     arrival: "",
   });
-
+  const [image, setImage] = useState(null);
+  const [preview, setPreview] = useState(null);
   const [loading, setLoading] = useState(false);
+  const fileInputRef = useRef(null);
 
+  console.log(formData);
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -27,27 +29,55 @@ function AddImportForm() {
       [name]: value,
     }));
   };
+  const handleImageChange = (e) => {
+    const file = e.target.files?.[0];
+
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      alert("Please select a valid image");
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      alert("Image must be less than 5MB");
+      return;
+    }
+
+    setImage(file);
+    setPreview(URL.createObjectURL(file));
+  };
+  const removeImage = () => {
+    if (preview) URL.revokeObjectURL(preview);
+    setImage(null);
+    setPreview(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const payload = {
-      ...formData,
-      year: Number(formData.year),
-      arrival: new Date(formData.arrival).toISOString(),
-    };
-
+    if (!image) {
+      alert("Please select a vehicle image");
+      return;
+    }
+    const data = new FormData();
+    Object.entries(formData).forEach(([key, value]) => {
+      data.append(key, value);
+    });
+    data.append("image", image);
+    console.log([...data.entries()]);
     try {
       setLoading(true);
-      const response = await api.post("/api/imports", payload);
+      const response = await api.post("/api/imports", data);
+      console.log(data);
       toast.success(response.data.message || "Import added successfully!");
-
       setFormData({
         make: "",
         model: "",
         year: "",
         description: "",
-        imageUrl: "",
         arrival: "",
       });
     } catch (error) {
@@ -173,38 +203,46 @@ function AddImportForm() {
 
         {/* Image URL */}
         <div>
-          <label className={labelClass} htmlFor="imageUrl">
-            Vehicle Image URL
+          <label className="block text-sm font-semibold mb-2">
+            Vehicle Image
           </label>
-          <div className="relative">
-            <Image
-              size={18}
-              className="absolute left-3 top-3.5 text-gray-400"
-            />
-            <input
-              id="imageUrl"
-              name="imageUrl"
-              type="url"
-              value={formData.imageUrl}
-              onChange={handleChange}
-              placeholder="https://example.com/car.jpg"
-              className={`${inputClass} pl-10`}
-              required
-            />
-          </div>
 
-          {formData.imageUrl.startsWith("https://") && (
-            <img
-              src={formData.imageUrl}
-              alt="Vehicle preview"
-              className="mt-4 h-48 w-full rounded-xl border border-gray-200 object-cover"
-              onError={(e) => {
-                e.currentTarget.style.display = "none";
-              }}
-              onLoad={(e) => {
-                e.currentTarget.style.display = "block";
-              }}
-            />
+          {preview ? (
+            <div className="relative w-full h-64 rounded-xl overflow-hidden border">
+              <img
+                src={preview}
+                alt="Vehicle preview"
+                className="w-full h-full object-cover"
+              />
+
+              <button
+                type="button"
+                onClick={removeImage}
+                className="absolute top-3 right-3 bg-white rounded-full p-2 shadow"
+              >
+                <X size={18} />
+              </button>
+            </div>
+          ) : (
+            <label className="flex flex-col items-center justify-center h-64 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:bg-gray-50">
+              <ImagePlus size={40} className="text-gray-400" />
+
+              <span className="mt-3 text-sm font-medium">
+                Click to upload vehicle image
+              </span>
+
+              <span className="text-xs text-gray-400 mt-1">
+                PNG, JPG or WEBP (Max 5MB)
+              </span>
+
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                className="hidden"
+              />
+            </label>
           )}
         </div>
 

@@ -1,7 +1,7 @@
 import { ArrowRight, Pencil, Trash } from "lucide-react";
 import { useContext } from "react";
 import { AdminContext } from "../context/AdminContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { formatDate } from "../services/formatDate";
 
 export const PastImportsGrid = () => {
@@ -39,11 +39,17 @@ export const PastImportCard = ({
   arrival,
 }) => {
   const { deleteImport } = useContext(AdminContext);
+  const navigate = useNavigate();
+
+  const handleDelete = (e) => {
+    e.stopPropagation();
+    deleteImport(id);
+  };
 
   return (
-    <Link
+    <div
       className="w-full mx-auto space-y-2 border border-gray-300 rounded-lg hover:shadow-md transition"
-      to={`/import-details/${id}`}
+      onClick={() => navigate(`/import-details/${id}`)}
     >
       <img
         src={imageUrl}
@@ -56,7 +62,7 @@ export const PastImportCard = ({
         </h2>
         <div className="flex items-center justify-between">
           <div className="flex flex-col text-gray-500 text-xs">
-            <span>2021 manufacture</span>
+            <span>{year} manufacture</span>
             <span>
               Imported{" "}
               <span className="text-pink-500 font-semibold">
@@ -64,12 +70,16 @@ export const PastImportCard = ({
               </span>
             </span>
           </div>
-          <Trash
-            className="w-4 text-red-600 hover:text-black cursor-pointer"
-            onClick={() => deleteImport(id)}
-          />
+          <button
+            type="button"
+            onClick={handleDelete}
+            aria-label={`Delete ${make} ${model}`}
+            className="p-2 text-red-600 hover:text-black hover:bg-red-50 rounded-full transition"
+          >
+            <Trash className="w-4" />
+          </button>{" "}
         </div>
       </div>
-    </Link>
+    </div>
   );
 };
