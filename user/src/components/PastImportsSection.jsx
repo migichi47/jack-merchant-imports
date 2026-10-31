@@ -28,7 +28,7 @@ const PastImportsSection = () => {
             </div>
           </div>
         ) : (
-          <div className="grid gap-5 lg:grid-cols-3">
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {pastImports?.map((item) => (
               <PastImportCard key={item._id} {...item} />
             ))}
