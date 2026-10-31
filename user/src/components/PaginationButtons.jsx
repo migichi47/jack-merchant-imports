@@ -14,7 +14,10 @@ const PaginationButtons = ({ className }) => {
     >
       <button
         disabled={!pagination?.hasPrevPage}
-        onClick={() => fetchVehicles(pagination?.currentPage - 1)}
+        onClick={() => {
+          console.log("in previous");
+          fetchVehicles({}, pagination?.currentPage - 1);
+        }}
         className="rounded-lg text-xs sm:text-lg border px-4 py-2 disabled:opacity-40 disabled:cursor-not-allowed
                   cursor-pointer hover:bg-pink-200 transition-all duration-300"
       >
@@ -34,7 +37,7 @@ const PaginationButtons = ({ className }) => {
 
       <button
         disabled={!pagination?.hasNextPage}
-        onClick={() => fetchVehicles(pagination?.currentPage + 1)}
+        onClick={() => fetchVehicles({}, pagination?.currentPage + 1)}
         className="rounded-lg text-xs sm:text-lg border px-4 py-2 disabled:opacity-40 disabled:cursor-not-allowed
                   cursor-pointer hover:bg-pink-200 transition-all duration-300"
       >

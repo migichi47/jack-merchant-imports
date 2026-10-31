@@ -14,25 +14,18 @@ export function CarProvider({ children }) {
   const fetchVehicles = async (filters = {}, page = 1) => {
     try {
       setFetching(true);
-
-      // Remove empty filter values
-      const activeFilters = Object.fromEntries(
-        Object.entries(filters).filter(
-          ([key, value]) =>
-            value !== "" && value !== null && value !== undefined,
-        ),
-      );
+      console.log(filters);
 
       const response = await api.get("/api/vehicles", {
         params: {
-          ...activeFilters,
+          ...filters,
           page,
           limit: 15,
         },
       });
       const data = response.data ?? {};
       const fetchedVehicles = data.vehicles ?? [];
-      await setVehicles(fetchedVehicles ?? []);
+      setVehicles(fetchedVehicles);
       setPagination(data.pagination);
     } catch (err) {
       console.error(err);
@@ -46,7 +39,7 @@ export function CarProvider({ children }) {
       const response = await api.get("/api/vehicles?page=2");
       const data = response.data ?? {};
       const fetchedVehicles = data.vehicles ?? [];
-      await setSliderVehicles(fetchedVehicles ?? []);
+      setSliderVehicles(fetchedVehicles);
     } catch (err) {
       console.error(err);
     } finally {

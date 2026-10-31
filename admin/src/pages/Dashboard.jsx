@@ -102,9 +102,11 @@ const Dashboard = () => {
             </div>
 
             <div>
-              <DataTable data={dashboardQueries} />
+              
             </div>
           </div>
+
+          <DataTable />
 
           <PastImportsGrid />
         </div>
