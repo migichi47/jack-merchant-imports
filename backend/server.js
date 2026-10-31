@@ -12,6 +12,7 @@ import settingsRoutes from "./routes/settingsRoutes.js";
 import emailRoutes from "./routes/emailRoutes.js";
 import carapisRoutes from "./routes/carapisRoutes.js";
 import vehiclesRoutes from "./routes/vehiclesRoutes.js";
+import notificationRoutes from "./routes/notificationRoutes.js";
 
 const app = express();
 
@@ -67,6 +68,7 @@ app.use("/api/imports", importRoutes);
 app.use("/api/settings", settingsRoutes);
 app.use("/api/emails", emailRoutes);
 app.use("/api/carapis", carapisRoutes);
+app.use("/api/notifications", notificationRoutes);
 
 app.use(express.urlencoded({ extended: true }));
 

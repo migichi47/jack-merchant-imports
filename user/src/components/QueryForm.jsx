@@ -170,7 +170,7 @@ export function QueryForm({ ref }) {
         <label className="block sm:col-span-2">
           <span className="mb-2 block text-sm font-semibold">
             Query Description{" "}
-            {form?.message?.length >= 500 && (
+            {form?.description?.length >= 500 && (
               <span className="text-xs text-red-600">*max limit reached</span>
             )}
           </span>
@@ -186,7 +186,7 @@ export function QueryForm({ ref }) {
                 focus:border-red-600 focus:ring-2 focus:ring-red-600/10 font-semibold"
           />
           <p className="text-sm text-gray-500">
-            {form?.message?.length || 0} / 500 characters
+            {form?.description?.length || 0} / 500 characters
           </p>
         </label>
       </div>

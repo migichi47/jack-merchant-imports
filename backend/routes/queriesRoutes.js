@@ -4,6 +4,7 @@ import EmailLog from "../models/emailLog.js";
 import { sendClientEmail } from "../services/emailServices.js";
 import { getGeneralSettings } from "../services/settingServices.js";
 import requireAuth from "../middleware/requireAuth.js";
+import Notification from "../models/Notification.js";
 
 const router = express.Router();
 
@@ -18,29 +19,29 @@ router.get("/", async (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
-    const { fullName, contact, email, budget, car, description } = req.body;
-
     // Basic validation
-    if (!fullName || !contact || !car?.make || !car?.model) {
+    if (
+      !req.body.fullName ||
+      !req.body.contact ||
+      !req.body.car?.make ||
+      !req.body.car?.model
+    ) {
       return res.status(400).json({
         message: "Please provide all required fields.",
       });
     }
 
-    const newQuery = await Query.create({
-      fullName,
-      contact,
-      email,
-      budget,
-      description,
-      car: {
-        make: car.make,
-        model: car.model,
-      },
+    const newQuery = await Query.create(req.body);
+
+    await Notification.create({
+      title: "New query",
+      message: `A customer submitted a ${newQuery.car.make} ${newQuery.car.model} query.`,
+      type: "new_query",
+      relatedQuery: newQuery._id,
+      link: `/queries/${newQuery._id}`,
     });
 
     const settings = await getGeneralSettings();
-
     if (newQuery.email && settings.emails.queryConfirmation) {
       const subject = "We received your vehicle import request";
 

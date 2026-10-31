@@ -10,8 +10,25 @@ export function AdminContextProvider({ children }) {
   const [pastImports, setPastImports] = useState([]);
   const [queries, setQueries] = useState([]);
   const [loadingDashboard, setLoadingDashboard] = useState(false);
+  const [notifications, setNotifications] = useState([]);
+  const [fetchingNotifications, setFetchingNotifications] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
   const dashboardQueries = queries.slice(0, 3);
   const navigate = useNavigate();
+
+  const fetchNotifications = async () => {
+    try {
+      setFetchingNotifications(true);
+      const response = await api.get("/api/notifications");
+
+      setNotifications(response.data.notifications);
+      setUnreadCount(response.data.unreadCount);
+    } catch (error) {
+      console.error("Failed to fetch notifications:", error);
+    } finally {
+      setFetchingNotifications(false);
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,7 +45,10 @@ export function AdminContextProvider({ children }) {
         setLoadingDashboard(false);
       }
     };
+
     fetchData();
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    fetchNotifications();
   }, []);
 
   const addImport = async (importData) => {
@@ -74,6 +94,12 @@ export function AdminContextProvider({ children }) {
         queries,
         setQueries,
         dashboardQueries,
+        fetchNotifications,
+        fetchingNotifications,
+        notifications,
+        setNotifications,
+        setUnreadCount,
+        unreadCount,
       }}
     >
       {children}

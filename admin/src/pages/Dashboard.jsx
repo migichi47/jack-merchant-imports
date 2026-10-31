@@ -100,14 +100,7 @@ const Dashboard = () => {
                 View all <ArrowRight className="w-4" />
               </Link>
             </div>
-
-            <div>
-              
-            </div>
           </div>
-
-          <DataTable />
-
           <PastImportsGrid />
         </div>
       </div>
