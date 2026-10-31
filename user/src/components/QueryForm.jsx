@@ -50,7 +50,7 @@ export function QueryForm({ ref }) {
     <form
       ref={ref}
       onSubmit={handleSubmit}
-      className="rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm sm:p-8 sm:max-w-200 sm:min-w-160 mx-auto"
+      className="rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm w-full sm:p-8 sm:max-w-200 sm:min-w-160 mx-auto"
     >
       {selectedVehicle ? (
         <h2 className="font-semibold text-green-600">
@@ -176,9 +176,9 @@ export function QueryForm({ ref }) {
           </span>
           <textarea
             rows={4}
-            value={form.message}
+            value={form.description}
             onChange={(event) =>
-              setForm({ ...form, message: event.target.value })
+              setForm({ ...form, description: event.target.value })
             }
             maxLength={500}
             placeholder="Anything else we should know..."

@@ -9,6 +9,7 @@ export function CarProvider({ children }) {
   const [fetching, setFetching] = useState(false);
   const [pagination, setPagination] = useState({});
   const [availableMakes, setAvailableMakes] = useState({});
+  const [pastImports, setPastImports] = useState([]);
 
   const fetchVehicles = async (filters = {}, page = 1) => {
     try {
@@ -62,11 +63,24 @@ export function CarProvider({ children }) {
     }
   };
 
+  const fetchPastImports = async () => {
+    setFetching(true);
+    try {
+      const response = await api.get("/api/imports");
+      setPastImports(response.data);
+    } catch (err) {
+      console.error("Error in fetching past imports:", err);
+    } finally {
+      setFetching(false);
+    }
+  };
+
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchSliderVehicles();
     fetchVehicles();
     fetchAvailableMakes();
+    fetchPastImports();
   }, []);
 
   const handleEnquire = (vehicle) => {
@@ -91,6 +105,7 @@ export function CarProvider({ children }) {
         sliderVehicles,
         pagination,
         availableMakes,
+        pastImports,
       }}
     >
       {children}

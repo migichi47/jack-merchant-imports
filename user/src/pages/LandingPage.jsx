@@ -7,6 +7,7 @@ import HowItWorks from "../components/HowItWorks";
 import AboutAndCTA from "../components/AboutAndCTA";
 import QuoteFrom from "../components/QuoteFrom";
 import Footer from "../components/Footer";
+import PastImportsSection from "../components/PastImportsSection";
 
 export default function LandingPage() {
   const [maxPrice, setMaxPrice] = useState("Any budget");
@@ -20,6 +21,7 @@ export default function LandingPage() {
         <Hero />
         <TrustStrip />
         <QuerySection maxPrice={maxPrice} setMaxPrice={setMaxPrice} />
+        <PastImportsSection />
         <HowItWorks />
         <AboutAndCTA />
 

@@ -2,10 +2,10 @@ import { GoDotFill } from "react-icons/go";
 import React from "react";
 import { twMerge } from "tailwind-merge";
 
-const StatusBar = ({ variant = "new", status }) => {
+const StatusBar = ({ status }) => {
   const variants = {
     new: "bg-pink-100 text-pink-900",
-    inprogress: "bg-amber-100 text-amber-900",
+    inprogress: "bg-amber-100 text-amber-900 min-w-25",
     replied: "bg-green-100 text-green-900",
   };
 

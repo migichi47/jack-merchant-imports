@@ -63,7 +63,7 @@ const QueryDetails = () => {
         items={[
           {
             label: "Queries",
-            to: "/queries"
+            to: "/queries",
           },
           {
             label: "Query details",
@@ -101,7 +101,9 @@ const QueryDetails = () => {
                 </p>
               </div>
             </div>
-            <p className="text-gray-600">
+            <p
+              className={query?.description ? "text-pink-500" : "text-gray-600"}
+            >
               {query?.description || "__No description__"}
             </p>
             <div className="flex gap-5">
