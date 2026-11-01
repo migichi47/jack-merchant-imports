@@ -14,6 +14,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import PastEmails from "./pages/EmailLogs";
 import ImportDetails from "./pages/ImportDetails";
 import Notifications from "./pages/Notifications";
+import AddVehicle from "./pages/addVehicle";
 
 const App = () => {
   return (
@@ -31,6 +32,7 @@ const App = () => {
             <Route path="/emails" element={<PastEmails />} />
             <Route path="/import-details/:id" element={<ImportDetails />} />
             <Route path="/notifications" element={<Notifications />} />
+            <Route path="/add-vehicle" element={<AddVehicle />} />
           </Route>
         </Route>
       </Routes>

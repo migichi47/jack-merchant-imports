@@ -1,4 +1,5 @@
 import Vehicle from "../models/Vehicle.js";
+import uploadToCloudinary from "../utils/uploadToCloudinary.js";
 
 export const getVehicles = async (req, res) => {
   try {
@@ -134,5 +135,67 @@ export const deleteVehicle = async (req, res) => {
     res.status(200).json({ msg: "all vehicles deleted" });
   } catch (err) {
     res.send(500).json({ msg: "Could not delete vehicles", error: err });
+  }
+};
+
+export const addVehivle = async (req, res) => {
+  const uploadedImages = [];
+
+  try {
+    // Require at least one image
+    if (!req.files || req.files.length === 0) {
+      return res.status(400).json({
+        message: "At least one vehicle image is required",
+      });
+    }
+
+    // Upload images to Cloudinary
+    for (const file of req.files) {
+      const uploaded = await uploadToCloudinary(file.buffer);
+      uploadedImages.push(uploaded);
+    }
+
+    const imageUrls = uploadedImages.map((image) => image.url);
+    const vehicle = await Vehicle.create({
+      make: req.body.make,
+      model: req.body.model,
+      year: Number(req.body.year),
+      price_usd: Number(req.body.price_usd),
+      mileage:
+        req.body.mileage === "" || req.body.mileage == null
+          ? null
+          : Number(req.body.mileage),
+      fuel_type: req.body.fuel_type,
+      transmission: req.body.transmission,
+      body_type: req.body.body_type,
+      color: req.body.color,
+      engine_capacity:
+        req.body.engine_capacity === "" || req.body.engine_capacity == null
+          ? null
+          : Number(req.body.engine_capacity),
+      drive_type: req.body.drive_type,
+      thumbUrl: imageUrls[0],
+      photos: imageUrls,
+      source: "admin",
+    });
+
+    res.status(201).json({
+      message: "Vehicle added successfully",
+      vehicle,
+    });
+  } catch (error) {
+    console.error("Vehicle creation failed:", error);
+
+    // Remove uploaded Cloudinary images if saving fails
+    await Promise.allSettled(
+      uploadedImages.map((image) =>
+        cloudinary.uploader.destroy(image.public_id),
+      ),
+    );
+
+    res.status(500).json({
+      message: "Failed to add vehicle",
+      error: error.message,
+    });
   }
 };

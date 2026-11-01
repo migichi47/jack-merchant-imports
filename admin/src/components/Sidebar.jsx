@@ -1,4 +1,3 @@
-
 import Logo from "./Logo";
 import { NavLink } from "react-router-dom";
 import {
@@ -9,6 +8,7 @@ import {
   MessageCircleQuestionMark,
   Settings,
   X,
+  Car,
 } from "lucide-react";
 
 const Sidebar = ({ setShowSidebar }) => {
@@ -22,6 +22,11 @@ const Sidebar = ({ setShowSidebar }) => {
       name: "Customer Queries",
       to: "/queries",
       icon: <MessageCircleQuestionMark className="w-4" />,
+    },
+    {
+      name: "Add Vehicles",
+      to: "/add-vehicle",
+      icon: <Car className="w-4" />,
     },
     {
       name: "Past Imports",

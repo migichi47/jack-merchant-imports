@@ -21,7 +21,6 @@ const vehicleSchema = new mongoose.Schema(
 
     price_usd: {
       type: Number,
-      required: true,
       min: 0,
     },
 
