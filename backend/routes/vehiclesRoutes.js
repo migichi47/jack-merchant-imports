@@ -2,7 +2,8 @@ import { Router } from "express";
 import requireAuth from "../middleware/requireAuth.js";
 import {
   addVehivle,
-  deleteVehicle,
+  deleteVehicleByID,
+  deleteVehicles,
   getAllVehicles,
   getAvailableMakes,
   getVehicleById,
@@ -15,7 +16,8 @@ router.get("/", getVehicles);
 router.get("/all", getAllVehicles);
 router.get("/available-makes", getAvailableMakes);
 router.post("/", requireAuth, upload.array("images", 10), addVehivle);
-router.delete("/all", requireAuth, deleteVehicle);
+router.delete("/all", requireAuth, deleteVehicles);
 router.get("/:id", getVehicleById);
+router.delete("/:id", deleteVehicleByID);
 
 export default router;

@@ -124,6 +124,7 @@ export const getAllVehicles = async (req, res) => {
     res.status(200).json({
       success: true,
       vehicles,
+      totalVehicles,
     });
   } catch (error) {
     console.error("Failed to fetch vehicles:", error);
@@ -185,12 +186,21 @@ export const getVehicleById = async (req, res) => {
   }
 };
 
-export const deleteVehicle = async (req, res) => {
+export const deleteVehicles = async (req, res) => {
   try {
     await Vehicle.deleteMany();
     res.status(200).json({ msg: "all vehicles deleted" });
   } catch (err) {
     res.send(500).json({ msg: "Could not delete vehicles", error: err });
+  }
+};
+
+export const deleteVehicleByID = async (req, res) => {
+  try {
+    await Vehicle.findByIdAndDelete(req.params.id);
+    res.status(200).json({ msg: "vehicle deleted" });
+  } catch (err) {
+    res.send(500).json({ msg: "Could not delete vehicle", error: err });
   }
 };
 
