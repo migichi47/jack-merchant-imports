@@ -55,28 +55,23 @@ const AddVehicle = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
     setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
   };
+
   const handleImageChange = (e) => {
     const selectedFiles = Array.from(e.target.files || []);
-
     setError("");
     setSuccess("");
-
     const remainingSlots = MAX_IMAGES - images.length;
-
     if (remainingSlots <= 0) {
       setError(`Maximum of ${MAX_IMAGES} images allowed.`);
       e.target.value = "";
       return;
     }
-
     const validImages = [];
-
     for (const file of selectedFiles) {
       if (!file.type.startsWith("image/")) {
         setError("Only image files are allowed.");
