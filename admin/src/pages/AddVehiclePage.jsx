@@ -36,7 +36,7 @@ const MAX_FILE_SIZE = 5 * 1024 * 1024;
 const inputClass = `w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-800
   outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100 placeholder:text-gray-400`;
 const labelClass = "mb-2 block text-sm font-medium text-gray-700";
-const AddVehicle = () => {
+const AddVehiclePage = () => {
   const fileInputRef = useRef(null);
 
   const [formData, setFormData] = useState(initialForm);
@@ -830,4 +830,4 @@ const AddVehicle = () => {
   );
 };
 
-export default AddVehicle;
+export default AddVehiclePage;

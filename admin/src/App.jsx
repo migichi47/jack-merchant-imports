@@ -14,7 +14,7 @@ import PastEmails from "./pages/EmailLogs";
 import ImportDetails from "./pages/ImportDetails";
 import Notifications from "./pages/Notifications";
 import Vehicles from "./pages/Vehicles";
-import AddVehicle from "./pages/addVehicle";
+import AddVehiclePage from "./pages/AddVehiclePage";
 
 const App = () => {
   return (
@@ -32,7 +32,7 @@ const App = () => {
             <Route path="/emails" element={<PastEmails />} />
             <Route path="/import-details/:id" element={<ImportDetails />} />
             <Route path="/notifications" element={<Notifications />} />
-            <Route path="/add-vehicle" element={<AddVehicle />} />
+            <Route path="/add-vehicle" element={<AddVehiclePage />} />
             <Route path="/vehicles" element={<Vehicles />} />
           </Route>
         </Route>
