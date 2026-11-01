@@ -3,16 +3,8 @@ import express from "express";
 import session from "express-session";
 import MongoStore from "connect-mongo";
 import cors from "cors";
-
 import { connectDB } from "./config/db.js";
-import authRoutes from "./routes/loginRoutes.js";
-import queriesRoutes from "./routes/queriesRoutes.js";
-import importRoutes from "./routes/importRoutes.js";
-import settingsRoutes from "./routes/settingsRoutes.js";
-import emailRoutes from "./routes/emailRoutes.js";
-import carapisRoutes from "./routes/carapisRoutes.js";
-import vehiclesRoutes from "./routes/vehiclesRoutes.js";
-import notificationRoutes from "./routes/notificationRoutes.js";
+import apiRoutes from "./routes/index.js";
 
 const app = express();
 
@@ -24,7 +16,6 @@ const startServer = async () => {
 };
 
 startServer();
-
 app.use(
   cors({
     origin: [
@@ -61,14 +52,7 @@ app.use(
   }),
 );
 
-app.use("/api/auth", authRoutes);
-app.use("/api/queries", queriesRoutes);
-app.use("/api/vehicles", vehiclesRoutes);
-app.use("/api/imports", importRoutes);
-app.use("/api/settings", settingsRoutes);
-app.use("/api/emails", emailRoutes);
-app.use("/api/carapis", carapisRoutes);
-app.use("/api/notifications", notificationRoutes);
+app.use("/api", apiRoutes);
 
 app.use(express.urlencoded({ extended: true }));
 
