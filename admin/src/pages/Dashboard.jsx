@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import Button from "../components/Button";
 import {
   ArrowRight,
+  Car,
   CarFront,
   ChartNoAxesCombined,
   MessagesSquare,
@@ -21,6 +22,7 @@ const Dashboard = () => {
     queries,
     loadingDashboard,
     availableMakesCount,
+    vehicles,
   } = useContext(AdminContext);
   const navigate = useNavigate();
 
@@ -32,6 +34,12 @@ const Dashboard = () => {
       to: "/queries",
     },
     {
+      name: "Total Vehicles",
+      value: vehicles?.length,
+      icon: <Car />,
+      to: "/vehicles",
+    },
+    {
       name: "Total Imports",
       value: pastImports?.length ?? 0,
       icon: <CarFront />,
@@ -41,7 +49,7 @@ const Dashboard = () => {
       name: "Total Vehicle Makes",
       value: availableMakesCount ?? 0,
       icon: <ChartNoAxesCombined />,
-      to: "/past-imports",
+      to: "/vehicles",
     },
   ];
 

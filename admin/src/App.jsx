@@ -1,4 +1,3 @@
-import React from "react";
 import { Route, Routes } from "react-router-dom";
 import Login from "./pages/Login";
 import AdminLayout from "./layouts/AdminLayout";
@@ -14,8 +13,8 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import PastEmails from "./pages/EmailLogs";
 import ImportDetails from "./pages/ImportDetails";
 import Notifications from "./pages/Notifications";
-import AddVehicle from "./pages/addVehicle";
 import Vehicles from "./pages/Vehicles";
+import AddVehicle from "./pages/AddVehicle";
 
 const App = () => {
   return (
