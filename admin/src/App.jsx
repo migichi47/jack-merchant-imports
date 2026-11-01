@@ -1,4 +1,6 @@
 import { Route, Routes } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Login from "./pages/Login";
 import AdminLayout from "./layouts/AdminLayout";
 import Dashboard from "./pages/Dashboard";
@@ -6,8 +8,6 @@ import Queries from "./pages/Queries";
 import QueryDetails from "./pages/QueryDetails";
 import PastImports from "./pages/PastImports";
 import AddImport from "./pages/AddImport";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import Settings from "./pages/Settings";
 import ProtectedRoute from "./components/ProtectedRoute";
 import PastEmails from "./pages/EmailLogs";
