@@ -8,14 +8,7 @@ import apiRoutes from "./routes/index.js";
 
 const app = express();
 
-const startServer = async () => {
-  await connectDB();
-  app.listen(process.env.PORT || 3000, () => {
-    console.log(`Server running on port ${process.env.PORT || 3000}`);
-  });
-};
-
-startServer();
+app.set("trust proxy", 1);
 app.use(
   cors({
     origin: [
@@ -30,8 +23,6 @@ app.use(
   }),
 );
 app.use(express.json());
-
-app.set("trust proxy", 1);
 app.use(
   session({
     name: "jm-imports.sid",
@@ -51,9 +42,16 @@ app.use(
     },
   }),
 );
-
 app.use("/api", apiRoutes);
-
 app.use(express.urlencoded({ extended: true }));
+
+const startServer = async () => {
+  await connectDB();
+  app.listen(process.env.PORT || 3000, () => {
+    console.log(`Server running on port ${process.env.PORT || 3000}`);
+  });
+};
+
+startServer();
 
 export default app;

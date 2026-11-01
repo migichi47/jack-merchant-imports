@@ -2,9 +2,25 @@ import { ArrowRight, Calendar, Menu, X } from "lucide-react";
 import { useState } from "react";
 import Logo from "./Logo";
 import { navLinks } from "../data/navlinks";
+import { useEffect } from "react";
+import api from "../services/api";
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [exchangeRate, setExchangeRate] = useState(null);
+  console.log(exchangeRate)
+
+  useEffect(() => {
+    const getExhangeRates = async () => {
+      try {
+        const response = await api.get("/api/rates");
+        setExchangeRate(response.data);
+      } catch (err) {
+        console.error("error in getting exchange rate");
+      }
+    };
+    getExhangeRates();
+  }, []);
 
   return (
     <>
@@ -28,7 +44,7 @@ export default function Header() {
               LIVE RATES
             </span>
             <div>
-              USD/KES: <span className="font-semibold">130.00</span>
+              USD/KES: <span className="font-semibold">{exchangeRate?.rates || "N/A"}</span>
             </div>
           </div>
         </div>

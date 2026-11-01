@@ -14,7 +14,6 @@ export function CarProvider({ children }) {
   const fetchVehicles = async (filters = {}, page = 1) => {
     try {
       setFetching(true);
-      console.log(filters);
 
       const response = await api.get("/api/vehicles", {
         params: {
