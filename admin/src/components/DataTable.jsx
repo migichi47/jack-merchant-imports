@@ -103,13 +103,13 @@ function DataTable({ data }) {
                   {column.render ? column.render(row) : row[column.key]}
                 </td>
               ))}
-              <div className="mt-3 flex gap-5 items-center">
+              <td className="mt-3 flex gap-5 items-center">
                 <Trash
                   className="w-4 text-pink-500 hover:text-red-600"
                   onClick={() => deleteQuery(row._id ?? row.id)}
                 />
                 <StatusBar status={row?.status} />
-              </div>
+              </td>
             </tr>
           ))}
 

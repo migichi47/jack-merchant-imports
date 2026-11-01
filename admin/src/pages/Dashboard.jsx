@@ -15,8 +15,13 @@ import SectionHeading from "../components/SectionHeading";
 import Breadcrumbs from "../components/BreadCrumbs";
 
 const Dashboard = () => {
-  const { pastImports, dashboardQueries, queries, loadingDashboard } =
-    useContext(AdminContext);
+  const {
+    pastImports,
+    dashboardQueries,
+    queries,
+    loadingDashboard,
+    availableMakesCount,
+  } = useContext(AdminContext);
   const navigate = useNavigate();
 
   const dashboardCards = [
@@ -33,8 +38,8 @@ const Dashboard = () => {
       to: "/past-imports",
     },
     {
-      name: "Imported This Month",
-      value: 6,
+      name: "Total Vehicle Makes",
+      value: availableMakesCount ?? 0,
       icon: <ChartNoAxesCombined />,
       to: "/past-imports",
     },
@@ -100,6 +105,7 @@ const Dashboard = () => {
                 View all <ArrowRight className="w-4" />
               </Link>
             </div>
+            <DataTable data={dashboardQueries} />
           </div>
           <PastImportsGrid />
         </div>

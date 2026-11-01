@@ -1,7 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import api from "../services/api";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const AdminContext = createContext();
@@ -13,8 +12,9 @@ export function AdminContextProvider({ children }) {
   const [notifications, setNotifications] = useState([]);
   const [fetchingNotifications, setFetchingNotifications] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
+  const [availableMakes, setAvailableMakes] = useState({});
   const dashboardQueries = queries.slice(0, 3);
-  const navigate = useNavigate();
+  const availableMakesCount = Object.keys(availableMakes).length;
 
   const fetchNotifications = async () => {
     try {
@@ -46,7 +46,20 @@ export function AdminContextProvider({ children }) {
       }
     };
 
+    const fetchAvailableMakes = async () => {
+      setLoadingDashboard(true);
+      try {
+        const response = await api.get("/api/vehicles/available-makes");
+        setAvailableMakes(response.data.availableMakes);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoadingDashboard(false);
+      }
+    };
+
     fetchData();
+    fetchAvailableMakes();
     // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchNotifications();
   }, []);
@@ -100,6 +113,7 @@ export function AdminContextProvider({ children }) {
         setNotifications,
         setUnreadCount,
         unreadCount,
+        availableMakesCount,
       }}
     >
       {children}
