@@ -214,18 +214,18 @@ const AddVehicle = () => {
       <div className="mx-auto max-w-6xl">
         <div className="mb-8">
           <Link
-            to="/"
+            to="/vehicles"
             className="mb-5 inline-flex items-center gap-2 text-sm text-gray-500 transition hover:text-gray-900"
           >
             <ArrowLeft size={17} />
-            Back to home
+            Back to vehicles
           </Link>
 
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div>
-              <div className="mb-2 flex items-center gap-2 text-pink-500">
-                <CarFront size={20} />
-                <span className="text-xs font-semibold uppercase tracking-wider">
+              <div className="mb-2 flex items-center gap-2 text-red-600">
+                <CarFront size={23} />
+                <span className="text-xl font-semibold uppercase tracking-wider">
                   Vehicle Management
                 </span>
               </div>

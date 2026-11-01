@@ -13,6 +13,7 @@ export function AdminContextProvider({ children }) {
   const [fetchingNotifications, setFetchingNotifications] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
   const [availableMakes, setAvailableMakes] = useState({});
+  const [vehicles, setVehicles] = useState({});
   const dashboardQueries = queries.slice(0, 3);
   const availableMakesCount = Object.keys(availableMakes).length;
 
@@ -34,11 +35,22 @@ export function AdminContextProvider({ children }) {
     const fetchData = async () => {
       try {
         setLoadingDashboard(true);
-
         const importsResponse = await api.get("/api/imports");
         setPastImports(importsResponse.data);
         const queriesResponse = await api.get("/api/queries");
         setQueries(queriesResponse.data);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoadingDashboard(false);
+      }
+    };
+
+    const fetchVehicles = async () => {
+      try {
+        setLoadingDashboard(true);
+        const response = await api.get("/api/vehicles");
+        setVehicles(response.data.vehicles);
       } catch (err) {
         console.error(err);
       } finally {
@@ -60,9 +72,12 @@ export function AdminContextProvider({ children }) {
 
     fetchData();
     fetchAvailableMakes();
+    fetchVehicles();
     // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchNotifications();
   }, []);
+
+  console.log(vehicles)
 
   const addImport = async (importData) => {
     const response = await api.post("/api/imports", importData);
@@ -114,6 +129,7 @@ export function AdminContextProvider({ children }) {
         setUnreadCount,
         unreadCount,
         availableMakesCount,
+        vehicles,
       }}
     >
       {children}

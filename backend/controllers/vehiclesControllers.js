@@ -77,6 +77,62 @@ export const getVehicles = async (req, res) => {
   }
 };
 
+export const getAllVehicles = async (req, res) => {
+  try {
+    const filters = {};
+    if (req.query.make) {
+      filters.make = {
+        $regex: req.query.make,
+        $options: "i",
+      };
+    }
+    if (req.query.model) {
+      filters.model = {
+        $regex: req.query.model,
+        $options: "i",
+      };
+    }
+    if (req.query.year) {
+      filters.year = Number(req.query.year);
+    }
+    if (req.query.minYear || req.query.maxYear) {
+      filters.year = {
+        ...(req.query.minYear && {
+          $gte: Number(req.query.minYear),
+        }),
+        ...(req.query.maxYear && {
+          $lte: Number(req.query.maxYear),
+        }),
+      };
+    }
+    if (req.query.fuel_type) {
+      filters.fuel_type = req.query.fuel_type;
+    }
+    if (req.query.transmission) {
+      filters.transmission = req.query.transmission;
+    }
+    if (req.query.body_type) {
+      filters.body_type = req.query.body_type;
+    }
+    if (req.query.source) {
+      filters.source = req.query.source;
+    }
+    const [vehicles, totalVehicles] = await Promise.all([
+      Vehicle.find(filters).sort({ source: 1, createdAt: -1 }),
+      Vehicle.countDocuments(filters),
+    ]);
+    res.status(200).json({
+      success: true,
+      vehicles,
+    });
+  } catch (error) {
+    console.error("Failed to fetch vehicles:", error);
+    res.status(500).json({
+      message: "Could not retrieve vehicles from server",
+    });
+  }
+};
+
 export const getAvailableMakes = async (req, res) => {
   try {
     const makes = await Vehicle.aggregate([

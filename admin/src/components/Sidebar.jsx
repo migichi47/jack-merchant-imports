@@ -24,9 +24,14 @@ const Sidebar = ({ setShowSidebar }) => {
       icon: <MessageCircleQuestionMark className="w-4" />,
     },
     {
+      name: "Total Vehicles",
+      to: "/vehicles",
+      icon: <Car className="w-4" />,
+    },
+    {
       name: "Add Vehicles",
       to: "/add-vehicle",
-      icon: <Car className="w-4" />,
+      icon: <CirclePlus className="w-4" />,
     },
     {
       name: "Past Imports",
