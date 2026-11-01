@@ -14,7 +14,7 @@ import PastEmails from "./pages/EmailLogs";
 import ImportDetails from "./pages/ImportDetails";
 import Notifications from "./pages/Notifications";
 import Vehicles from "./pages/Vehicles";
-import AddVehicle from "./pages/AddVehicle";
+import AddVehicle from "./pages/addVehicle";
 
 const App = () => {
   return (
