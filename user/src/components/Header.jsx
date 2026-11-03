@@ -8,7 +8,6 @@ import api from "../services/api";
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [exchangeRate, setExchangeRate] = useState(null);
-  console.log(exchangeRate)
 
   useEffect(() => {
     const getExhangeRates = async () => {
