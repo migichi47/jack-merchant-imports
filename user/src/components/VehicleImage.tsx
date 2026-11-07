@@ -1,7 +1,12 @@
 import { Ship } from "lucide-react";
 import { useState } from "react";
+import { Vehicle } from "../types/vehicle";
 
-export default function VehicleImage({ vehicle }) {
+type VehicleImageProps = {
+  vehicle: Vehicle;
+};
+
+export default function VehicleImage({ vehicle }: VehicleImageProps) {
   const [failed, setFailed] = useState(false);
   const imageUrl = vehicle.thumbUrl;
 
@@ -19,7 +24,7 @@ export default function VehicleImage({ vehicle }) {
   return (
     <img
       src={imageUrl}
-      alt={`${vehicle.year} ${vehicle.brand_name} ${vehicle.model_name}`}
+      alt={`${vehicle.year} ${vehicle.make} ${vehicle.model}`}
       loading="lazy"
       onError={() => setFailed(true)}
       className="h-full min-h-48 w-full object-cover transition duration-500 group-hover:scale-105"

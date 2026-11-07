@@ -2,8 +2,13 @@ import { ArrowUpRight, Fuel, Gauge, Zap } from "lucide-react";
 import { formatMileage, formatUSD } from "../services/UtilityFunctions";
 import VehicleImage from "./VehicleImage";
 import { useNavigate } from "react-router-dom";
+import { Vehicle } from "../types/vehicle";
 
-export default function VehicleCard({ vehicle }) {
+type VehicleCardProps = {
+  vehicle: Vehicle;
+};
+
+export default function VehicleCard({ vehicle }: VehicleCardProps) {
   const vehicleName = `${vehicle.make} ${vehicle.model}`;
   const navigate = useNavigate();
 
@@ -23,13 +28,13 @@ export default function VehicleCard({ vehicle }) {
       </div>
       <div className="p-5">
         <p className="mb-1 text-xs font-medium uppercase tracking-widest text-pink-500">
-          {vehicle.region || "Japan"}
+          Japan
         </p>
         <h3 className="text-xl font-bold text-neutral-950">{vehicleName}</h3>
         <div className="m-4 flex justify-between border-y border-neutral-100 py-4 text-sm text-neutral-600">
           <span className="flex items-center gap-2">
             <Gauge size={16} className="text-pink-600" />
-            {formatMileage(vehicle.mileage)}
+            {formatMileage(vehicle.mileage ?? 0)}
           </span>
           <span className="flex items-center gap-2 capitalize">
             <Fuel size={16} className="text-pink-600" />
@@ -45,7 +50,7 @@ export default function VehicleCard({ vehicle }) {
           <div>
             <p className="text-xs text-neutral-500">Listed price in Japan</p>
             <p className="mt-1 text-2xl font-extrabold text-neutral-950">
-              {formatUSD(vehicle.price_usd)}
+              {formatUSD(vehicle.price_usd ?? 0)}
             </p>
           </div>
 

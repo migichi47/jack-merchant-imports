@@ -1,4 +1,3 @@
-import React from "react";
 import { useCars } from "../hooks/useCars";
 import PastImportCard from "./PastImportCard";
 import { Loader } from "lucide-react";
@@ -30,7 +29,7 @@ const PastImportsSection = () => {
         ) : (
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {pastImports?.map((item) => (
-              <PastImportCard key={item._id} {...item} />
+              <PastImportCard key={item._id} pastImport={item} />
             ))}
           </div>
         )}

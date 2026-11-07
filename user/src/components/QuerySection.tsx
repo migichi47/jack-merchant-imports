@@ -4,10 +4,19 @@ import { carYears } from "../data/carYears";
 import { useCars } from "../hooks/useCars";
 import PaginationButtons from "./PaginationButtons";
 
+type Filters = {
+  make: string;
+  model: string;
+  minYear: string;
+  maxYear: string;
+  fuel_type: string;
+  transmission: string;
+};
+
 function VehicleSearch() {
-  const [filtering, setFiltering] = useState(false);
-  const [yearFrom, setYearFrom] = useState();
-  const [filters, setFilters] = useState({
+  const [filtering, setFiltering] = useState<boolean>(false);
+  const [yearFrom, setYearFrom] = useState<string>();
+  const [filters, setFilters] = useState<Filters>({
     make: "",
     model: "",
     minYear: "",
@@ -15,21 +24,20 @@ function VehicleSearch() {
     fuel_type: "",
     transmission: "",
   });
-  const { fetchVehicles, vehicles, fetching, availableMakes } =
-    useCars();
+  const { fetchVehicles, vehicles, fetching, availableMakes } = useCars();
   const availableYearsTo = carYears.filter((year) => year >= Number(yearFrom));
 
   const handleSubmit = async () => {
     try {
       fetchVehicles(filters, 1);
     } catch (err) {
-      throw new Error(err, { cause: err });
+      console.error("Failed to search vehicles:", err);
     } finally {
       setFiltering(true);
     }
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
     const { name, value } = e.target;
 
     setFilters((prev) => ({
@@ -180,7 +188,7 @@ function VehicleSearch() {
             <div className="space-y-10">
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
                 {vehicles?.map((vehicle) => (
-                  <VehicleCard key={vehicle.id} vehicle={vehicle} />
+                  <VehicleCard key={vehicle._id} vehicle={vehicle} />
                 ))}
               </div>
               <PaginationButtons />

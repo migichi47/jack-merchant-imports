@@ -1,16 +1,13 @@
 import { CalendarDays, CarFront } from "lucide-react";
+import { PastImport } from "../types/vehicle";
 
-const PastImportCard = ({
-  _id,
-  make,
-  model,
-  year,
-  description,
-  imageUrl,
-  arrival,
-}) => {
-  const formattedDate = arrival
-    ? new Date(arrival).toLocaleDateString("en-KE", {
+type PastImportCardProps = {
+  pastImport: PastImport;
+};
+
+const PastImportCard = ({ pastImport }: PastImportCardProps) => {
+  const formattedDate = pastImport?.arrival
+    ? new Date(pastImport?.arrival).toLocaleDateString("en-KE", {
         day: "numeric",
         month: "short",
         year: "numeric",
@@ -19,14 +16,14 @@ const PastImportCard = ({
 
   return (
     <article
-      key={_id}
+      key={pastImport?._id}
       className="bg-white rounded-xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-md transition-shadow"
     >
       {/* Vehicle Image */}
       <div className="h-52 bg-gray-100 overflow-hidden">
         <img
-          src={imageUrl}
-          alt={`${make} ${model}`}
+          src={pastImport?.imageUrl}
+          alt={`${pastImport?.make} ${pastImport?.model}`}
           className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
         />
       </div>
@@ -45,16 +42,16 @@ const PastImportCard = ({
         </div>
 
         <h3 className="text-lg font-bold text-gray-900">
-          {make} {model}
+          {pastImport?.make} {pastImport?.model}
         </h3>
 
         <div className="flex items-center gap-2 text-sm text-gray-500 mt-1">
           <CarFront size={16} />
-          <span>Year: {year}</span>
+          <span>Year: {pastImport?.year}</span>
         </div>
 
         <p className="text-sm text-gray-600 leading-relaxed mt-4 line-clamp-3">
-          {description}
+          {pastImport?.description}
         </p>
       </div>
     </article>
