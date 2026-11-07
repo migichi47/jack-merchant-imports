@@ -20,13 +20,13 @@ import { Vehicle } from "../types/vehicle";
 import { useCars } from "../hooks/useCars";
 
 const VehicleDetails = () => {
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
   const { handleEnquire } = useCars();
-  const [vehicle, setVehicle] = useState<Vehicle>();
-  const [activeImage, setActiveImage] = useState("");
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  const targetRef = useRef<HTMLDivElement>(null);
+  const [vehicle, setVehicle] = useState<Vehicle | null>(null);
+  const [activeImage, setActiveImage] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string>("");
+  const targetRef = useRef<HTMLFormElement>(null);
 
   const scrollToSection = () => {
     targetRef.current?.scrollIntoView({
@@ -40,10 +40,10 @@ const VehicleDetails = () => {
       try {
         setLoading(true);
         setError("");
-        const response = await api.get(`/api/vehicles/${id}`);
+        const response = await api.get<Vehicle>(`/api/vehicles/${id}`);
         const data = response.data;
         setVehicle(data);
-        setActiveImage(data.thumbUrl);
+        setActiveImage(data.thumbUrl || "");
       } catch (err) {
         console.error(err);
         setError("We couldn't find this vehicle.");
@@ -77,8 +77,12 @@ const VehicleDetails = () => {
   }
 
   // Combine the main image and gallery images without duplicates
-  const images = [
-    ...new Set([vehicle.thumbUrl, ...(vehicle.photos || [])].filter(Boolean)),
+  const images: string[] = [
+    ...new Set(
+      [vehicle.thumbUrl, ...(vehicle.photos || [])].filter(
+        (image): image is string => Boolean(image),
+      ),
+    ),
   ];
 
   const specifications = [
@@ -130,7 +134,7 @@ const VehicleDetails = () => {
 
   return (
     <main className="bg-white min-h-screen">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Breadcrumb */}
         <div className="mb-7">
           <Link
@@ -159,7 +163,7 @@ const VehicleDetails = () => {
           {/* Image gallery */}
           <section className="lg:col-span-3">
             {/* Main image */}
-            <div className="bg-gray-100 rounded-2xl overflow-hidden aspect-[4/3] relative">
+            <div className="bg-gray-100 rounded-2xl overflow-hidden aspect-4/3 relative">
               <img
                 src={activeImage || vehicle.thumbUrl}
                 alt={`${vehicle.make} ${vehicle.model}`}

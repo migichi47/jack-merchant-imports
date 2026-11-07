@@ -1,7 +1,7 @@
 const AboutAndCTA = () => {
   return (
     <section id="about" className="scroll-mt-24">
-      <div className="flex max-w-7xl mx-auto flex-col items-start justify-between gap-8 px-5 sm:px-8 lg:flex-row lg:items-center">
+      <div className="flex max-w-350 mx-auto flex-col items-start justify-between gap-8 px-5 sm:px-8 lg:flex-row lg:items-center">
         <div className="">
           <p className="text-xs font-bold uppercase tracking-[0.25em] text-red-400">
             What do we do?

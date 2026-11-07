@@ -7,8 +7,7 @@ const Hero = () => {
 
   return (
     <section id="home" className="py-10 px-5 flex items-center">
-      <div className="max-w-7xl mx-auto">
-        
+      <div className="w-full mx-auto">
         {sliderVehicles.length === 0 ? <HeroFallback /> : <CarSlider />}
       </div>
     </section>

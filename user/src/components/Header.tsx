@@ -13,7 +13,7 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [exchangeRate, setExchangeRate] = useState<Currencydata | null>(null);
 
-  console.log(exchangeRate)
+  console.log(exchangeRate);
 
   useEffect(() => {
     const getExhangeRates = async () => {
@@ -30,7 +30,7 @@ export default function Header() {
   return (
     <>
       <header className="bg-gray-100 py-2 sm:py-2 px-4">
-        <div className="max-w-7xl mx-auto flex md:justify-between justify-center items-center text-xs sm:text-[12px]">
+        <div className="max-w-[1400px] mx-auto flex md:justify-between justify-center items-center text-xs sm:text-[12px]">
           <div className="hidden md:flex items-center gap-2 text-gray-600">
             <Calendar size={18} />
             <span>
@@ -58,7 +58,7 @@ export default function Header() {
         </div>
       </header>
       <header className="sticky top-0 z-40 border-b border-neutral-200 bg-white/95 backdrop-blur">
-        <div className="mx-auto flex h-15 max-w-7xl items-center justify-between px-5 sm:px-8">
+        <div className="mx-auto flex h-15 w-full items-center justify-between px-5 sm:px-8">
           <Logo />
           <nav className="hidden items-center gap-8 md:flex">
             {navLinks.map((link) => (

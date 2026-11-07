@@ -12,7 +12,6 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-white text-neutral-950">
       {/* Navigation */}
-
       <Header />
       <main>
         <Hero />

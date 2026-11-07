@@ -7,7 +7,7 @@ const QuoteFrom = () => {
       id="request-quote"
       className="scroll-mt-24 bg-neutral-50 py-20 sm:py-24"
     >
-      <div className="mx-auto grid max-w-7xl gap-12 px-5 sm:px-8 lg:grid-cols-[0.8fr_1.2fr]">
+      <div className="mx-auto grid w-full gap-12 px-5 sm:px-8 lg:grid-cols-[0.8fr_1.2fr]">
         <div>
           <p className="text-xs font-bold uppercase tracking-[0.25em] text-red-600">
             Get started

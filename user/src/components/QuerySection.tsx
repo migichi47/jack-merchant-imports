@@ -47,7 +47,7 @@ function VehicleSearch() {
   };
 
   return (
-    <div id="quick-search" className="max-w-7xl mx-auto space-y-20 px-10 mt-20">
+    <div id="quick-search" className="w-full mx-auto space-y-20 px-5 mt-20">
       <div className="shadow-md flex flex-col pb-5">
         <div className="font-bold text-white bg-gray-950 p-2 text-xl">
           Quick Search
@@ -186,7 +186,7 @@ function VehicleSearch() {
         <div className="py-5">
           {vehicles?.length > 0 ? (
             <div className="space-y-10">
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-10">
                 {vehicles?.map((vehicle) => (
                   <VehicleCard key={vehicle._id} vehicle={vehicle} />
                 ))}

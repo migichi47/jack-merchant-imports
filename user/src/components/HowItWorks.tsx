@@ -1,7 +1,7 @@
 const HowItWorks = () => {
   return (
     <section id="how-it-works" className="scroll-mt-24 bg-white py-20 sm:py-24">
-      <div className="mx-auto max-w-7xl px-5 sm:px-8">
+      <div className="mx-auto w-full px-5 sm:px-8">
         <div className="mx-auto max-w-2xl text-center">
           <p className="text-xs font-bold uppercase tracking-[0.25em] text-red-600">
             Simple and transparent
