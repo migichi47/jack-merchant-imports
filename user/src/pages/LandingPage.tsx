@@ -1,4 +1,3 @@
-import { useState } from "react";
 import Header from "../components/Header";
 import Hero from "../components/Hero";
 import TrustStrip from "../components/TrustStrip";
@@ -10,8 +9,6 @@ import Footer from "../components/Footer";
 import PastImportsSection from "../components/PastImportsSection";
 
 export default function LandingPage() {
-  const [maxPrice, setMaxPrice] = useState("Any budget");
-
   return (
     <div className="min-h-screen bg-white text-neutral-950">
       {/* Navigation */}
@@ -20,7 +17,7 @@ export default function LandingPage() {
       <main>
         <Hero />
         <TrustStrip />
-        <QuerySection maxPrice={maxPrice} setMaxPrice={setMaxPrice} />
+        <QuerySection />
         <PastImportsSection />
         <HowItWorks />
         <AboutAndCTA />

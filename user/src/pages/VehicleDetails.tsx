@@ -15,17 +15,18 @@ import {
 } from "lucide-react";
 
 import api from "../services/api";
-import { CarContext } from "../context/CarContext";
 import { QueryForm } from "../components/QueryForm";
+import { useCars } from "./useCars";
+import { Vehicle } from "../types/vehicle";
 
 const VehicleDetails = () => {
   const { id } = useParams();
-  const { handleEnquire } = useContext(CarContext);
-  const [vehicle, setVehicle] = useState(null);
+  const { handleEnquire } = useCars();
+  const [vehicle, setVehicle] = useState<Vehicle>();
   const [activeImage, setActiveImage] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const targetRef = useRef(null);
+  const targetRef = useRef<HTMLDivElement>(null);
 
   const scrollToSection = () => {
     targetRef.current?.scrollIntoView({

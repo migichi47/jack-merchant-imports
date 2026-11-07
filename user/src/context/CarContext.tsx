@@ -1,15 +1,25 @@
-import { useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { CarContext } from "./CarContext";
 import api from "../services/api";
+import type {
+  AvailableMakes,
+  PastImport,
+  Pagination,
+  Vehicle,
+} from "../types/vehicle";
 
-export function CarProvider({ children }) {
-  const [vehicles, setVehicles] = useState([]);
-  const [selectedVehicle, setSelectedVehicle] = useState(null);
-  const [sliderVehicles, setSliderVehicles] = useState([]);
-  const [fetching, setFetching] = useState(false);
-  const [pagination, setPagination] = useState({});
-  const [availableMakes, setAvailableMakes] = useState({});
-  const [pastImports, setPastImports] = useState([]);
+type CarProviderProps = {
+  children: ReactNode;
+};
+
+export function CarProvider({ children }: CarProviderProps) {
+  const [vehicles, setVehicles] = useState<Vehicle[]>([]);
+  const [selectedVehicle, setSelectedVehicle] = useState<Vehicle | null>(null);
+  const [sliderVehicles, setSliderVehicles] = useState<Vehicle[]>([]);
+  const [fetching, setFetching] = useState<boolean>(false);
+  const [pagination, setPagination] = useState<Pagination | null>(null);
+  const [availableMakes, setAvailableMakes] = useState<AvailableMakes>({});
+  const [pastImports, setPastImports] = useState<PastImport[]>([]);
 
   const fetchVehicles = async (filters = {}, page = 1) => {
     try {
@@ -75,7 +85,7 @@ export function CarProvider({ children }) {
     fetchPastImports();
   }, []);
 
-  const handleEnquire = (vehicle) => {
+  const handleEnquire = (vehicle: Vehicle) => {
     setSelectedVehicle(vehicle);
 
     document.getElementById("request-quote")?.scrollIntoView({
