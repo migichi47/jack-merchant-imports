@@ -5,9 +5,15 @@ import { navLinks } from "../data/navlinks";
 import { useEffect } from "react";
 import api from "../services/api";
 
+type Currencydata = {
+  rates: number;
+};
+
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [exchangeRate, setExchangeRate] = useState(null);
+  const [exchangeRate, setExchangeRate] = useState<Currencydata | null>(null);
+
+  console.log(exchangeRate)
 
   useEffect(() => {
     const getExhangeRates = async () => {
@@ -43,7 +49,10 @@ export default function Header() {
               LIVE RATES
             </span>
             <div>
-              USD/KES: <span className="font-semibold">{exchangeRate?.rates || "N/A"}</span>
+              USD/KES:{" "}
+              <span className="font-semibold">
+                {exchangeRate?.rates || "N/A"}
+              </span>
             </div>
           </div>
         </div>
