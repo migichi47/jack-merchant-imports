@@ -1,7 +1,16 @@
 import { Link } from "react-router-dom";
 import { ChevronRight, Home } from "lucide-react";
 
-const Breadcrumbs = ({ items = [] }) => {
+type BreadCrumbItem = {
+  label: string;
+  to?: string;
+};
+
+type BreadCrumbsProps = {
+  items?: BreadCrumbItem[];
+};
+
+const Breadcrumbs = ({ items = [] }: BreadCrumbsProps) => {
   return (
     <nav aria-label="Breadcrumb" className="mb-5">
       <ol className="flex flex-wrap items-center gap-2 text-sm">

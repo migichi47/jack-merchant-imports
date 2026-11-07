@@ -1,4 +1,10 @@
-import { useEffect, useRef, useState } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type ChangeEvent,
+  type SyntheticEvent,
+} from "react";
 import {
   ArrowLeft,
   CarFront,
@@ -15,8 +21,29 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import api from "../services/api";
+import axios from "axios";
 
-const initialForm = {
+type VehicleFormData = {
+  make: string;
+  model: string;
+  year: string;
+  price_usd: string;
+  mileage: string;
+  fuel_type: string;
+  transmission: string;
+  body_type: string;
+  color: string;
+  engine_capacity: string;
+  drive_type: string;
+};
+
+type VehicleImage = {
+  id: string;
+  file: File;
+  preview: string;
+};
+
+const initialForm: VehicleFormData = {
   make: "",
   model: "",
   year: "",
@@ -36,16 +63,16 @@ const MAX_FILE_SIZE = 5 * 1024 * 1024;
 const inputClass = `w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-800
   outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100 placeholder:text-gray-400`;
 const labelClass = "mb-2 block text-sm font-medium text-gray-700";
-const AddVehiclePage = () => {
-  const fileInputRef = useRef(null);
 
+const AddVehiclePage = () => {
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [formData, setFormData] = useState(initialForm);
-  const [images, setImages] = useState([]);
-  const [coverImage, setCoverImage] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [images, setImages] = useState<VehicleImage[]>([]);
+  const [coverImage, setCoverImage] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
   const [uploadProgress, setUploadProgress] = useState(0);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  const [error, setError] = useState<string>("");
+  const [success, setSuccess] = useState<string>("");
 
   useEffect(() => {
     return () => {
@@ -53,7 +80,9 @@ const AddVehiclePage = () => {
     };
   }, [images]);
 
-  const handleChange = (e) => {
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
@@ -61,7 +90,7 @@ const AddVehiclePage = () => {
     }));
   };
 
-  const handleImageChange = (e) => {
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const selectedFiles = Array.from(e.target.files || []);
     setError("");
     setSuccess("");
@@ -71,7 +100,7 @@ const AddVehiclePage = () => {
       e.target.value = "";
       return;
     }
-    const validImages = [];
+    const validImages: VehicleImage[] = [];
     for (const file of selectedFiles) {
       if (!file.type.startsWith("image/")) {
         setError("Only image files are allowed.");
@@ -105,7 +134,7 @@ const AddVehiclePage = () => {
     e.target.value = "";
   };
 
-  const removeImage = (id) => {
+  const removeImage = (id: string) => {
     setImages((prev) => {
       const updated = prev.filter((image) => image.id !== id);
 
@@ -117,11 +146,11 @@ const AddVehiclePage = () => {
     });
   };
 
-  const selectCover = (id) => {
+  const selectCover = (id: string) => {
     setCoverImage(id);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
     setSuccess("");
@@ -185,13 +214,14 @@ const AddVehiclePage = () => {
         top: 0,
         behavior: "smooth",
       });
-    } catch (err) {
-      console.error("Vehicle submission error:", err);
-
-      setError(
-        err.response?.data?.message ||
-          "Something went wrong while adding the vehicle.",
-      );
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err)) {
+        setError(err.response?.data?.message || "Something went wrong.");
+      } else if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("An unexpected error occurred.");
+      }
     } finally {
       setLoading(false);
     }
@@ -653,7 +683,7 @@ const AddVehiclePage = () => {
                   {images.find((image) => image.id === coverImage) ? (
                     <img
                       src={
-                        images.find((image) => image.id === coverImage).preview
+                        images.find((image) => image.id === coverImage)?.preview
                       }
                       alt="Cover preview"
                       className="h-full w-full object-cover"

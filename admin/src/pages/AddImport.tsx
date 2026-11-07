@@ -1,52 +1,58 @@
-import { useState } from "react";
-import { CalendarDays, Image, ImagePlus, X } from "lucide-react";
+import { useState, type ChangeEvent, type SubmitEvent } from "react";
+import { CalendarDays, ImagePlus, X } from "lucide-react";
 
 import { toast } from "react-toastify";
 import api from "../services/api";
 import SectionHeading from "../components/SectionHeading";
 import Breadcrumbs from "../components/BreadCrumbs";
 import { useRef } from "react";
+import axios from "axios";
+
+type ImportFormData = {
+  make: string;
+  model: string;
+  year: string;
+  description: string;
+  arrival: string;
+};
 
 function AddImportForm() {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<ImportFormData>({
     make: "",
     model: "",
     year: "",
     description: "",
     arrival: "",
   });
-  const [image, setImage] = useState(null);
-  const [preview, setPreview] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const fileInputRef = useRef(null);
+  const [image, setImage] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  console.log(formData);
-  const handleChange = (e) => {
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     const { name, value } = e.target;
-
     setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
   };
-  const handleImageChange = (e) => {
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-
     if (!file) return;
-
     if (!file.type.startsWith("image/")) {
       alert("Please select a valid image");
       return;
     }
-
     if (file.size > 5 * 1024 * 1024) {
       alert("Image must be less than 5MB");
       return;
     }
-
     setImage(file);
     setPreview(URL.createObjectURL(file));
   };
+
   const removeImage = () => {
     if (preview) URL.revokeObjectURL(preview);
     setImage(null);
@@ -56,7 +62,7 @@ function AddImportForm() {
     }
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!image) {
       alert("Please select a vehicle image");
@@ -80,11 +86,12 @@ function AddImportForm() {
         description: "",
         arrival: "",
       });
-    } catch (error) {
-      toast.error(
-        error.response?.data?.message ||
-          "Failed to add import. Please try again.",
-      );
+    } catch (error: unknown) {
+      const message = axios.isAxiosError<{ message?: string }>(error)
+        ? error.response?.data?.message
+        : undefined;
+
+      toast.error(message || "Failed to add import. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -250,7 +257,8 @@ function AddImportForm() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full rounded-lg bg-red-600 px-5 py-3 font-semibold text-white transition hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+          className="w-full rounded-lg bg-red-600 px-5 py-3 font-semibold text-white transition hover:bg-red-700
+          disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
         >
           {loading ? "Saving Import..." : "Save Import"}
         </button>
