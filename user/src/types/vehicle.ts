@@ -5,6 +5,8 @@ export type Pagination = {
   totalPages: number;
   totalVehicles: number;
   limit: number;
+  hasPrevPage: boolean;
+  hasNextPage: boolean;
 }
 
 export type Vehicle = {
@@ -12,13 +14,10 @@ export type Vehicle = {
   make: string;
   model: string;
   year: number;
-
   thumbUrl?: string;
-
   photos: {
     url: string;
   }[];
-
   price_usd?: number;
   mileage?: number;
   fuel_type?: string;

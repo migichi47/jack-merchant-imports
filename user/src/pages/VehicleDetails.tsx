@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import {
   ArrowLeft,
@@ -16,8 +16,8 @@ import {
 
 import api from "../services/api";
 import { QueryForm } from "../components/QueryForm";
-import { useCars } from "./useCars";
 import { Vehicle } from "../types/vehicle";
+import { useCars } from "../hooks/useCars";
 
 const VehicleDetails = () => {
   const { id } = useParams();

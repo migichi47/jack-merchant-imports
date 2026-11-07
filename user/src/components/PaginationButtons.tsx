@@ -2,7 +2,11 @@ import { useCars } from "../hooks/useCars";
 import { Loader } from "lucide-react";
 import { twMerge } from "tailwind-merge";
 
-const PaginationButtons = ({ className }) => {
+type PaginationButtonsProps = {
+  className?: string;
+};
+
+const PaginationButtons = ({ className }: PaginationButtonsProps) => {
   const { pagination, fetchVehicles, fetching } = useCars();
 
   return (
@@ -13,10 +17,9 @@ const PaginationButtons = ({ className }) => {
       )}
     >
       <button
-        disabled={!pagination?.hasPrevPage}
+        disabled={!pagination?.hasPrevPage || fetching}
         onClick={() => {
-          console.log("in previous");
-          fetchVehicles({}, pagination?.currentPage - 1);
+          if (pagination) fetchVehicles({}, pagination?.currentPage - 1);
         }}
         className="rounded-lg text-xs sm:text-lg border px-4 py-2 disabled:opacity-40 disabled:cursor-not-allowed
                   cursor-pointer hover:bg-pink-200 transition-all duration-300"
@@ -36,8 +39,10 @@ const PaginationButtons = ({ className }) => {
       )}
 
       <button
-        disabled={!pagination?.hasNextPage}
-        onClick={() => fetchVehicles({}, pagination?.currentPage + 1)}
+        disabled={!pagination?.hasNextPage || fetching}
+        onClick={() => {
+          if (pagination) fetchVehicles({}, pagination?.currentPage + 1);
+        }}
         className="rounded-lg text-xs sm:text-lg border px-4 py-2 disabled:opacity-40 disabled:cursor-not-allowed
                   cursor-pointer hover:bg-pink-200 transition-all duration-300"
       >
