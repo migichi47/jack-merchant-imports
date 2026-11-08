@@ -1,3 +1,5 @@
+
+import type { Dispatch, SetStateAction } from "react";
 import api from "./api";
 
 export const getSettings = async () => {
@@ -5,12 +7,21 @@ export const getSettings = async () => {
   return response.data;
 };
 
-export const updateSettings = async (settings) => {
+export const updateSettings = async (settings: object) => {
   const response = await api.patch("/api/settings", settings);
   return response.data;
 };
 
-export const updateSetting = (setSettings, section, key, value) => {
+export const updateSetting = <
+  T extends { [section: string]: object },
+  S extends keyof T,
+  K extends keyof T[S]
+>(
+  setSettings: Dispatch<SetStateAction<T>>,
+  section: S,
+  key: K,
+  value?: T[S][K]
+) => {
   setSettings((prev) => ({
     ...prev,
     [section]: {

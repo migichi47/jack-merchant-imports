@@ -1,4 +1,4 @@
-export const formatPhoneNumber = (phone) => {
+export const formatPhoneNumber = (phone: string) => {
   phone = phone?.trim();
 
   if (phone?.startsWith("+254")) {

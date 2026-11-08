@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "../components/Button";
 import { CarFront, CheckCheck, Clock } from "lucide-react";
 import StatusBar from "../components/StatusBar";
@@ -6,22 +6,23 @@ import { MdOutlineMail } from "react-icons/md";
 import { FaWhatsapp } from "react-icons/fa";
 import { useParams, Link } from "react-router-dom";
 import api from "../services/api";
-import { AdminContext } from "../context/AdminContext";
+import { type Query, useAdminContext } from "../context/AdminContext";
 import Spinner from "../components/Spinner";
 import { formatPhoneNumber } from "../services/formatPhone";
 import EmailClientForm from "../components/EmailClientForm";
 import Breadcrumbs from "../components/BreadCrumbs";
+import axios from "axios";
 
 const QueryDetails = () => {
-  const [query, setQuery] = useState({});
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  const [showEmailForm, setShowEmailForm] = useState(false);
+  const [query, setQuery] = useState<Query | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string>("");
+  const [showEmailForm, setShowEmailForm] = useState<boolean>(false);
 
   const { id } = useParams();
   const [replied, setReplied] = useState(false);
-  const { deleteQuery } = useContext(AdminContext);
-  const formatedPhone = formatPhoneNumber(query?.contact);
+  const { deleteQuery } = useAdminContext();
+  const formatedPhone = formatPhoneNumber(query?.contact ?? "");
 
   useEffect(() => {
     const fetchQuery = async () => {
@@ -30,7 +31,11 @@ const QueryDetails = () => {
         const response = await api.get(`/api/queries/${id}`);
         setQuery(response.data);
       } catch (err) {
-        setError(err.response?.data?.message || "Failed to fetch queries");
+        if (axios.isAxiosError<{ message?: string }>(err)) {
+          setError(err.response?.data?.message || "Failed to fetch queries");
+        } else {
+          setError("Failed to fetch queries");
+        }
       } finally {
         setLoading(false);
       }
@@ -38,8 +43,8 @@ const QueryDetails = () => {
     fetchQuery();
   }, [id, replied]);
 
-  const updateQuery = async (newStatus) => {
-    await api.patch(`/api/queries/${query._id ?? query.id}`, {
+  const updateQuery = async (newStatus: string) => {
+    await api.patch(`/api/queries/${query?._id ?? query?.id}`, {
       status: newStatus,
     });
     setReplied(newStatus === "inprogress" ? false : true);
@@ -75,14 +80,16 @@ const QueryDetails = () => {
           <h1 className="text-xl font-bold">Enquiry from {query?.fullName}</h1>
           <span className="text-gray-500 text-sm">
             Received{" "}
-            {new Date(query?.createdAt).toLocaleDateString("en-GB", {
-              day: "2-digit",
-              month: "short",
-              year: "numeric",
-              hour: "2-digit",
-              minute: "2-digit",
-              hour12: true,
-            })}
+            {query?.createdAt
+              ? new Date(query.createdAt).toLocaleString("en-GB", {
+                  day: "2-digit",
+                  month: "short",
+                  year: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  hour12: true,
+                })
+              : "N/A"}
           </span>
         </div>
 
@@ -96,7 +103,7 @@ const QueryDetails = () => {
                 <p className="font-semibold text-lg">
                   {query?.car?.make} {query?.car?.model}{" "}
                   <span className="text-sm text-pink-500">
-                    {query?.car?.year?.from} - {query?.car?.year?.to}
+                    year to and year from will be added shortly
                   </span>
                 </p>
               </div>
@@ -126,7 +133,7 @@ const QueryDetails = () => {
                 </Link>
               </Button>
             </div>
-            {showEmailForm && (
+            {showEmailForm && query && (
               <EmailClientForm
                 query={query}
                 onClose={() => setShowEmailForm(false)}
@@ -156,12 +163,11 @@ const QueryDetails = () => {
         <div className="bg-white rounded-xl p-5 space-y-4 border border-gray-200">
           <h2 className="font-bold text-lg">Status & Assignment</h2>
           <div className="space-y-5">
-            <StatusBar status={query?.status} />
+            <StatusBar status={query?.status ?? "new"} />
             <div className="flex gap-4">
               {!replied ? (
                 <Button
                   className="bg-transparent text-black border border-gray-300 active:bg-black active:text-white"
-                  variant={null}
                   onClick={() => updateQuery("replied")}
                 >
                   <CheckCheck className="w-4" />
@@ -170,7 +176,6 @@ const QueryDetails = () => {
               ) : (
                 <Button
                   className="bg-transparent text-black border border-gray-300 active:bg-black active:text-white"
-                  variant={null}
                   onClick={() => updateQuery("inprogress")}
                 >
                   <Clock className="w-4" />
@@ -182,7 +187,7 @@ const QueryDetails = () => {
         </div>
 
         <div className="w-full flex justify-end">
-          <Button onClick={() => deleteQuery(query?._id ?? query?.id)}>
+          <Button onClick={() => deleteQuery(query?._id ?? "")}>
             Delete Query
           </Button>
         </div>

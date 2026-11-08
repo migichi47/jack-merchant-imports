@@ -1,7 +1,8 @@
 import { Ship } from "lucide-react";
 import { useState } from "react";
+import { type Vehicle } from "../context/AdminContext";
 
-export default function VehicleImage({ vehicle }) {
+export default function VehicleImage({ vehicle }: { vehicle: Vehicle }) {
   const [failed, setFailed] = useState(false);
   const imageUrl = vehicle.thumbUrl;
 

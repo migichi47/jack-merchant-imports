@@ -1,8 +1,13 @@
 import { GoDotFill } from "react-icons/go";
-import React from "react";
 import { twMerge } from "tailwind-merge";
 
-const StatusBar = ({ status }) => {
+type Status = "new" | "inprogress" | "replied";
+
+type StatusBarProps = {
+  status: Status;
+};
+
+const StatusBar = ({ status }: StatusBarProps) => {
   const variants = {
     new: "bg-pink-100 text-pink-900",
     inprogress: "bg-amber-100 text-amber-900 min-w-25",

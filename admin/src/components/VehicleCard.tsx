@@ -2,12 +2,12 @@ import { Fuel, Gauge, Trash, Zap } from "lucide-react";
 import VehicleImage from "./VehicleImage";
 import { formatMileage, formatUSD } from "../services/utilityFunctions";
 import api from "../services/api";
-import { useContext, useState } from "react";
-import { AdminContext } from "../context/AdminContext";
+import { useState } from "react";
+import { useAdminContext, type Vehicle } from "../context/AdminContext";
 
-export default function VehicleCard({ vehicle }) {
+export default function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
   const [deleting, setDeleting] = useState(false);
-  const { setVehicles } = useContext(AdminContext);
+  const { setVehicles } = useAdminContext();
   const vehicleName = `${vehicle.make} ${vehicle.model}`;
 
   const deleteVehicle = async () => {
@@ -37,13 +37,13 @@ export default function VehicleCard({ vehicle }) {
       </div>
       <div className="p-5">
         <p className="mb-1 text-xs font-medium uppercase tracking-widest text-pink-500">
-          {vehicle.region || "Japan"}
+          Japan
         </p>
         <h3 className="text-xl font-bold text-neutral-950">{vehicleName}</h3>
         <div className="m-4 flex justify-between border-y border-neutral-100 py-4 text-sm text-neutral-600">
           <span className="flex items-center gap-2">
             <Gauge size={16} className="text-pink-600" />
-            {formatMileage(vehicle.mileage)}
+            {vehicle.mileage && formatMileage(vehicle.mileage)}
           </span>
           <span className="flex items-center gap-2 capitalize">
             <Fuel size={16} className="text-pink-600" />
@@ -59,7 +59,7 @@ export default function VehicleCard({ vehicle }) {
           <div>
             <p className="text-xs text-neutral-500">Listed price in Japan</p>
             <p className="mt-1 text-2xl font-extrabold text-neutral-950">
-              {formatUSD(vehicle.price_usd)}
+              {formatUSD(vehicle.price_usd ?? 0)}
             </p>
           </div>
 

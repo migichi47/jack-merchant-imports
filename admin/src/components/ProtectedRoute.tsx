@@ -4,7 +4,7 @@ import api from "../services/api";
 import { Loader } from "lucide-react";
 
 const ProtectedRoute = () => {
-  const [authenticated, setAuthenticated] = useState(null);
+  const [authenticated, setAuthenticated] = useState(false);
 
   useEffect(() => {
     let active = true;

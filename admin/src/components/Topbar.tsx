@@ -1,14 +1,18 @@
 import { GoDotFill } from "react-icons/go";
 import { useNavigate } from "react-router-dom";
 import { Bell, Menu } from "lucide-react";
-import { useContext, useState } from "react";
+import { useState, type Dispatch, type SetStateAction } from "react";
 import NotificationsModal from "../modals/NotificationModals";
-import { AdminContext } from "../context/AdminContext";
+import { useAdminContext } from "../context/AdminContext";
 
-const Topbar = ({ setShowSidebar }) => {
+const Topbar = ({
+  setShowSidebar,
+}: {
+  setShowSidebar: Dispatch<SetStateAction<boolean>>;
+}) => {
   const [showNotifications, setShowNotifications] = useState(false);
   const navigate = useNavigate();
-  const { unreadCount } = useContext(AdminContext);
+  const { unreadCount } = useAdminContext();
   return (
     <div className="flex items-center h-full justify-between px-5 sm:pr-20">
       <div className="flex items-center gap-7">

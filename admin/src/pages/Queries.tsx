@@ -1,12 +1,11 @@
-import  { useContext } from "react";
 import { Search } from "lucide-react";
 import DataTable from "../components/DataTable";
-import { AdminContext } from "../context/AdminContext";
+import { useAdminContext } from "../context/AdminContext";
 import SectionHeading from "../components/SectionHeading";
 import Breadcrumbs from "../components/BreadCrumbs";
 
 const Queries = () => {
-  const { queries } = useContext(AdminContext);
+  const { queries } = useAdminContext();
 
   return (
     <>

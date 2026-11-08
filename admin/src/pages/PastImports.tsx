@@ -1,6 +1,5 @@
 import { Search } from "lucide-react";
-import { useContext } from "react";
-import { AdminContext } from "../context/AdminContext";
+import { useAdminContext } from "../context/AdminContext";
 import { PastImportCard } from "../components/PastImportsGrid";
 import SectionHeading from "../components/SectionHeading";
 import Breadcrumbs from "../components/BreadCrumbs";
@@ -8,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 
 const PastImports = () => {
-  const { pastImports } = useContext(AdminContext);
+  const { pastImports } = useAdminContext();
   const navigate = useNavigate();
 
   return (

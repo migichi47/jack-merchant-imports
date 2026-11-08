@@ -27,13 +27,15 @@ export type Query = {
   fullName: string;
   contact: string;
   email: string;
-  status: string;
+  status: "new" | "inprogress" | "replied";
   budget?: string;
   description?: string;
   car: {
     make: string;
     model: string;
   };
+  createdAt: string;
+  stringupdatedAt: string;
   [key: string]: unknown;
 };
 export type Vehicle = {
@@ -41,6 +43,11 @@ export type Vehicle = {
   make?: string;
   model?: string;
   year?: number;
+  fuel_type?: string;
+  transmission?: string;
+  thumbUrl?: string;
+  mileage?: number;
+  price_usd?: number;
   [key: string]: unknown;
 };
 export type Notification = {
@@ -51,6 +58,7 @@ export type Notification = {
   isRead: boolean;
   relatedQuery?: string;
   link?: string;
+  createdAt?: string;
   [key: string]: unknown;
 };
 type AdminContextType = {

@@ -10,9 +10,20 @@ import {
   X,
   Car,
 } from "lucide-react";
+import type { Dispatch, ReactNode, SetStateAction } from "react";
 
-const Sidebar = ({ setShowSidebar }) => {
-  const links = [
+type SidebarProps = {
+  setShowSidebar: Dispatch<SetStateAction<boolean>>;
+};
+
+type SidebarLink = {
+  name: string;
+  to: string;
+  icon: ReactNode;
+};
+
+const Sidebar = ({ setShowSidebar }: SidebarProps) => {
+  const links: SidebarLink[] = [
     {
       name: "Dashboard",
       to: "/",

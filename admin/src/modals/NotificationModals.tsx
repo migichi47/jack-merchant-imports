@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 import {
   Bell,
   X,
@@ -12,9 +12,19 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api";
-import { AdminContext } from "../context/AdminContext";
+import { useAdminContext, type Notification } from "../context/AdminContext";
 
-const NotificationsModal = ({ isOpen, onClose, setShowNotifications }) => {
+type NotificationsModalProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  setShowNotifications: Dispatch<SetStateAction<boolean>>;
+};
+
+const NotificationsModal = ({
+  isOpen,
+  onClose,
+  setShowNotifications,
+}: NotificationsModalProps) => {
   const [activeFilter, setActiveFilter] = useState("all");
   const {
     fetchingNotifications,
@@ -23,11 +33,11 @@ const NotificationsModal = ({ isOpen, onClose, setShowNotifications }) => {
     setUnreadCount,
     unreadCount,
     fetchNotifications,
-  } = useContext(AdminContext);
+  } = useAdminContext();
   const navigate = useNavigate();
 
   // Mark one notification as read
-  const markAsRead = async (id) => {
+  const markAsRead = async (id: string) => {
     try {
       await api.patch(`/api/notifications/${id}/read`);
       setNotifications((prev) =>
@@ -54,7 +64,7 @@ const NotificationsModal = ({ isOpen, onClose, setShowNotifications }) => {
     }
   };
 
-  const deleteNotification = async (id) => {
+  const deleteNotification = async (id: string) => {
     try {
       await api.delete(`/api/notifications/${id}`);
       fetchNotifications();
@@ -75,7 +85,7 @@ const NotificationsModal = ({ isOpen, onClose, setShowNotifications }) => {
   };
 
   // Handle notification click
-  const handleNotificationClick = async (notification) => {
+  const handleNotificationClick = async (notification: Notification) => {
     if (!notification.isRead) {
       await markAsRead(notification._id);
     }
@@ -93,7 +103,7 @@ const NotificationsModal = ({ isOpen, onClose, setShowNotifications }) => {
   });
 
   // Notification icon
-  const getNotificationIcon = (type) => {
+  const getNotificationIcon = (type: string) => {
     switch (type) {
       case "new_query":
         return <CarFront size={19} />;
@@ -107,7 +117,7 @@ const NotificationsModal = ({ isOpen, onClose, setShowNotifications }) => {
   };
 
   // Relative time
-  const getTimeAgo = (date) => {
+  const getTimeAgo = (date: string) => {
     // eslint-disable-next-line react-hooks/purity
     const seconds = Math.floor((Date.now() - new Date(date).getTime()) / 1000);
     if (seconds < 60) return "Just now";
@@ -121,7 +131,7 @@ const NotificationsModal = ({ isOpen, onClose, setShowNotifications }) => {
   // Close modal using Escape
   useEffect(() => {
     if (!isOpen) return;
-    const handleEscape = (e) => {
+    const handleEscape = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
     };
     window.addEventListener("keydown", handleEscape);
@@ -271,9 +281,11 @@ const NotificationsModal = ({ isOpen, onClose, setShowNotifications }) => {
                       {notification.message}
                     </p>
 
-                    <span className="text-xs text-gray-400 mt-2 block">
-                      {getTimeAgo(notification.createdAt)}
-                    </span>
+                    {notification.createdAt && (
+                      <span className="text-xs text-gray-400 mt-2 block">
+                        {getTimeAgo(notification.createdAt)}
+                      </span>
+                    )}
                   </div>
                   <Trash
                     className="w-5 my-auto cursor-pointer"

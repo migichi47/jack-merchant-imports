@@ -1,4 +1,10 @@
-const Toggle = ({ checked, onChange }) => (
+type ToggleProps = {
+  checked: boolean;
+  onChange: (checked: boolean) => void;
+  disabled?: boolean;
+};
+
+const Toggle = ({ checked, onChange }: ToggleProps) => (
   <button
     type="button"
     role="switch"

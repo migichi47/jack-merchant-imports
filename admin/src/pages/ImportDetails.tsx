@@ -79,7 +79,7 @@ const ImportDetails = () => {
     {
       key: "arrival",
       label: "Date of import",
-      value: formatDate(pastImport?.arrival),
+      value: formatDate(pastImport?.arrival ?? new Date()),
     },
     {
       key: "description",

@@ -1,16 +1,23 @@
-import { useState } from "react";
+import { useState, type SyntheticEvent } from "react";
 import { toast } from "react-toastify";
 import { Send, X } from "lucide-react";
 import api from "../services/api";
+import type { Query } from "../context/AdminContext";
+import axios from "axios";
 
-const EmailClientForm = ({ query, onClose }) => {
+type EmailClientFormProps = {
+  query: Query;
+  onClose: () => void;
+};
+
+const EmailClientForm = ({ query, onClose }: EmailClientFormProps) => {
   const [subject, setSubject] = useState(
     "Update on your vehicle import request",
   );
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!subject.trim() || !message.trim()) {
@@ -28,8 +35,9 @@ const EmailClientForm = ({ query, onClose }) => {
 
       toast.success(response.data.message);
       onClose();
-    } catch (error) {
-      toast.error(error.response?.data?.message || "Failed to send email");
+    } catch (err) {
+      if (axios.isAxiosError<{ message?: string }>(err))
+        toast.error(err.response?.data?.message || "Failed to send email");
     } finally {
       setLoading(false);
     }

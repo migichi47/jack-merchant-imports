@@ -1,15 +1,41 @@
 import { Trash } from "lucide-react";
-import { useContext } from "react";
-import { AdminContext } from "../context/AdminContext";
+import { useAdminContext, type Query } from "../context/AdminContext";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api";
 import StatusBar from "./StatusBar";
 import { toast } from "react-toastify";
+import type { ReactNode } from "react";
 
-function DataTable({ data }) {
+// Extend Query with the fields used by this component
+type DataTableQuery = Query & {
+  fullName?: string;
+  contact?: string;
+  budget?: number | string;
+  status?: string;
+  car?: {
+    make?: string;
+    model?: string;
+    year?: {
+      from?: number | string;
+      to?: number | string;
+    };
+  };
+};
+
+type DataTableProps = {
+  data: DataTableQuery[];
+};
+
+type Column = {
+  key: string;
+  label: string;
+  render?: (row: DataTableQuery) => ReactNode;
+};
+
+function DataTable({ data }: DataTableProps) {
   const navigate = useNavigate();
-  const { deleteQuery, setQueries, queries } = useContext(AdminContext);
-  const columns = [
+  const { deleteQuery, setQueries, queries } = useAdminContext();
+  const columns: Column[] = [
     {
       key: "fullName",
       label: "Customer Name",
@@ -46,7 +72,7 @@ function DataTable({ data }) {
     },
   ];
 
-  const openQuery = async (row) => {
+  const openQuery = async (row: DataTableQuery) => {
     navigate(`/queries/${row._id ?? row.id}`);
     await api.patch(`/api/queries/${row._id ?? row.id}`, {
       status: "inprogress",
@@ -100,7 +126,7 @@ function DataTable({ data }) {
                   className="whitespace-nowrap px-6 py-4 text-gray-700"
                   onClick={() => openQuery(row)}
                 >
-                  {column.render ? column.render(row) : row[column.key]}
+                  {column.render ? column.render(row) : "N/A"}
                 </td>
               ))}
               <td className="mt-3 flex gap-5 items-center">

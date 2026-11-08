@@ -1,11 +1,13 @@
-import { ArrowRight, Pencil, Trash } from "lucide-react";
-import { useContext } from "react";
-import { AdminContext } from "../context/AdminContext";
+import { ArrowRight, Trash } from "lucide-react";
+import { type MouseEvent } from "react";
+import { useAdminContext, type PastImport } from "../context/AdminContext";
 import { Link, useNavigate } from "react-router-dom";
 import { formatDate } from "../services/formatDate";
 
+type PastImportCardProps = PastImport;
+
 export const PastImportsGrid = () => {
-  const { pastImports } = useContext(AdminContext);
+  const { pastImports } = useAdminContext();
 
   return (
     <div className="bg-white border border-gray-200 p-5 space-y-5 rounded-xl">
@@ -35,13 +37,12 @@ export const PastImportCard = ({
   imageUrl,
   _id: id,
   year,
-  description,
   arrival,
-}) => {
-  const { deleteImport } = useContext(AdminContext);
+}: PastImportCardProps) => {
+  const { deleteImport } = useAdminContext();
   const navigate = useNavigate();
 
-  const handleDelete = (e) => {
+  const handleDelete = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     deleteImport(id);
   };
@@ -52,7 +53,7 @@ export const PastImportCard = ({
       onClick={() => navigate(`/import-details/${id}`)}
     >
       <img
-        src={imageUrl}
+        src={imageUrl || "/placeholder.png"}
         alt=""
         className="rounded-t-lg object-cover max-h-60 w-full"
       />
@@ -65,9 +66,11 @@ export const PastImportCard = ({
             <span>{year} manufacture</span>
             <span>
               Imported{" "}
-              <span className="text-pink-500 font-semibold">
-                {formatDate(arrival)}
-              </span>
+              {arrival && (
+                <span className="text-pink-500 font-semibold">
+                  {formatDate(arrival)}
+                </span>
+              )}
             </span>
           </div>
           <button

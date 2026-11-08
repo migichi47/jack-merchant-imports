@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { ChevronRight, SlidersHorizontal } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import { toast } from "react-toastify";
 import { initialSettings } from "../utils/settings/initialSettings";
 import SectionHeading from "../components/SectionHeading";
 import { Field, SettingRow } from "../components/SettingsComponents";
-import navigation from "../utils/settings/navigation";
+import navigation, { type SettingsTab } from "../utils/settings/navigation";
 
 import { useEffect } from "react";
 import {
@@ -13,9 +13,11 @@ import {
   updateSettings,
 } from "../services/SettingsServices";
 import Breadcrumbs from "../components/BreadCrumbs";
+import axios from "axios";
+
 
 const Settings = () => {
-  const [activeTab, setActiveTab] = useState("email");
+  const [activeTab, setActiveTab] = useState<SettingsTab>("email");
   const [settings, setSettings] = useState(initialSettings);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -39,10 +41,14 @@ const Settings = () => {
             ...data.business,
           },
         });
-      } catch (error) {
-        toast.error(
-          error.response?.data?.message || "Failed to load settings.",
-        );
+      } catch (err) {
+        if (axios.isAxiosError<{ message?: string }>(err)) {
+          toast.error(
+            err.response?.data?.message || "Failed to load settings.",
+          );
+        } else {
+          toast.error("Failed to load settings.");
+        }
       } finally {
         setLoading(false);
       }
@@ -75,8 +81,12 @@ const Settings = () => {
       }
 
       toast.success(response.message || "Settings saved successfully.");
-    } catch (error) {
-      toast.error(error.response?.data?.message || "Failed to save settings.");
+    } catch (err) {
+      if (axios.isAxiosError<{ message?: string }>(err)) {
+        toast.error(err.response?.data?.message || "Failed to save settings.");
+      } else {
+        toast.error("Failed to save settings.");
+      }
     } finally {
       setSaving(false);
     }
@@ -93,7 +103,7 @@ const Settings = () => {
           title="Query confirmation emails"
           description="Send a confirmation when a client submits a vehicle import request."
           checked={settings.emails.queryConfirmation}
-          onChange={(v) =>
+          onChange={(v: boolean) =>
             updateSetting(setSettings, "emails", "queryConfirmation", v)
           }
         />
@@ -102,7 +112,7 @@ const Settings = () => {
           title="Query status updates"
           description="Notify clients when their query status changes."
           checked={settings.emails.statusUpdates}
-          onChange={(v) =>
+          onChange={(v: boolean) =>
             updateSetting(setSettings, "emails", "statusUpdates", v)
           }
         />
@@ -111,7 +121,7 @@ const Settings = () => {
           title="Import completion emails"
           description="Notify clients when their vehicle import process is completed."
           checked={settings.emails.importCompletion}
-          onChange={(v) =>
+          onChange={(v: boolean) =>
             updateSetting(setSettings, "emails", "importCompletion", v)
           }
         />
@@ -120,7 +130,7 @@ const Settings = () => {
           title="New query alerts"
           description="Notify the administrator when a new client request arrives."
           checked={settings.emails.newQueryAlerts}
-          onChange={(v) =>
+          onChange={(v: boolean) =>
             updateSetting(setSettings, "emails", "newQueryAlerts", v)
           }
         />
@@ -129,7 +139,7 @@ const Settings = () => {
           title="Failed email alerts"
           description="Notify the administrator when an email fails to send."
           checked={settings.emails.failedEmailAlerts}
-          onChange={(v) =>
+          onChange={(v: boolean) =>
             updateSetting(setSettings, "emails", "failedEmailAlerts", v)
           }
         />
@@ -167,7 +177,7 @@ const Settings = () => {
             title="Follow-up reminders"
             description="Enable reminders for queries that have not been followed up."
             checked={settings.queries.followUpReminders}
-            onChange={(v) =>
+            onChange={(v: boolean) =>
               updateSetting(setSettings, "queries", "followUpReminders", v)
             }
           />
@@ -205,8 +215,13 @@ const Settings = () => {
             title="Require cancellation reason"
             description="Require an explanation before an admin cancels a query."
             checked={settings.queries.requireCancellationReason}
-            onChange={(v) =>
-              updateSetting("queries", "requireCancellationReason", v)
+            onChange={(v: boolean) =>
+              updateSetting(
+                setSettings,
+                "queries",
+                "requireCancellationReason",
+                v,
+              )
             }
           />
         </div>
@@ -225,26 +240,34 @@ const Settings = () => {
         <Field
           label="Business name"
           value={settings.business.name}
-          onChange={(v) => updateSetting("business", "name", v)}
+          onChange={(v: string) =>
+            updateSetting(setSettings, "business", "name", v)
+          }
           placeholder="Business name"
         />
         <Field
           label="Contact email"
           type="email"
           value={settings.business.contactEmail}
-          onChange={(v) => updateSetting("business", "contactEmail", v)}
+          onChange={(v: string) =>
+            updateSetting(setSettings, "business", "contactEmail", v)
+          }
           placeholder="info@yourdomain.com"
         />
         <Field
           label="Phone number"
           value={settings.business.phone}
-          onChange={(v) => updateSetting("business", "phone", v)}
+          onChange={(v: string) =>
+            updateSetting(setSettings, "business", "phone", v)
+          }
           placeholder="+254 7XX XXX XXX"
         />
         <Field
           label="WhatsApp number"
           value={settings.business.whatsapp}
-          onChange={(v) => updateSetting("business", "whatsapp", v)}
+          onChange={(v: string) =>
+            updateSetting(setSettings, "business", "whatsapp", v)
+          }
           placeholder="+254 7XX XXX XXX"
         />
       </div>
@@ -263,7 +286,7 @@ const Settings = () => {
   };
 
   const activeItem = navigation.find((item) => item.id === activeTab);
-  const ActiveIcon = activeItem.icon;
+  const ActiveIcon = activeItem?.icon;
 
   if (loading) {
     return (
@@ -347,11 +370,13 @@ const Settings = () => {
             <main className="min-w-0 rounded-xl border border-gray-200 bg-white p-5 shadow-sm sm:p-7">
               <div className="mb-6 flex items-center gap-3 border-b border-gray-100 pb-5">
                 <div className="rounded-lg bg-red-50 p-2.5">
-                  <ActiveIcon className="h-5 w-5 text-red-600" />
+                  {ActiveIcon && (
+                    <ActiveIcon className="h-5 w-5 text-red-600" />
+                  )}
                 </div>
                 <div>
                   <h2 className="font-bold text-gray-900">
-                    {activeItem.label}
+                    {activeItem?.label}
                   </h2>
                   <p className="mt-0.5 text-xs text-gray-500">
                     Jack Merchants Imports administration
