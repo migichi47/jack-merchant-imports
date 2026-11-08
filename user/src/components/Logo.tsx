@@ -1,7 +1,10 @@
-import React from "react";
 import { Link } from "react-router-dom";
 
-const Logo = ({ variant = "primary" }) => {
+type LogoProps = {
+  variant?: "primary" | "secondary";
+};
+
+const Logo = ({ variant = "primary" }: LogoProps) => {
   const variants = {
     primary:
       "https://res.cloudinary.com/pzmxzqp0/image/upload/v1791925121/f1b934d6-71ab-40b5-8ced-c2ada86dcaea-remover-bg.png",

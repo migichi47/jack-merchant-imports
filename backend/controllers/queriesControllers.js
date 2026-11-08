@@ -2,6 +2,7 @@ import Notification from "../models/Notification.js";
 import Query from "../models/queries.js";
 import EmailLog from "../models/emailLog.js";
 import { sendClientEmail } from "../services/emailServices.js";
+import { getGeneralSettings } from "../services/settingServices.js";
 
 export const getQueries = async (req, res) => {
   try {

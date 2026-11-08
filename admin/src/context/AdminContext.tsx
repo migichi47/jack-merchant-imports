@@ -1,19 +1,94 @@
-import { createContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useEffect,
+  useState,
+  type Dispatch,
+  type ReactNode,
+  type SetStateAction,
+} from "react";
+
 import api from "../services/api";
 import { toast } from "react-toastify";
 
-// eslint-disable-next-line react-refresh/only-export-components
-export const AdminContext = createContext();
+// types
+export type PastImport = {
+  _id: string;
+  make: string;
+  model: string;
+  year: number;
+  description?: string;
+  imageUrl?: string;
+  arrival?: Date;
+};
+export type ImportData = Omit<PastImport, "_id">;
+export type Query = {
+  _id: string;
+  fullName: string;
+  contact: string;
+  email: string;
+  status: string;
+  budget?: string;
+  description?: string;
+  car: {
+    make: string;
+    model: string;
+  };
+  [key: string]: unknown;
+};
+export type Vehicle = {
+  _id: string;
+  make?: string;
+  model?: string;
+  year?: number;
+  [key: string]: unknown;
+};
+export type Notification = {
+  _id: string;
+  title: string;
+  message: string;
+  type: string;
+  isRead: boolean;
+  relatedQuery?: string;
+  link?: string;
+  [key: string]: unknown;
+};
+type AdminContextType = {
+  pastImports: PastImport[];
+  addImport: (importData: ImportData) => Promise<unknown>;
+  deleteImport: (id: string) => Promise<void>;
+  deleteQuery: (id: string) => Promise<void>;
+  loadingDashboard: boolean;
+  queries: Query[];
+  setQueries: Dispatch<SetStateAction<Query[]>>;
+  dashboardQueries: Query[];
+  fetchNotifications: () => Promise<void>;
+  fetchingNotifications: boolean;
+  notifications: Notification[];
+  setNotifications: Dispatch<SetStateAction<Notification[]>>;
+  setUnreadCount: Dispatch<SetStateAction<number>>;
+  unreadCount: number;
+  availableMakesCount: number;
+  vehicles: Vehicle[];
+  setVehicles: Dispatch<SetStateAction<Vehicle[]>>;
+};
+export const AdminContext = createContext<AdminContextType | undefined>(
+  undefined,
+);
 
-export function AdminContextProvider({ children }) {
-  const [pastImports, setPastImports] = useState([]);
-  const [queries, setQueries] = useState([]);
-  const [loadingDashboard, setLoadingDashboard] = useState(false);
-  const [notifications, setNotifications] = useState([]);
-  const [fetchingNotifications, setFetchingNotifications] = useState(false);
-  const [unreadCount, setUnreadCount] = useState(0);
+type AdminContextProviderProps = {
+  children: ReactNode;
+};
+
+export function AdminContextProvider({ children }: AdminContextProviderProps) {
+  const [pastImports, setPastImports] = useState<PastImport[]>([]);
+  const [queries, setQueries] = useState<Query[]>([]);
+  const [loadingDashboard, setLoadingDashboard] = useState<boolean>(false);
+  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [fetchingNotifications, setFetchingNotifications] =
+    useState<boolean>(false);
+  const [unreadCount, setUnreadCount] = useState<number>(0);
   const [availableMakes, setAvailableMakes] = useState({});
-  const [vehicles, setVehicles] = useState([]);
+  const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const dashboardQueries = queries.slice(0, 3);
   const availableMakesCount = Object.keys(availableMakes).length;
 
@@ -76,13 +151,13 @@ export function AdminContextProvider({ children }) {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchNotifications();
   }, []);
-  const addImport = async (importData) => {
+  const addImport = async (importData: ImportData) => {
     const response = await api.post("/api/imports", importData);
     setPastImports((prev) => [...prev, response.data.import]);
     return response.data;
   };
 
-  const deleteImport = async (id) => {
+  const deleteImport = async (id: string) => {
     if (!window.confirm(`Confirm delete import?`)) {
       return;
     }
@@ -90,12 +165,13 @@ export function AdminContextProvider({ children }) {
       const response = await api.delete(`/api/imports/${id}`);
       setPastImports((prev) => prev.filter((item) => item._id !== id));
       toast.success(response.data.message);
-    } catch (err) {
-      toast.error(err.response?.data?.message || "Could not delete import");
+    } catch (err: unknown) {
+      toast.error("Could not delete import");
+      console.error("Failed to delete import");
     }
   };
 
-  const deleteQuery = async (id) => {
+  const deleteQuery = async (id: string) => {
     if (!window.confirm(`Confirm delete query?`)) {
       return;
     }
@@ -103,8 +179,9 @@ export function AdminContextProvider({ children }) {
       await api.delete(`/api/queries/${id}`);
       setQueries((prev) => prev.filter((query) => query._id !== id));
       toast.success("query deleted successfully");
-    } catch (err) {
-      toast.error(err.response?.data?.message || "Could not delete query");
+    } catch (err: unknown) {
+      toast.error("Could not delete query");
+      console.error("Failed to delete query");
     }
   };
 

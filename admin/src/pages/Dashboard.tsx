@@ -15,6 +15,13 @@ import Spinner from "../components/Spinner";
 import SectionHeading from "../components/SectionHeading";
 import Breadcrumbs from "../components/BreadCrumbs";
 
+type DashboardCard = {
+  name: string;
+  value: string;
+  icon: React.ReactNode;
+  to: string;
+};
+
 const Dashboard = () => {
   const {
     pastImports,
@@ -26,7 +33,7 @@ const Dashboard = () => {
   } = useContext(AdminContext);
   const navigate = useNavigate();
 
-  const dashboardCards = [
+  const dashboardCards: DashboardCard[] = [
     {
       name: "Total Queries",
       value: queries?.length,
