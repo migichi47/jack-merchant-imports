@@ -95,6 +95,9 @@ const Login = () => {
                   password: e.target.value,
                 });
               }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") handleSubmit();
+              }}
             />
             <span
               className="cursor-pointer absolute right-5 bottom-2"

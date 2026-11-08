@@ -4,32 +4,27 @@ import api from "../services/api";
 import { Loader } from "lucide-react";
 
 const ProtectedRoute = () => {
-  const [authenticated, setAuthenticated] = useState(false);
+  const [authenticated, setAuthenticated] = useState<boolean | undefined>();
 
   useEffect(() => {
-    let active = true;
-
     api
       .get("/api/auth/me")
       .then(() => {
-        if (active) setAuthenticated(true);
+        console.log("Setting authenticated to true");
+        setAuthenticated(true);
       })
-      .catch(() => {
-        if (active) setAuthenticated(false);
+      .catch((error) => {
+        console.log("Setting authenticated to false", error);
+        setAuthenticated(false);
       });
-
-    return () => {
-      active = false;
-    };
   }, []);
 
-  if (authenticated === null) {
+  console.log("Current authentication state:", authenticated);
+
+  if (authenticated === undefined) {
     return (
-      <div className="flex flex-col min-h-screen items-center justify-center">
-        <span>
-          <Loader className="animate-spin text-pink-500 w-10 h-10" />
-        </span>
-        Checking authentication...
+      <div className="flex min-h-screen items-center justify-center">
+        <Loader className="animate-spin text-pink-500 w-10 h-10" />
       </div>
     );
   }

@@ -39,10 +39,12 @@ function DataTable({ data }: DataTableProps) {
     {
       key: "fullName",
       label: "Customer Name",
+      render: (row) => `${row.fullName}`,
     },
     {
       key: "contact",
       label: "Phone",
+      render: (row) => `${row.contact} `,
     },
     {
       key: "car",
