@@ -1,4 +1,3 @@
-
 import { CircleAlert, Eye, EyeOff } from "lucide-react";
 import Button from "../components/Button";
 import Logo from "../components/Logo";
@@ -6,13 +5,14 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import api from "../services/api";
 import { toast } from "react-toastify";
+import axios from "axios";
 
 const Login = () => {
   const [form, setForm] = useState({
     username: "",
     password: "",
   });
-  const [error, setError] = useState();
+  const [error, setError] = useState<string>();
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
@@ -25,10 +25,18 @@ const Login = () => {
       await api.post("/api/auth/login", form);
       toast.success("Login successful");
       navigate("/");
-    } catch (err) {
-      setError(
-        err?.response?.data?.message || "Unable to log in. Please try again.",
-      );
+    } catch (err: unknown) {
+      if (axios.isAxiosError<{ message?: string }>(err)) {
+        setError(
+          err.response?.data.message || "unable to login, please try again",
+        );
+      } else {
+        setError(
+          err instanceof Error
+            ? err.message
+            : "unable to login, please try again",
+        );
+      }
     } finally {
       setLoading(false);
     }

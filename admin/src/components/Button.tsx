@@ -1,5 +1,14 @@
-import React from "react";
+import { type MouseEventHandler, type ReactNode } from "react";
 import { twMerge } from "tailwind-merge";
+
+type ButtonProps = {
+  children: ReactNode;
+  variant?: "primary" | "secondary";
+  className?: string;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
+  type?: "submit" | "reset" | "button";
+  disabled?: boolean;
+};
 
 const Button = ({
   children,
@@ -7,7 +16,8 @@ const Button = ({
   className,
   onClick,
   type,
-}) => {
+  ...props
+}: ButtonProps) => {
   const variants = {
     primary: "bg-red-600 border border-gray-200 text-white",
     secondary: "bg-black",
@@ -19,6 +29,7 @@ const Button = ({
   };
 
   const overlaySpanVariants = {
+    primary: "",
     secondary: "bg-gray-100/20",
   };
   return (
@@ -30,6 +41,7 @@ const Button = ({
       )}
       onClick={onClick}
       type={type}
+      {...props}
     >
       <span
         className={twMerge(

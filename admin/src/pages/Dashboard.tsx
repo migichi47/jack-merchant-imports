@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import Button from "../components/Button";
 import {
   ArrowRight,
@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 import DataTable from "../components/DataTable";
 import { PastImportsGrid } from "../components/PastImportsGrid";
-import { AdminContext } from "../context/AdminContext";
+import { useAdminContext } from "../context/AdminContext";
 import { Link, useNavigate } from "react-router-dom";
 import Spinner from "../components/Spinner";
 import SectionHeading from "../components/SectionHeading";
@@ -17,7 +17,7 @@ import Breadcrumbs from "../components/BreadCrumbs";
 
 type DashboardCard = {
   name: string;
-  value: string;
+  value: number;
   icon: React.ReactNode;
   to: string;
 };
@@ -30,7 +30,7 @@ const Dashboard = () => {
     loadingDashboard,
     availableMakesCount,
     vehicles,
-  } = useContext(AdminContext);
+  } = useAdminContext();
   const navigate = useNavigate();
 
   const dashboardCards: DashboardCard[] = [

@@ -11,9 +11,23 @@ import {
   AlertTriangle,
   LoaderCircle,
   ArrowUpRight,
+  type LucideIcon,
 } from "lucide-react";
 import api from "../services/api";
 import Breadcrumbs from "../components/BreadCrumbs";
+
+type Email = {
+  _id: string;
+  to?: string;
+  subject?: string;
+  message?: string;
+  type?: string;
+  status?: string;
+  error?: string;
+  queryId?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+};
 
 const statusStyles = {
   sent: {
@@ -38,11 +52,28 @@ const statusStyles = {
   },
 };
 
-const formatDate = (date) => {
+type EmailStatus = keyof typeof statusStyles;
+
+type StatusConfig = {
+  label: string;
+  className: string;
+  icon: LucideIcon;
+};
+
+type StatusBadgeProps = {
+  status?: string;
+};
+
+// Modal props
+type EmailDetailsModalProps = {
+  email: Email | null;
+  onClose: () => void;
+};
+
+const formatDate = (date: Date) => {
   if (!date) return "—";
 
   const parsedDate = new Date(date);
-
   if (Number.isNaN(parsedDate.getTime())) return "Invalid date";
 
   return parsedDate.toLocaleString("en-KE", {
@@ -54,18 +85,23 @@ const formatDate = (date) => {
   });
 };
 
-const formatType = (type = "") =>
+const formatType = (type = ""): string =>
   type
     .split("_")
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ") || "Unknown";
 
-const StatusBadge = ({ status }) => {
-  const config = statusStyles[status?.toLowerCase()] ?? {
-    label: status || "Unknown",
-    className: "bg-gray-100 text-gray-600 border-gray-200",
-    icon: AlertTriangle,
-  };
+const StatusBadge = ({ status }: StatusBadgeProps) => {
+  const normalizedStatus = status?.toLowerCase() ?? "";
+
+  const config: StatusConfig =
+    normalizedStatus in statusStyles
+      ? statusStyles[normalizedStatus as EmailStatus]
+      : {
+          label: status || "Unknown",
+          className: "bg-gray-100 text-gray-600 border-gray-200",
+          icon: AlertTriangle,
+        };
 
   const Icon = config.icon;
 
@@ -79,7 +115,7 @@ const StatusBadge = ({ status }) => {
   );
 };
 
-const EmailDetailsModal = ({ email, onClose }) => {
+const EmailDetailsModal = ({ email, onClose }: EmailDetailsModalProps) => {
   if (!email) return null;
 
   return (
@@ -100,7 +136,6 @@ const EmailDetailsModal = ({ email, onClose }) => {
             <div className="rounded-xl bg-orange-50 p-3 text-orange-600">
               <Mail size={22} />
             </div>
-
             <div>
               <h2
                 id="email-modal-title"
@@ -113,7 +148,6 @@ const EmailDetailsModal = ({ email, onClose }) => {
               </p>
             </div>
           </div>
-
           <button
             onClick={onClose}
             aria-label="Close email details"
@@ -122,12 +156,11 @@ const EmailDetailsModal = ({ email, onClose }) => {
             <X size={20} />
           </button>
         </div>
-
         <div className="space-y-5 overflow-y-auto p-5 sm:p-6">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <StatusBadge status={email.status} />
             <span className="text-sm text-gray-500">
-              {formatDate(email.createdAt)}
+              {formatDate(email.createdAt ?? new Date())}
             </span>
           </div>
 
@@ -204,13 +237,12 @@ const EmailDetailsModal = ({ email, onClose }) => {
               <div>
                 <p className="text-gray-400">Last updated</p>
                 <p className="mt-1 text-gray-700">
-                  {formatDate(email.updatedAt)}
+                  {formatDate(email.updatedAt ?? new Date())}
                 </p>
               </div>
             </div>
           </div>
         </div>
-
         <div className="flex justify-end border-t border-gray-100 p-4">
           <button
             onClick={onClose}
@@ -225,13 +257,13 @@ const EmailDetailsModal = ({ email, onClose }) => {
 };
 
 export default function PastEmails() {
-  const [emails, setEmails] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  const [search, setSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState("all");
-  const [typeFilter, setTypeFilter] = useState("all");
-  const [selectedEmail, setSelectedEmail] = useState(null);
+  const [emails, setEmails] = useState<Email[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string>("");
+  const [search, setSearch] = useState<string>("");
+  const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [typeFilter, setTypeFilter] = useState<string>("all");
+  const [selectedEmail, setSelectedEmail] = useState<Email | null>(null);
 
   const fetchEmails = async () => {
     try {
@@ -250,12 +282,9 @@ export default function PastEmails() {
       }
 
       setEmails(records);
-    } catch (err) {
-      setError(
-        err.response?.data?.message ||
-          err.message ||
-          "Could not load email records.",
-      );
+    } catch (err: unknown) {
+      setError("Could not load email records.");
+      console.error(err);
     } finally {
       setLoading(false);
     }
@@ -302,7 +331,7 @@ export default function PastEmails() {
   ).length;
 
   const sentCount = emails.filter((email) =>
-    ["sent", "delivered"].includes(email.status?.toLowerCase()),
+    ["sent", "delivered"].includes(email.status?.toLowerCase() ?? ""),
   ).length;
 
   return (
@@ -540,7 +569,11 @@ export default function PastEmails() {
                         </td>
 
                         <td className="whitespace-nowrap px-5 py-4 text-sm text-gray-500">
-                          {formatDate(email.createdAt)}
+                          {formatDate(
+                            email.createdAt
+                              ? new Date(email.createdAt)
+                              : new Date(),
+                          )}
                         </td>
 
                         <td className="px-5 py-4 text-right">

@@ -6,13 +6,23 @@ import { Check, Pencil, X } from "lucide-react";
 import { toast } from "react-toastify";
 import { formatDate } from "../services/formatDate";
 import Breadcrumbs from "../components/BreadCrumbs";
+import { type PastImport } from "../context/AdminContext";
+import axios from "axios";
+
+type EditableField = "make" | "model" | "year" | "arrival" | "description";
+
+type DetailField = {
+  key: EditableField;
+  label: string;
+  value: string | number;
+};
 
 const ImportDetails = () => {
-  const { id } = useParams();
-  const [pastImport, setPastImport] = useState({});
-  const [editingField, setEditingField] = useState([]);
-  const [update, setUpdate] = useState();
-  const [updating, setUpdating] = useState(false);
+  const { id } = useParams<{ id: string }>();
+  const [pastImport, setPastImport] = useState<PastImport | null>(null);
+  const [editingField, setEditingField] = useState<EditableField | null>(null);
+  const [update, setUpdate] = useState<string>();
+  const [updating, setUpdating] = useState<boolean>(false);
 
   const fetchPastImports = async () => {
     const response = await api.get(`/api/imports/${id}`);
@@ -28,38 +38,43 @@ const ImportDetails = () => {
   }, [id]);
 
   const updateImport = async () => {
-    if (!update) return;
+    if (!update || !editingField || !id) return;
     setUpdating(true);
     try {
       const response = await api.patch(`/api/imports/${id}`, {
         [editingField]: update,
       });
-      toast.success(response.message || "Import updated succeessfully");
+      toast.success(response.data.message || "Import updated succeessfully");
       setUpdate("");
-      setEditingField("");
+      setEditingField(null);
       fetchPastImports();
-    } catch (err) {
-      toast.error(err.message || err.response || "failed to update import");
+    } catch (err: unknown) {
+      const message = axios.isAxiosError<{ message?: string }>(err)
+        ? err.response?.data?.message
+        : err instanceof Error
+          ? err.message
+          : undefined;
+      toast.error(message || "failed to update import");
     } finally {
       setUpdating(false);
     }
   };
 
-  const detailFields = [
+  const detailFields: DetailField[] = [
     {
       key: "make",
       label: "Make",
-      value: pastImport?.make,
+      value: pastImport?.make ?? "",
     },
     {
       key: "model",
       label: "Model",
-      value: pastImport?.model,
+      value: pastImport?.model ?? "",
     },
     {
       key: "year",
       label: "Year of Manufacture",
-      value: pastImport?.year,
+      value: pastImport?.year ?? "",
     },
     {
       key: "arrival",

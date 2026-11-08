@@ -1,8 +1,12 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import { twMerge } from "tailwind-merge";
 
-const Logo = ({ variant = "primary", className }) => {
+type LogoProps = {
+  variant?: "primary" | "secondary";
+  className?: string;
+};
+
+const Logo = ({ variant = "primary", className }: LogoProps) => {
   const variants = {
     primary:
       "https://res.cloudinary.com/pzmxzqp0/image/upload/v1791925121/f1b934d6-71ab-40b5-8ced-c2ada86dcaea-remover-bg.png",
