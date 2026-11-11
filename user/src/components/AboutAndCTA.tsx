@@ -1,97 +1,119 @@
-import { Pause, Play } from "lucide-react";
+import { Handshake} from "lucide-react";
 import { useEffect, useState } from "react";
-
-type Card = {
-  id: number;
-  title: string;
-  description: string;
-  position: string;
-  index: number;
-};
+import { whyChooseUs } from "../data/aboutAndCTAData";
+import { useCars } from "../hooks/useCars";
 
 const AboutAndCTA = () => {
-  const [topCard, setTopCard] = useState<number>(1);
-  const [play, setPlay] = useState<boolean>(true);
+  const { pastImports } = useCars();
+  const [carImage, setCarImage] = useState<string | undefined>(undefined);
 
   useEffect(() => {
-    if (!play) return;
-    const interval = setInterval(() => {
-      setTopCard((prev) => {
-        if (prev >= 3) {
-          clearInterval(interval);
-          return (prev = 1);
-        }
-        return prev + 1;
-      });
-    }, 2000);
-    return () => {
-      clearInterval(interval);
-    };
-  }, [topCard, play]);
-
-  const cards: Card[] = [
-    {
-      id: 1,
-      title: "Driving Dreams. Delivering Happiness.",
-      description:
-        "At Jack Merchant Imports, we believe that importing a vehicle is more than just a transaction; it is about fulfilling dreams, creating memorable experiences and giving our clients confidence in every purchase. Over the past two years, we have built our business around one fundamental promise: to deliver quality vehicles and exceptional customer experiences. Our journey has been driven by a passion for automobiles and an unwavering commitment to helping clients access quality, reliable and competitively priced vehicles from the international market, particularly Japan.",
-      position: "top-30 right-5",
-      index: 1 ,
-    },
-    {
-      id: 2,
-      title: "Our Commitment to Quality",
-      description:
-        "Quality is at the heart of everything we do. From carefully identifying vehicles to reviewing auction information, assessing vehicle condition and coordinating the importation process, we pay attention to the details that matter. We understand that purchasing a vehicle is a significant investment. That is why we strive to make the process transparent, professional and seamless, ensuring our clients make informed decisions and receive value for their money.",
-      position: "bottom-5 right-52",
-      index: 2,
-    },
-    {
-      id: 3,
-      title: "Two Years of Trust and Happiness",
-      description:
-        "Over the last two years, our greatest achievement has not simply been the number of vehicles imported, but the smiles, satisfaction and trust of the clients we have served. Every successful delivery represents another dream fulfilled, another milestone celebrated and another relationship built. We take pride in walking with our clients throughout the journey, from vehicle selection and purchase to shipping, clearance and final delivery.",
-      position: "top-5 left-70",
-      index: 0,
-    },
-  ];
+    const randomCarImport = Math.floor(Math.random() * pastImports?.length);
+    setCarImage(pastImports[randomCarImport]?.imageUrl ?? undefined);
+  }, [pastImports]);
 
   return (
-    <section id="about" className="scroll-mt-24 px-10">
-      <div
-        className="flex max-w-350 mx-auto flex-col items-start justify-between gap-8 px-5 sm:px-8 lg:flex-row
-        lg:items-center shadow-[0_4px_10px_rgba(0,0,0,0.3)] bg-linear-to-br from-white to-black/80 via-red-400 relative h-150"
-      >
-        <span
-          className="absolute top-5 left-5 rounded-full border border-gray-400 p-2 cursor-pointer hover:bg-gray-200
-          transition duration-300"
-          onClick={() => setPlay((prev) => !prev)}
+    <section className="py-24 px-4 md:px-16 bg-neutral-50">
+      <div className="max-w-7xl mx-auto">
+        {/* ABOUT US */}
+        <div
+          id="about"
+          className="grid md:grid-cols-2 gap-16 items-center md:mb-28 mb-18"
         >
-          {play ? (
-            <Play className="text-gray-600" />
-          ) : (
-            <Pause className="text-gray-600" />
-          )}
-        </span>
-        <div className="space-y-15 w-150 flex flex-col">
-          <p className="text-sm font-bold uppercase tracking-[0.25em] text-black">
-            What do we do?
-          </p>
-          <h2 className="mt-4 text-3xl text-transparent bg-clip-text bg-linear-to-r via-black/60 to-black from-red-800 font-black tracking-wider leading-13 sm:text-5xl">
-            About Jack Merchants Imports
-          </h2>
-        </div>
-        {cards.map((card) => (
-          <div
-            key={card.id}
-            className={`leading-7 text-neutral-500 bg-white absolute ${card.position} w-150 flex flex-col gap-2 items-center
-            rounded-lg p-5 text-center shadow-lg ${topCard === card.id ? "z-10  border border-red-600 scale-105" : `z-${card.index}`}
-            transition duration-300`}
-          >
-            <h1 className="font-bold text-black text-xl">{card.title}</h1>
-            <p className="text-md text-zinc-500 leading-6">{card.description}</p>
+          <div>
+            <span className="text-red-600 font-semibold uppercase tracking-widest text-sm">
+              About Jack Merchant Imports
+            </span>
+
+            <h2 className="text-4xl md:text-5xl font-bold text-neutral-900 mt-4 leading-tight">
+              Driving Dreams.
+              <span className="text-red-600"> Delivering Happiness.</span>
+            </h2>
+            <p className="text-neutral-600 leading-8 mt-6">
+              At Jack Merchant Imports, we believe that importing a vehicle is
+              more than just a transaction; it is about fulfilling dreams,
+              creating memorable experiences and giving our clients confidence
+              in every purchase.
+            </p>
+            <p className="text-neutral-600 leading-8 mt-4">
+              Over the past two years, we have built our business around one
+              fundamental promise: to deliver quality vehicles and exceptional
+              customer experiences. Our journey is driven by a passion for
+              automobiles and an unwavering commitment to helping clients access
+              reliable and competitively priced vehicles from international
+              markets, particularly Japan.
+            </p>
+            <div className="flex gap-10 mt-8">
+              <div>
+                <h3 className="text-4xl font-bold text-red-600">2+</h3>
+                <p className="text-sm text-neutral-500 mt-1">
+                  Years of Experience
+                </p>
+              </div>
+              <div>
+                <h3 className="text-4xl font-bold text-red-600">100%</h3>
+                <p className="text-sm text-neutral-500 mt-1">
+                  Client Commitment
+                </p>
+              </div>
+            </div>
           </div>
-        ))}
+
+          <div className="relative">
+            <img
+              src={carImage}
+              alt="Premium imported vehicle"
+              className="w-full h-[450px] object-cover rounded-2xl shadow-xl"
+            />
+            <div className="absolute -bottom-6 -left-6 bg-red-600 text-white p-6 rounded-xl shadow-lg">
+              <p className="text-3xl font-bold">2+</p>
+              <p className="text-sm">Years of building trust</p>
+            </div>
+          </div>
+        </div>
+
+        {/* WHY CHOOSE US */}
+        <div id="why-choose-us">
+          <div className="text-center max-w-2xl mx-auto mb-14">
+            <span className="text-red-600 font-semibold uppercase tracking-widest text-sm">
+              Why Choose Us
+            </span>
+
+            <h2 className="text-4xl md:text-5xl font-bold text-neutral-900 mt-4">
+              More Than Just Importing Cars
+            </h2>
+
+            <p className="text-neutral-500 leading-7 mt-5">
+              We make the journey to owning your dream vehicle straightforward,
+              transparent and rewarding.
+            </p>
+          </div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {whyChooseUs.map((value) => {
+              const Icon = value.icon ?? Handshake;
+
+              return (
+                <div
+                  key={value.title}
+                  className="bg-white p-8 rounded-xl border border-neutral-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition duration-300"
+                >
+                  <div className="w-14 h-14 flex items-center justify-center rounded-xl bg-red-50 text-red-600">
+                    <Icon size={28} />
+                  </div>
+
+                  <h3 className="text-xl font-bold text-neutral-900 mt-6">
+                    {value.title}
+                  </h3>
+
+                  <p className="text-neutral-500 leading-7 mt-3">
+                    {value.description}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
       </div>
     </section>
   );

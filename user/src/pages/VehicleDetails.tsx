@@ -134,7 +134,7 @@ const VehicleDetails = () => {
 
   return (
     <main className="bg-white min-h-screen">
-      <div className="w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 max-w-450 mx-auto">
         {/* Breadcrumb */}
         <div className="mb-7">
           <Link
@@ -159,7 +159,7 @@ const VehicleDetails = () => {
           <p className="text-gray-500 mt-2">{vehicle.year} model</p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-10">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-10 max-w-400 mx-auto">
           {/* Image gallery */}
           <section className="lg:col-span-3">
             {/* Main image */}

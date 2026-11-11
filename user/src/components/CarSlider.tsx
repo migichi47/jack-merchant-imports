@@ -25,7 +25,7 @@ const CarSlider = () => {
         disableOnInteraction: false,
         pauseOnMouseEnter: true,
       }}
-      className="flex max-w-md sm:max-w-150 md:max-w-200 lg:max-w-300"
+      className="flex sm:max-w-150 md:max-w-200 lg:max-w-300"
     >
       {sliderVehicles.map((car) => (
         <SwiperSlide>

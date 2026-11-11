@@ -65,7 +65,7 @@ export const QueryForm = forwardRef<HTMLFormElement>((_, ref) => {
     <form
       ref={ref}
       onSubmit={handleSubmit}
-      className="rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm w-full sm:p-8 sm:max-w-200 sm:min-w-160 mx-auto"
+      className="rounded-2xl border border-neutral-200 bg-white py-6 px-4 shadow-sm w-full sm:p-8 sm:max-w-200 sm:min-w-160 mx-auto"
     >
       {selectedVehicle ? (
         <h2 className="font-semibold text-green-600">

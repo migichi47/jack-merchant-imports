@@ -47,8 +47,8 @@ function VehicleSearch() {
   };
 
   return (
-    <div id="quick-search" className="w-full mx-auto space-y-20 px-5 mt-20">
-      <div className="shadow-md flex flex-col pb-5">
+    <div id="quick-search" className="w-full mx-auto space-y-20 px-2 mt-20">
+      <div className="shadow-md flex flex-col pb-5 max-w-450 mx-auto">
         <div className="font-bold text-white bg-gray-950 p-2 text-xl">
           Quick Search
         </div>
@@ -175,7 +175,7 @@ function VehicleSearch() {
           {fetching ? "searching..." : "Search vehicles"}
         </button>
       </div>
-      <div className="space-y-5">
+      <div className="space-y-5 max-w-450 mx-auto">
         <div className="flex items-center justify-between">
           <h1 className="font-bold text-[20px] sm:text-2xl">
             {filtering ? "Search Results" : "Top Viewed Vehicles"}

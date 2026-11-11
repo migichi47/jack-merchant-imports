@@ -8,7 +8,7 @@ const PastImportsSection = () => {
   // receiving _id, make, model, year, description, imageUrl, arrival
   return (
     <section id="past-imports" className="scroll-mt-24 bg-white py-10">
-      <div className="mx-auto w-full px-5 sm:px-8 space-y-10">
+      <div className="w-full px-2 sm:px-8 space-y-10 max-w-450 mx-auto">
         <div className="mx-auto max-w-2xl text-center">
           <p className="text-xs font-bold uppercase tracking-[0.25em] text-red-600"></p>
           <h2 className="mt-3 text-3xl font-black tracking-tight sm:text-5xl">

@@ -5,10 +5,10 @@ const QuoteFrom = () => {
   return (
     <section
       id="request-quote"
-      className="scroll-mt-24 bg-neutral-50 py-20 sm:py-24"
+      className="scroll-mt-24 bg-neutral-50 sm:py-24"
     >
-      <div className="mx-auto grid w-full gap-12 px-5 sm:px-8 lg:grid-cols-[0.8fr_1.2fr]">
-        <div>
+      <div className="max-w-450 mx-auto grid w-full gap-12 px-2 sm:px-8 lg:grid-cols-[0.8fr_1.2fr]">
+        <div className="px-4">
           <p className="text-xs font-bold uppercase tracking-[0.25em] text-red-600">
             Get started
           </p>
