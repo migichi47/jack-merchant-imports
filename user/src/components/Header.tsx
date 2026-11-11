@@ -13,8 +13,6 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [exchangeRate, setExchangeRate] = useState<Currencydata | null>(null);
 
-  console.log(exchangeRate);
-
   useEffect(() => {
     const getExhangeRates = async () => {
       try {

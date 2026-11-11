@@ -20,7 +20,7 @@ const PastImportCard = ({ pastImport }: PastImportCardProps) => {
       className="bg-white rounded-xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-md transition-shadow"
     >
       {/* Vehicle Image */}
-      <div className="h-52 bg-gray-100 overflow-hidden">
+      <div className="h-80 bg-gray-100 overflow-hidden">
         <img
           src={pastImport?.imageUrl}
           alt={`${pastImport?.make} ${pastImport?.model}`}
@@ -34,22 +34,18 @@ const PastImportCard = ({ pastImport }: PastImportCardProps) => {
           <span className="text-xs font-semibold uppercase tracking-wider text-red-600 bg-red-50 px-3 py-1 rounded-full">
             Past Import
           </span>
-
           <div className="flex items-center gap-1.5 text-xs text-gray-500">
             <CalendarDays size={14} />
             <span>{formattedDate}</span>
           </div>
         </div>
-
         <h3 className="text-lg font-bold text-gray-900">
           {pastImport?.make} {pastImport?.model}
         </h3>
-
         <div className="flex items-center gap-2 text-sm text-gray-500 mt-1">
           <CarFront size={16} />
           <span>Year: {pastImport?.year}</span>
         </div>
-
         <p className="text-sm text-gray-600 leading-relaxed mt-4 line-clamp-3">
           {pastImport?.description}
         </p>
