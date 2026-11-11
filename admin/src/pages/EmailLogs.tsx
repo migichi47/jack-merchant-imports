@@ -12,9 +12,13 @@ import {
   LoaderCircle,
   ArrowUpRight,
   type LucideIcon,
+  ArrowLeft,
 } from "lucide-react";
 import api from "../services/api";
 import Breadcrumbs from "../components/BreadCrumbs";
+import { Link } from "react-router-dom";
+
+const pageIsUnderDevelopment = true;
 
 type Email = {
   _id: string;
@@ -269,7 +273,6 @@ export default function PastEmails() {
     try {
       setLoading(true);
       setError("");
-
       // Assumes GET /api/emails returns an array or { emails: [] }
       const response = await api.get("/api/emails");
 
@@ -319,9 +322,7 @@ export default function PastEmails() {
 
       const matchesStatus =
         statusFilter === "all" || email.status?.toLowerCase() === statusFilter;
-
       const matchesType = typeFilter === "all" || email.type === typeFilter;
-
       return matchesSearch && matchesStatus && matchesType;
     });
   }, [emails, search, statusFilter, typeFilter]);
@@ -333,6 +334,43 @@ export default function PastEmails() {
   const sentCount = emails.filter((email) =>
     ["sent", "delivered"].includes(email.status?.toLowerCase() ?? ""),
   ).length;
+
+  if (pageIsUnderDevelopment)
+    return (
+      <main className="min-h-screen bg-neutral-50 flex pt-20 sm:pt-50 justify-center">
+        <div className="max-w-xl w-full text-center">
+          <div className="w-20 h-20 rounded-2xl bg-red-50 text-red-600 flex items-center justify-center mx-auto mb-8">
+            <Clock size={38} />
+          </div>
+
+          <span className="text-red-600 uppercase tracking-[0.25em] text-xs font-bold">
+            Coming Soon
+          </span>
+
+          <h1 className="text-4xl md:text-6xl font-bold text-neutral-900 mt-5 leading-tight">
+            Something Great Is
+            <span className="text-red-600"> on the Way.</span>
+          </h1>
+
+          <p className="text-neutral-500 leading-8 mt-6 text-lg">
+            We're working behind the scenes to bring you something exciting.
+            This page will be available shortly. Thank you for your patience!
+          </p>
+
+          <Link
+            to="/"
+            className="inline-flex items-center gap-3 bg-red-600 hover:bg-red-700 text-white px-7 py-3.5 rounded-lg font-semibold mt-9 transition"
+          >
+            <ArrowLeft size={18} />
+            Back to Home
+          </Link>
+
+          <p className="text-neutral-400 text-sm mt-16">
+            Jack Merchant Imports · Driving Dreams. Delivering Happiness.
+          </p>
+        </div>
+      </main>
+    );
 
   return (
     <>

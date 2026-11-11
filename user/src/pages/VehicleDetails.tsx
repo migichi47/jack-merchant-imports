@@ -134,7 +134,7 @@ const VehicleDetails = () => {
 
   return (
     <main className="bg-white min-h-screen">
-      <div className="w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 max-w-450 mx-auto">
+      <div className="w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 max-w-450">
         {/* Breadcrumb */}
         <div className="mb-7">
           <Link

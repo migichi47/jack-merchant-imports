@@ -28,7 +28,7 @@ export default function Header() {
   return (
     <>
       <header className="bg-gray-100 py-2 sm:py-2 px-4">
-        <div className="max-w-[1400px] mx-auto flex md:justify-between justify-center items-center text-xs sm:text-[12px]">
+        <div className="max-w-350 mx-auto flex md:justify-between justify-center items-center text-xs sm:text-[12px]">
           <div className="hidden md:flex items-center gap-2 text-gray-600">
             <Calendar size={18} />
             <span>

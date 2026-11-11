@@ -6,7 +6,7 @@ import {
   deleteOneQuery,
   getQueries,
   getQueryById,
-  sendManualEmail,
+  // sendManualEmail,
   updateQueryStatus,
 } from "../controllers/queriesControllers.js";
 
@@ -14,7 +14,7 @@ const router = express.Router();
 
 router.post("/", addQuery);
 router.get("/", requireAuth, getQueries);
-router.post("/:id/email", requireAuth, sendManualEmail);
+// router.post("/:id/email", requireAuth, sendManualEmail);
 router.delete("/all", requireAuth, deleteAllQueries);
 router.get("/:id", requireAuth, getQueryById);
 router.delete("/:id", requireAuth, deleteOneQuery);

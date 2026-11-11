@@ -28,7 +28,6 @@ export const addQuery = async (req, res) => {
     }
 
     const newQuery = await Query.create(req.body);
-
     await Notification.create({
       title: "New query",
       message: `A customer submitted a ${newQuery.car.make} ${newQuery.car.model} query.`,
@@ -37,53 +36,53 @@ export const addQuery = async (req, res) => {
       link: `/queries/${newQuery._id}`,
     });
 
-    const settings = await getGeneralSettings();
-    if (newQuery.email && settings.emails.queryConfirmation) {
-      const subject = "We received your vehicle import request";
+    // const settings = await getGeneralSettings();
+    // if (newQuery.email && settings.emails.queryConfirmation) {
+    //   const subject = "We received your vehicle import request";
 
-      const message =
-        `Hello ${newQuery.fullName},\n\n` +
-        "Thank you for contacting Jack Merchants Imports. " +
-        "We have received your vehicle import request and our team " +
-        "will review the details and contact you.\n\n" +
-        "This email confirms receipt of your request; it does not " +
-        "mean your vehicle order has been confirmed.\n\n" +
-        "Thank you,\nJack Merchants Imports";
+    //   const message =
+    //     `Hello ${newQuery.fullName},\n\n` +
+    //     "Thank you for contacting Jack Merchants Imports. " +
+    //     "We have received your vehicle import request and our team " +
+    //     "will review the details and contact you.\n\n" +
+    //     "This email confirms receipt of your request; it does not " +
+    //     "mean your vehicle order has been confirmed.\n\n" +
+    //     "Thank you,\nJack Merchants Imports";
 
-      try {
-        const result = await sendClientEmail({
-          to: newQuery.email,
-          subject,
-          message,
-        });
+    //   try {
+    //     const result = await sendClientEmail({
+    //       to: newQuery.email,
+    //       subject,
+    //       message,
+    //     });
 
-        await EmailLog.create({
-          queryId: newQuery._id,
-          to: newQuery.email,
-          subject,
-          message,
-          type: "query_confirmation",
-          status: "sent",
-          providerId: result.id,
-        });
-      } catch (emailError) {
-        console.error("Confirmation email failed:", emailError);
+    //     await EmailLog.create({
+    //       queryId: newQuery._id,
+    //       to: newQuery.email,
+    //       subject,
+    //       message,
+    //       type: "query_confirmation",
+    //       status: "sent",
+    //       providerId: result.id,
+    //     });
+    //   } catch (emailError) {
+    //     console.error("Confirmation email failed:", emailError);
 
-        try {
-          await EmailLog.create({
-            queryId: newQuery._id,
-            to: newQuery.email,
-            subject,
-            message,
-            type: "query_confirmation",
-            status: "failed",
-            error: emailError.message,
-          });
-        } catch (logError) {
-          console.error("Could not save email failure:", logError);
-        }
-      }
-    }
+    //     try {
+    //       await EmailLog.create({
+    //         queryId: newQuery._id,
+    //         to: newQuery.email,
+    //         subject,
+    //         message,
+    //         type: "query_confirmation",
+    //         status: "failed",
+    //         error: emailError.message,
+    //       });
+    //     } catch (logError) {
+    //       console.error("Could not save email failure:", logError);
+    //     }
+    //   }
+    // }
 
     return res.status(201).json({
       message: "Your vehicle import request was submitted successfully",
@@ -98,85 +97,85 @@ export const addQuery = async (req, res) => {
   }
 };
 
-export const sendManualEmail = async (req, res) => {
-  const { subject, message } = req.body;
+// export const sendManualEmail = async (req, res) => {
+//   const { subject, message } = req.body;
 
-  if (
-    typeof subject !== "string" ||
-    !subject.trim() ||
-    typeof message !== "string" ||
-    !message.trim()
-  ) {
-    return res.status(400).json({
-      message: "Subject and message are required",
-    });
-  }
+//   if (
+//     typeof subject !== "string" ||
+//     !subject.trim() ||
+//     typeof message !== "string" ||
+//     !message.trim()
+//   ) {
+//     return res.status(400).json({
+//       message: "Subject and message are required",
+//     });
+//   }
 
-  if (subject.length > 200 || message.length > 10000) {
-    return res.status(400).json({
-      message: "Subject or message is too long",
-    });
-  }
+//   if (subject.length > 200 || message.length > 10000) {
+//     return res.status(400).json({
+//       message: "Subject or message is too long",
+//     });
+//   }
 
-  try {
-    const query = await Query.findById(req.params.id);
+//   try {
+//     const query = await Query.findById(req.params.id);
 
-    if (!query) {
-      return res.status(404).json({
-        message: "Client query not found",
-      });
-    }
+//     if (!query) {
+//       return res.status(404).json({
+//         message: "Client query not found",
+//       });
+//     }
 
-    if (!query.email) {
-      return res.status(400).json({
-        message: "This client has no email address",
-      });
-    }
+//     if (!query.email) {
+//       return res.status(400).json({
+//         message: "This client has no email address",
+//       });
+//     }
 
-    try {
-      const result = await sendClientEmail({
-        to: query.email,
-        subject: subject.trim(),
-        message: message.trim(),
-      });
+//     try {
+//       const result = await sendClientEmail({
+//         to: query.email,
+//         subject: subject.trim(),
+//         message: message.trim(),
+//       });
 
-      await EmailLog.create({
-        queryId: query._id,
-        to: query.email,
-        subject: subject.trim(),
-        message: message.trim(),
-        type: "manual",
-        status: "sent",
-        providerId: result.id,
-      });
+//       await EmailLog.create({
+//         queryId: query._id,
+//         to: query.email,
+//         subject: subject.trim(),
+//         message: message.trim(),
+//         type: "manual",
+//         status: "sent",
+//         providerId: result.id,
+//       });
 
-      return res.status(200).json({
-        message: "Email accepted by the email service",
-        emailId: result.id,
-      });
-    } catch (emailError) {
-      await EmailLog.create({
-        queryId: query._id,
-        to: query.email,
-        subject: subject.trim(),
-        message: message.trim(),
-        type: "manual",
-        status: "failed",
-        error: emailError.message,
-      });
+//       return res.status(200).json({
+//         message: "Email accepted by the email service",
+//         emailId: result.id,
+//       });
+//     } catch (emailError) {
+//       await EmailLog.create({
+//         queryId: query._id,
+//         to: query.email,
+//         subject: subject.trim(),
+//         message: message.trim(),
+//         type: "manual",
+//         status: "failed",
+//         error: emailError.message,
+//       });
 
-      return res.status(502).json({
-        message: "Unable to send email. Please try again.",
-      });
-    }
-  } catch (error) {
-    console.error("Manual email route error:", error);
+//       return res.status(502).json({
+//         message: "Unable to send email. Please try again.",
+//       });
+//     }
+//   } catch (error) {
+//     console.error("Manual email route error:", error);
 
-    return res.status(500).json({
-      message: "An unexpected error occurred",
-    });
-  }
-};
+//     return res.status(500).json({
+//       message: "An unexpected error occurred",
+//     });
+//   }
+// };
 
 export const deleteAllQueries = async (req, res) => {
   try {

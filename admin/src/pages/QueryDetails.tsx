@@ -103,7 +103,7 @@ const QueryDetails = () => {
                 <p className="font-semibold text-lg">
                   {query?.car?.make} {query?.car?.model}{" "}
                   <span className="text-sm text-pink-500">
-                    year to and year from will be added shortly
+                    (year details will be added shortly)
                   </span>
                 </p>
               </div>

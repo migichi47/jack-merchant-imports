@@ -16,7 +16,7 @@ router.use("/queries", queriesRoutes);
 router.use("/vehicles", vehiclesRoutes);
 router.use("/imports", importRoutes);
 router.use("/settings", settingsRoutes);
-router.use("/emails", emailRoutes);
+// router.use("/emails", emailRoutes);
 router.use("/carapis", carapisRoutes);
 router.use("/notifications", notificationRoutes);
 router.use("/rates", exchangeRateRoutes);

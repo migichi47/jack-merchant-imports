@@ -63,7 +63,7 @@ const AboutAndCTA = () => {
             <img
               src={carImage}
               alt="Premium imported vehicle"
-              className="w-full h-[450px] object-cover rounded-2xl shadow-xl"
+              className="w-full h-112.5 object-cover rounded-2xl shadow-xl"
             />
             <div className="absolute -bottom-6 -left-6 bg-red-600 text-white p-6 rounded-xl shadow-lg">
               <p className="text-3xl font-bold">2+</p>
