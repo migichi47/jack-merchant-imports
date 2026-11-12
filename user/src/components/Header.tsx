@@ -4,6 +4,7 @@ import Logo from "./Logo";
 import { navLinks } from "../data/navlinks";
 import { useEffect } from "react";
 import api from "../services/api";
+import { Link } from "react-router-dom";
 
 type Currencydata = {
   rates: number;
@@ -27,8 +28,8 @@ export default function Header() {
 
   return (
     <>
-      <header className="bg-gray-100 py-2 sm:py-2 px-4">
-        <div className="max-w-350 mx-auto flex md:justify-between justify-center items-center text-xs sm:text-[12px]">
+      <header className="bg-gray-100 py-2 sm:py-2 sm:px-4">
+        <div className="max-w-350 mx-auto flex gap-13 sm:gap-0 md:justify-between justify-center items-center text-xs sm:text-[12px]">
           <div className="hidden md:flex items-center gap-2 text-gray-600">
             <Calendar size={18} />
             <span>
@@ -42,8 +43,8 @@ export default function Header() {
           <h1 className="text-gray-500 inline-flex font-semibold leading-[1.08] tracking-tight gap-2">
             Import your next car from Japan to Kenya.
           </h1>
-          <div className="hidden md:flex items-center gap-4">
-            <span className="border border-green-300 bg-green-100 rounded-full p-1">
+          <div className="flex items-center gap-4">
+            <span className="border border-green-300 bg-green-100 rounded-full py-1 px-2">
               LIVE RATES
             </span>
             <div>
@@ -92,14 +93,14 @@ export default function Header() {
         {mobileMenuOpen && (
           <nav className="border-t border-neutral-200 bg-white p-5 md:hidden">
             {navLinks.map((link) => (
-              <a
+              <Link
                 key={link.label}
-                href={link.href}
+                to={link.href}
                 onClick={() => setMobileMenuOpen(false)}
                 className="block rounded-lg px-3 py-3 text-sm font-medium hover:bg-neutral-50"
               >
                 {link.label}
-              </a>
+              </Link>
             ))}
             <a
               href="#request-quote"
