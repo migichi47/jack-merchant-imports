@@ -1,4 +1,4 @@
-import { Handshake} from "lucide-react";
+import { Handshake } from "lucide-react";
 import { useEffect, useState } from "react";
 import { whyChooseUs } from "../data/aboutAndCTAData";
 import { useCars } from "../hooks/useCars";
@@ -6,6 +6,15 @@ import { useCars } from "../hooks/useCars";
 const AboutAndCTA = () => {
   const { pastImports } = useCars();
   const [carImage, setCarImage] = useState<string | undefined>(undefined);
+  const [scale, setScale] = useState<number>(1);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setScale((prev) => (prev === 1 ? 2 : 1));
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     const randomCarImport = Math.floor(Math.random() * pastImports?.length);
@@ -29,13 +38,19 @@ const AboutAndCTA = () => {
               Driving Dreams.
               <span className="text-red-600"> Delivering Happiness.</span>
             </h2>
-            <p className="text-neutral-600 leading-8 mt-6">
+            <p
+              className={`text-neutral-600 leading-8 mt-6 bg-white shadow-lg border border-zinc-200 px-5 py-2 
+              ${scale === 1 && "scale-110 shadow-md shadow-pink-500/30"} transition duration-300 mx-5 mb-10 md:mx-0`}
+            >
               At Jack Merchant Imports, we believe that importing a vehicle is
               more than just a transaction; it is about fulfilling dreams,
               creating memorable experiences and giving our clients confidence
               in every purchase.
             </p>
-            <p className="text-neutral-600 leading-8 mt-4">
+            <p
+              className={`text-neutral-600 px-5 py-2 leading-8 mt-4 bg-white shadow-lg border border-zinc-200
+              ${scale === 2 && "scale-110 shadow-md shadow-pink-500/30"} transition duration-300 mx-5 md:mx-0`}
+            >
               Over the past two years, we have built our business around one
               fundamental promise: to deliver quality vehicles and exceptional
               customer experiences. Our journey is driven by a passion for
@@ -43,7 +58,7 @@ const AboutAndCTA = () => {
               reliable and competitively priced vehicles from international
               markets, particularly Japan.
             </p>
-            <div className="flex gap-10 mt-8">
+            <div className="flex justify-center md:justify-start gap-10 mt-8">
               <div>
                 <h3 className="text-4xl font-bold text-red-600">2+</h3>
                 <p className="text-sm text-neutral-500 mt-1">
