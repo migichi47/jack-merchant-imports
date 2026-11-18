@@ -166,20 +166,20 @@ const Hero = () => {
           className="absolute z-0 inset-0 h-full w-full object-cover"
         />
         <div
-          className="absolute bg-linear-to-r from-black h-full w-fit
-          pl-10 flex flex-col justify-center z-2"
+          className="absolute bg-linear-to-b lg:bg-linear-to-r from-black h-full lg:w-fit
+          px-3 lg:pl-10 flex flex-col justify-center z-2 w-screen"
         >
           <div className="flex flex-col justify-center gap-8 w-fit">
             <div
               id="pretext"
-              className="text-2xl text-sans font-semibold flex gap-3 items-center text-gray-300"
+              className="text-md sm:text-xl lg:text-2xl text-sans font-semibold flex gap-3 items-center text-gray-300"
             >
               IMPORT <GoDotFill className="text-red-700" /> DRIVE
               <GoDotFill className="text-red-700" /> ENJOY
             </div>
             <h2
               ref={headingContainer}
-              className="text-4xl sm:text-5xl lg:text-8xl text-black font-bold w-100 sm:w-200
+              className="text-3xl sm:text-5xl lg:text-8xl text-black font-bold w-100 sm:w-200
               lg:w-260 bg-clip-text text-white"
             >
               Your Dream <span className="text-red-600">Car</span>, Imported
@@ -187,46 +187,46 @@ const Hero = () => {
             </h2>
             <p
               id="description"
-              className="text-xl text-sans font-semibold text-gray-400"
+              className="text-md max-w-80 sm:max-w-none sm:text-xl text-sans font-semibold text-gray-400"
             >
               Reliable vehicle imports. Transparent process.
             </p>
 
             <div
-              className="flex items-center gap-5 text-white relative top-20"
+              className="flex items-center gap-2 text-white relative top-5 sm:top-20 text-xs lg:text-xl"
               id="hero-cta"
             >
               <button
-                className="hero-cta flex items-center gap-2 bg-red-700 hover:bg-red-900 duration-300
+                className="hero-cta flex items-center gap-1 lg:gap-2 bg-red-700 hover:bg-red-900 duration-300
                 cursor-pointer py-3 px-4 rounded-full"
                 onClick={() => navigate("#request-quote")}
               >
-                Request a Quote <ArrowRight />
+                Request a Quote <ArrowRight size={isDesktop ? 30 : 20} />
               </button>
               <button
-                className="hero-cta flex items-center gap-2 py-3 px-4 rounded-full border
+                className="hero-cta flex items-center gap-1 lg:gap-2 py-3 px-4 rounded-full border
               border-white/50 cursor-pointer duration-300 hover:bg-white/10"
                 onClick={() => navigate("#past-imports")}
               >
-                View Past Imports <ArrowDown />
+                View Past Imports <ArrowDown size={isDesktop ? 30 : 20} />
               </button>
             </div>
           </div>
           <div
-            className="flex bg-linear-to-r from-white/10 via-white/80 to-white/20
-            w-fit text-black mt-60 md:mt-30 rounded-full px-3 md:px-10 py-3 md:relative left-250"
+            className="flex bg-linear-to-r from-white/10 sm:via-white/80 via-white/60 to-white/20 text-xs lg:text-xl
+            w-fit text-black mt-40 md:mt-30 rounded-full lg:px-3 md:px-10 py-3 md:relative left-250"
           >
-            <div className="flex gap-3 items-center border-r-2 px-3">
+            <div className="flex gap-3 items-center border-r-2 px-1 sm:px-3">
               <ShieldCheck size={isDesktop ? 40 : 35} />
-              <p className="w-20">Trusted & Reliable</p>
+              <p className={isDesktop ? "w-20" : ""}>Trusted & Reliable</p>
             </div>
-            <div className="flex gap-3 items-center border-r-2 px-3">
+            <div className="flex gap-3 items-center border-r-2 px-1 sm:px-3">
               <Ship size={isDesktop ? 40 : 35} />
-              <p className="w-20">Japan Sourcing</p>
+              <p className={isDesktop ? "w-20" : ""}>Japan Sourcing</p>
             </div>
-            <div className="flex gap-3 items-center px-3">
+            <div className="flex gap-3 items-center px-1 sm:px-3">
               <Handshake size={isDesktop ? 40 : 35} />
-              <p className="w-20">Dedicated Support</p>
+              <p className={isDesktop ? "w-20" : ""}>Dedicated Support</p>
             </div>
           </div>
         </div>
