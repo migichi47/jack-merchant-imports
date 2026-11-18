@@ -24,6 +24,7 @@ const Hero = () => {
     media.add("(max-width: 767px)", () => {
       video.currentTime = 0;
       video.loop = true;
+      video.playbackRate = 0.5;
 
       void video.play().catch((error: unknown) => {
         if (error instanceof DOMException && error.name === "AbortError") return;
@@ -33,6 +34,7 @@ const Hero = () => {
       return () => {
         video.pause();
         video.loop = false;
+        video.playbackRate = 1;
         video.currentTime = 0;
       };
     });
@@ -40,6 +42,7 @@ const Hero = () => {
     media.add("(min-width: 768px)", () => {
       video.pause();
       video.loop = false;
+      video.playbackRate = 1;
 
       const createScrollAnimation = contextSafe(() => {
         if (!Number.isFinite(video.duration) || video.duration <= 0) return;
