@@ -12,50 +12,73 @@ const Hero = () => {
   const { sliderVehicles } = useCars();
   const videoSectionRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const { contextSafe } = useGSAP({ scope: videoSectionRef });
 
-  useGSAP(() => {
+  useGSAP((_, contextSafe) => {
     const section = videoSectionRef.current;
     const video = videoRef.current;
 
-    if (!section || !video) return;
+    if (!section || !video || !contextSafe) return;
 
-    const createScrollAnimation = contextSafe(() => {
-      if (!Number.isFinite(video.duration) || video.duration <= 0) return;
+    const media = gsap.matchMedia();
 
-      const isCoarsePointer = window.matchMedia("(pointer: coarse)").matches;
-
-      video.pause();
+    media.add("(max-width: 767px)", () => {
       video.currentTime = 0;
+      video.loop = true;
 
-      gsap.to(video, {
-        currentTime: Math.max(0, video.duration - 0.1),
-        ease: "none",
-        scrollTrigger: {
-          trigger: section,
-          start: "top top",
-          end: () =>
-            `+=${Math.round(Math.max(window.innerHeight * 2, video.duration * (isCoarsePointer ? 450 : 300)))}`,
-          pin: true,
-          scrub: isCoarsePointer ? 1.5 : 0.8,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-        },
+      void video.play().catch((error: unknown) => {
+        if (error instanceof DOMException && error.name === "AbortError") return;
+        console.error("Unable to autoplay the hero video", error);
       });
 
-      ScrollTrigger.refresh();
+      return () => {
+        video.pause();
+        video.loop = false;
+        video.currentTime = 0;
+      };
     });
 
-    if (video.readyState >= HTMLMediaElement.HAVE_METADATA) {
-      createScrollAnimation();
-    } else {
-      video.addEventListener("loadedmetadata", createScrollAnimation);
-    }
+    media.add("(min-width: 768px)", () => {
+      video.pause();
+      video.loop = false;
+
+      const createScrollAnimation = contextSafe(() => {
+        if (!Number.isFinite(video.duration) || video.duration <= 0) return;
+
+        video.currentTime = 0;
+
+        gsap.to(video, {
+          currentTime: Math.max(0, video.duration - 0.1),
+          ease: "none",
+          scrollTrigger: {
+            trigger: section,
+            start: "top top",
+            end: () =>
+              `+=${Math.round(Math.max(window.innerHeight * 2, video.duration * 300))}`,
+            pin: true,
+            scrub: 0.8,
+            anticipatePin: 1,
+            invalidateOnRefresh: true,
+          },
+        });
+
+        ScrollTrigger.refresh();
+      });
+
+      if (video.readyState >= HTMLMediaElement.HAVE_METADATA) {
+        createScrollAnimation();
+      } else {
+        video.addEventListener("loadedmetadata", createScrollAnimation);
+      }
+
+      return () => {
+        video.removeEventListener("loadedmetadata", createScrollAnimation);
+      };
+    });
 
     return () => {
-      video.removeEventListener("loadedmetadata", createScrollAnimation);
+      media.revert();
     };
-  }, [contextSafe]);
+  }, { scope: videoSectionRef });
 
   return (
     <>
