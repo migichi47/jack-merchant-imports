@@ -8,6 +8,7 @@ import {
   ShieldCheck,
   Ship,
 } from "lucide-react";
+import { useMediaQuery } from "react-responsive";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -24,6 +25,9 @@ const Hero = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const headingContainer = useRef<HTMLHeadingElement>(null);
   const navigate = useNavigate();
+  const isDesktop = useMediaQuery({
+    query: "(min-width: 1024px)",
+  });
 
   useGSAP(
     (_, contextSafe) => {
@@ -175,7 +179,8 @@ const Hero = () => {
             </div>
             <h2
               ref={headingContainer}
-              className="text-8xl text-black font-bold max-w-260 bg-clip-text text-white"
+              className="text-4xl sm:text-5xl lg:text-8xl text-black font-bold w-100 sm:w-200
+              lg:w-260 bg-clip-text text-white"
             >
               Your Dream <span className="text-red-600">Car</span>, Imported
               with <span className="text-red-600">Care</span>
@@ -209,18 +214,18 @@ const Hero = () => {
           </div>
           <div
             className="flex bg-linear-to-r from-white/10 via-white/80 to-white/20
-            w-fit text-black mt-30 rounded-full px-10 py-3 relative left-250"
+            w-fit text-black mt-60 md:mt-30 rounded-full px-3 md:px-10 py-3 md:relative left-250"
           >
             <div className="flex gap-3 items-center border-r-2 px-3">
-              <ShieldCheck size={40} />
+              <ShieldCheck size={isDesktop ? 40 : 35} />
               <p className="w-20">Trusted & Reliable</p>
             </div>
             <div className="flex gap-3 items-center border-r-2 px-3">
-              <Ship size={40} />
+              <Ship size={isDesktop ? 40 : 35} />
               <p className="w-20">Japan Sourcing</p>
             </div>
-            <div className="flex gap-3 items-center border-r-2 px-3">
-              <Handshake size={40} />
+            <div className="flex gap-3 items-center px-3">
+              <Handshake size={isDesktop ? 40 : 35} />
               <p className="w-20">Dedicated Support</p>
             </div>
           </div>
