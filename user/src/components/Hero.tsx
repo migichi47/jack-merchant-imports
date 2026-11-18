@@ -21,7 +21,7 @@ const Hero = () => {
 
     const media = gsap.matchMedia();
 
-    media.add("(max-width: 767px)", () => {
+    media.add("(max-width: 1023px)", () => {
       video.currentTime = 0;
       video.loop = true;
       video.playbackRate = 0.5;
@@ -39,7 +39,7 @@ const Hero = () => {
       };
     });
 
-    media.add("(min-width: 768px)", () => {
+    media.add("(min-width: 1024px)", () => {
       video.pause();
       video.loop = false;
       video.playbackRate = 1;
