@@ -23,6 +23,8 @@ const Hero = () => {
     const createScrollAnimation = contextSafe(() => {
       if (!Number.isFinite(video.duration) || video.duration <= 0) return;
 
+      const isCoarsePointer = window.matchMedia("(pointer: coarse)").matches;
+
       video.pause();
       video.currentTime = 0;
 
@@ -33,9 +35,9 @@ const Hero = () => {
           trigger: section,
           start: "top top",
           end: () =>
-            `+=${Math.round(Math.max(window.innerHeight * 2, video.duration * 300))}`,
+            `+=${Math.round(Math.max(window.innerHeight * 2, video.duration * (isCoarsePointer ? 450 : 300)))}`,
           pin: true,
-          scrub: 0.8,
+          scrub: isCoarsePointer ? 1.5 : 0.8,
           anticipatePin: 1,
           invalidateOnRefresh: true,
         },
